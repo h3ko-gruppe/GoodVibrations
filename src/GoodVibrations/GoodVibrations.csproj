@@ -29,7 +29,27 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml" />
-    <EmbeddedResource Include="Pages\GoodVibrationsPage.xaml" />
+    <EmbeddedResource Include="Pages\MainPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\PhoneCallTemplatePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\EditNotificatorPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Cells\NotificatorCell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Cells\PhoneCallTemplateCell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\RegistrationPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -39,9 +59,38 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Services\PersistenceService.cs" />
     <Compile Include="Models\Sample.cs" />
-    <Compile Include="Pages\GoodVibrationsPage.xaml.cs">
-      <DependentUpon>GoodVibrationsPage.xaml</DependentUpon>
+    <Compile Include="Pages\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PhoneCallTemplatePage.xaml.cs">
+      <DependentUpon>PhoneCallTemplatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EditNotificatorPage.xaml.cs">
+      <DependentUpon>EditNotificatorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\PhoneCallTemplateViewModel.cs" />
+    <Compile Include="ViewModels\EditNotificatorViewModel.cs" />
+    <Compile Include="TemplateSelectors\MainTemplateSelector.cs" />
+    <Compile Include="Views\Cells\NotificatorCell.xaml.cs">
+      <DependentUpon>NotificatorCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ItemViewModels\NotificatorItemViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\BaseItemViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\PhoneCallTemplateItemViewModel.cs" />
+    <Compile Include="Views\Cells\PhoneCallTemplateCell.xaml.cs">
+      <DependentUpon>PhoneCallTemplateCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\ReactivePageExtensions.cs" />
+    <Compile Include="Pages\RegistrationPage.xaml.cs">
+      <DependentUpon>RegistrationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\RegistrationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Remotion.Linq">
@@ -83,11 +132,17 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\portable-net45+winrt45+wp8+wpa81\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Splat">
-      <HintPath>..\packages\Splat.1.4.0\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
-    </Reference>
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.7.0.0\lib\portable-net45+netcore45+wpa81+win8+wp8+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.XamForms">
+      <HintPath>..\packages\reactiveui-xamforms.7.0.0\lib\portable-net45+netcore45+wp8+wpa81+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.XamForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat">
+      <HintPath>..\packages\Splat.1.6.0\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Fody.Helpers">
+      <HintPath>..\packages\ReactiveUI.Fody.2.0.65\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\ReactiveUI.Fody.Helpers.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +153,12 @@
     <Folder Include="Models\" />
     <Folder Include="Services\" />
     <Folder Include="Pages\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="TemplateSelectors\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Cells\" />
+    <Folder Include="ViewModels\ItemViewModels\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\portable-net+sl+win+wpa+wp\Fody.targets')" />

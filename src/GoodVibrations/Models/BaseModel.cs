@@ -1,9 +1,8 @@
 ﻿using System;
-using Realms;
 
 namespace GoodVibrations.Models
 {
-    public class BaseModel : RealmObject
+    public class BaseModel
     {
         public Guid? Id {
             get;
