@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.iOS", "iOS\G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Droid", "Droid\GoodVibrations.Droid.csproj", "{BC5D33F5-827D-482A-A0FD-372BE4D8969D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Uwp", "GoodVibrations.Uwp\GoodVibrations.Uwp.csproj", "{A0A93A98-F10C-483C-83C4-A0CD814F8981}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Uwp", "Uwp\GoodVibrations.Uwp.csproj", "{A0A93A98-F10C-483C-83C4-A0CD814F8981}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
