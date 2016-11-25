@@ -7,6 +7,9 @@ namespace GoodVibrations
         public GoodVibrationsPage ()
         {
             InitializeComponent ();
+
+            var service = new Services.PersistenceService ();
+            var y = service.Load<Models.Sample> (x => x.Test == 3);
         }
     }
 }
