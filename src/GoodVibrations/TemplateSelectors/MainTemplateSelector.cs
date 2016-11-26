@@ -22,7 +22,7 @@ namespace GoodVibrations.TemplateSelectors
             if (item is PhoneCallTemplateItemViewModel)
                 return _phoneCallTemplate;
 
-            if (item is NotificatorItemViewModel)
+            if (item is NotificationItemViewModel)
                 return _notificatorTemplate;
                     
             return null;

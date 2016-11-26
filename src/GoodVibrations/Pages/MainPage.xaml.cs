@@ -37,10 +37,10 @@ namespace GoodVibrations.Pages
 
                 dispose(this.BindToToolBarItems(ViewModel));
 
-                dispose(ViewModel.ShowSelectedNotificator.RegisterHandler(async notificator =>
+                dispose(ViewModel.ShowSelectedNotificator.RegisterHandler(async notification =>
                 {
-                    await Navigation.PushAsync(new EditNotificatorPage(notificator.Input)).ConfigureAwait(false);
-                    notificator.SetOutput(Unit.Default);
+                    await Navigation.PushAsync(new EditNotificatorPage(notification.Input)).ConfigureAwait(false);
+                    notification.SetOutput(Unit.Default);
                 }));
 
                 dispose(ViewModel.ShowSelectedPhoneCallTemplate.RegisterHandler(async phoneCallTemplate =>
@@ -55,7 +55,7 @@ namespace GoodVibrations.Pages
         {
             base.OnAppearing();
 
-            FillTableView();
+            ViewModel.OnAppear();
         }
 
         private void FillTableView()

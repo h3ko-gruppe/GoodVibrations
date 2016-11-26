@@ -1,6 +1,6 @@
 ﻿using System;
-using GoodVibrations.Core.Models;
 using GoodVibrations.Models.Base;
+using ReactiveUI.Fody.Helpers;
 using SQLite.Net.Attributes;
 
 namespace GoodVibrations.Models
@@ -8,20 +8,23 @@ namespace GoodVibrations.Models
 	[Table("Notification")]
 	public class Notification : BaseModel
 	{
-		[Column("Description")]
-		public string Description
+		[Column("Name")]
+        [Reactive]
+        public string Name
 		{
 			get;
 			set;
 		}
 
         [Column ("EventId")]
+        [Reactive]
         public string EventId {
             get;
             set;
         }
 
 		[Column("Sound")]
+        [Reactive]
 		public string SoundFilePath
 		{
 			get;
@@ -29,22 +32,16 @@ namespace GoodVibrations.Models
 		}
 
 		[Column("Active")]
-		public string Active
+        [Reactive]
+		public bool Active
 		{
 			get;
 			set;
 		}
 
 		[Column("NotificationIcon")]
+        [Reactive]
 		public string NotificationIcon
-		{
-			get;
-			set;
-		}
-
-
-		[Column("PersonWhoRings")]
-		public User PersonWhoRings
 		{
 			get;
 			set;

@@ -18,15 +18,15 @@ namespace GoodVibrations.Views.Cells
 
             this.WhenActivated(dispose =>
             {
-                dispose(ViewModel.WhenAnyValue(x => x.Name)
+                dispose(ViewModel.WhenAnyValue(x => x.PhoneCall.Name)
                         .Distinct()
                         .Subscribe(newValue => Text = newValue));
 
-                dispose(ViewModel.WhenAnyValue(x => x.PhoneNumber)
+                dispose(ViewModel.WhenAnyValue(x => x.PhoneCall.DestinationNumber)
                         .Distinct()
                         .Subscribe(newValue => Detail = newValue));
 
-                dispose(ViewModel.WhenAnyValue(x => x.ImagePath)
+                dispose(ViewModel.WhenAnyValue(x => x.PhoneCall.Icon)
                         .Distinct()
                         .Subscribe(newValue => ImageSource = ImageSource.FromFile(newValue)));
 

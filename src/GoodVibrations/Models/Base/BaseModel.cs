@@ -1,10 +1,13 @@
 ﻿using System;
+using SQLite.Net.Attributes;
 
 namespace GoodVibrations.Models.Base
 {
-	public class BaseModel
+    public class BaseModel : ReactiveUI.ReactiveObject
     {
-        public Guid? Id {
+        [PrimaryKey]
+        [AutoIncrement]
+        public int Id {
             get;
             set;
         }

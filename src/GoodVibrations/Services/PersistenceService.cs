@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using GoodVibrations.Core.Models;
 using GoodVibrations.Persistence.ConnectionFactories;
 using GoodVibrations.Interfaces.Services;
 using GoodVibrations.Models;
@@ -23,22 +22,20 @@ namespace GoodVibrations.Services
 		public PersistenceService(ISQLitePlatform platform)
 		{
 			_platform = platform;
-			User = new UserDao();
 			Notification = new NotificationDao();
 			PhoneCall = new PhoneCallDao();
 		}
 
 		public void Initialize()
 		{
-			GoodVibrationsConnectionFactory.Instance.Initialize(_platform, Constants.DataBase.DatabaseFileName);
-			var fileExists = FileSystem.Current.LocalStorage.CheckExistsAsync(Constants.DataBase.DatabaseFileName);
+            var folderPath = FileSystem.Current.LocalStorage.Path;
+            GoodVibrationsConnectionFactory.Instance.Initialize(_platform, Path.Combine(folderPath, Constants.DataBase.DatabaseFileName));
 					
 			var db = GoodVibrationsConnectionFactory.Instance.GetConnection();
 			db.BeginTransaction();
 
 			try
 			{
-				db.CreateTable<User>();
 				db.CreateTable<PhoneCall>();
                 db.CreateTable<Notification>();
 			}
@@ -67,12 +64,6 @@ namespace GoodVibrations.Services
 				.FirstOrDefault(prop => prop.CanRead && typeof(GoodVibrationsBaseDao<T>).GetTypeInfo().IsAssignableFrom(prop.PropertyType.GetTypeInfo()));
 
 			return (GoodVibrationsBaseDao<T>)(_daoMap[typeof(T)] = (property.GetValue(this) as GoodVibrationsBaseDao<T>));
-		}
-
-		public UserDao User
-		{
-			get;
-			private set;
 		}
 
 		public NotificationDao Notification

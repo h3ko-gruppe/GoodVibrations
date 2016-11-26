@@ -13,7 +13,7 @@
     	<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="250">
             <Entry Text="{Binding Username}" Placeholder="{Binding UsernamePlaceholder}" />
     		<Entry Text="{Binding Password}" Placeholder="{Binding PasswordPlaceholder}" IsPassword="true" />
-    		<StackLayout Orientation="Horizontal" HorizontalOptions="End">
+    		<StackLayout Orientation="Horizontal" HorizontalOptions="End" Spacing="16">
                 <Button Command="{Binding Login}" Text="{Binding LoginText}"/>
                 <Button Command="{Binding Register}" Text="{Binding RegisterText}"/>
             </StackLayout>

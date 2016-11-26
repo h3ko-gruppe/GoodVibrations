@@ -8,7 +8,6 @@ namespace GoodVibrations.Interfaces.Services
 	public interface IPersistenceService
 	{
 		void Initialize();
-		UserDao User { get; }
 		NotificationDao Notification  { get; }
 		PhoneCallDao PhoneCall { get; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using GoodVibrations.Models;
 using ReactiveUI.Fody.Helpers;
 
 namespace GoodVibrations.ViewModels.ItemViewModels
@@ -6,15 +7,6 @@ namespace GoodVibrations.ViewModels.ItemViewModels
     public class PhoneCallTemplateItemViewModel : SelectableItemViewModel
     {
         [Reactive]
-        public string Name { get; set; }
-
-        [Reactive]
-        public string PhoneNumber { get; set; }
-
-        [Reactive]
-        public string ImagePath { get; set; }
-
-        [Reactive]
-        public string Text { get; set; }
+        public PhoneCall PhoneCall { get; set; }
     }
 }

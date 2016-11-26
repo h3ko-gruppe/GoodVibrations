@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace GoodVibrations.Views.Cells
 {
-    public class NotificatorCell : TextCell, IViewFor<NotificatorItemViewModel>
+    public class NotificatorCell : TextCell, IViewFor<NotificationItemViewModel>
     {
         protected override void OnBindingContextChanged()
         {
@@ -18,7 +18,7 @@ namespace GoodVibrations.Views.Cells
 
             this.WhenActivated(dispose =>
             {
-                dispose(ViewModel.WhenAnyValue(x => x.Name)
+                dispose(ViewModel.WhenAnyValue(x => x.Notification.Name)
                         .Distinct()
                         .Subscribe(newValue => Text = newValue));
 
@@ -29,9 +29,9 @@ namespace GoodVibrations.Views.Cells
 
         #region IViewFor implementation
 
-        public NotificatorItemViewModel ViewModel
+        public NotificationItemViewModel ViewModel
         {
-            get { return BindingContext as NotificatorItemViewModel; }
+            get { return BindingContext as NotificationItemViewModel; }
             set { BindingContext = value; }
 
         }
@@ -39,7 +39,7 @@ namespace GoodVibrations.Views.Cells
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = value as NotificatorItemViewModel; }
+            set { ViewModel = value as NotificationItemViewModel; }
         }
 
         #endregion

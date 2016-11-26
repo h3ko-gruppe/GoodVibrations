@@ -1,21 +1,33 @@
 ﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
+using System.Reactive.Linq;
 using ReactiveUI.Fody.Helpers;
+using GoodVibrations.Interfaces.Services;
+using GoodVibrations.Models;
 
 namespace GoodVibrations.ViewModels
 {
     public class PhoneCallTemplateViewModel : BaseViewModel
     {
-        public PhoneCallTemplateViewModel()
+        private readonly IPersistenceService _persistence;
+        
+        public PhoneCallTemplateViewModel(IPersistenceService persistence)
         {
+            _persistence = persistence;
+
             ChooseImage = ReactiveCommand.CreateFromTask(OnChooseImage);
             Save = ReactiveCommand.CreateFromTask(OnSave);
+            Test = ReactiveCommand.CreateFromTask(OnTest);
+            Delete = ReactiveCommand.CreateFromTask(OnDelete);
+
+            Close = new Interaction<Unit, Unit>();
         }
 
         [Reactive]
-        public PhoneCallTemplateItemViewModel PhoneCallTemplate { get; set; }
+        public PhoneCall PhoneCall { get; set; }
 
         [Reactive]
         public bool IsNewTemplate { get; set; }
@@ -30,22 +42,33 @@ namespace GoodVibrations.ViewModels
         public string NamePlaceholder { get; set; }
 
         [Reactive]
+        public string SaveText { get; set; }
+
+        [Reactive]
+        public string DeleteText { get; set; }
+
+        [Reactive]
         public string PhoneNumberPlaceholder { get; set; }
 
         public ReactiveCommand ChooseImage { get; }
         public ReactiveCommand Save { get; }
+        public ReactiveCommand Delete { get; }
+        public ReactiveCommand Test { get; }
+
+        public Interaction<Unit, Unit> Close { get; }
 
         public override void Init(object parameters)
         {
-            PhoneCallTemplate = parameters as PhoneCallTemplateItemViewModel;
+            PhoneCall = parameters as PhoneCall;
 
-            if (PhoneCallTemplate == null)
+            if (PhoneCall == null)
             {
                 IsNewTemplate = true;
-                PhoneCallTemplate = new PhoneCallTemplateItemViewModel();
+                PhoneCall = new PhoneCall();
             }
 
             SetUiTexts();
+            CreateToolBarItems();
         }
 
         protected override void CreateToolBarItems()
@@ -54,8 +77,8 @@ namespace GoodVibrations.ViewModels
 
             ToolBarItems.Add(new ActionItemViewModel()
             {
-                Title = "Save",
-                SelectedCommand = Save
+                Title = "Test",
+                SelectedCommand = Test
             });
         }
 
@@ -66,11 +89,32 @@ namespace GoodVibrations.ViewModels
             PhoneNumberPlaceholder = "123456";
             ChooseImageText = "Choose Image";
             TextLabel = "Text";
+            SaveText = "Save";
+            DeleteText = "Delete";
+        }
+
+        private async Task OnTest()
+        {
+            await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
         }
 
         private async Task OnSave()
         {
-            // TODO: save template
+            await Task.Run(() => _persistence.PhoneCall.InsertOrReplace(PhoneCall));
+
+            await Close.Handle(Unit.Default);
+        }
+
+        private async Task OnDelete()
+        {
+            var result = await App.Current.MainPage.DisplayActionSheet("Delete Template", "Cancel", DeleteText);
+
+            if (result == DeleteText)
+            {
+                await Task.Run(() => _persistence.PhoneCall.Delete(PhoneCall));
+
+                await Close.Handle(Unit.Default);
+            }
         }
 
         private Task OnChooseImage()
@@ -79,7 +123,7 @@ namespace GoodVibrations.ViewModels
             // TODO: Start Camera or Gallery
             // TODO: set ImagePath
 
-            PhoneCallTemplate.ImagePath = "dummy.png";
+            PhoneCall.Icon = "dummy.png";
 
             return Task.FromResult(true);
         }

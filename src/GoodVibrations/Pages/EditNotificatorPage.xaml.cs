@@ -10,10 +10,10 @@ namespace GoodVibrations.Pages
 {
     public partial class EditNotificatorPage
     {
-        public EditNotificatorPage(NotificatorItemViewModel notificator)
+        public EditNotificatorPage(Models.Notification notification)
         {
             InitializeComponent();
-            this.AutoWireViewModel(notificator);
+            this.AutoWireViewModel(notification);
 
             this.WhenActivated(dispose =>
             {

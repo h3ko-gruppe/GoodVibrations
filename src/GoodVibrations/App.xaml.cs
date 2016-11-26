@@ -21,6 +21,9 @@ namespace GoodVibrations
 
             RegisterViewModels();
 
+            var persistence = Locator.Current.GetService<IPersistenceService>();
+            persistence.Initialize();
+
             MainPage = new NavigationPage(new LoginPage ());
         }
 
@@ -43,15 +46,15 @@ namespace GoodVibrations
         {
             var resolver = Locator.CurrentMutable;
 
-            resolver.Register(() => new MainViewModel(), typeof(MainViewModel));
+            resolver.Register(() => new MainViewModel(resolver.GetService<IPersistenceService>()), typeof(MainViewModel));
             resolver.Register(() => new RegistrationViewModel(resolver.GetService<IKeyChainHelper>(), resolver.GetService<IAuthentificationSerivce> ()), typeof(RegistrationViewModel));
             resolver.Register(() => new EditNotificatorViewModel(), typeof(EditNotificatorViewModel));
             resolver.Register(() => new LoginViewModel(resolver.GetService<IKeyChainHelper>(), resolver.GetService<IAuthentificationSerivce> ()), typeof(LoginViewModel));
-			resolver.Register(() => new PhoneCallTemplateViewModel(), typeof(PhoneCallTemplateViewModel));
+            resolver.Register(() => new PhoneCallTemplateViewModel(resolver.GetService<IPersistenceService>()), typeof(PhoneCallTemplateViewModel));
 
 			resolver.RegisterLazySingleton(() => new NotificationService(resolver.GetService<IPersistenceService> ()), typeof(INotificationService));
 			resolver.RegisterLazySingleton(() => new PersistenceService(resolver.GetService<ISQLitePlatform>()), typeof(IPersistenceService));
-			resolver.RegisterLazySingleton(() => new PhoneCallService(), typeof(IPhoneCallService));
+			resolver.RegisterLazySingleton(() => new PhoneCallService(resolver.GetService<IAuthentificationSerivce> ()), typeof(IPhoneCallService));
 			resolver.RegisterLazySingleton(() => new AuthentificationSerivce(), typeof(IAuthentificationSerivce));
 		}
     }

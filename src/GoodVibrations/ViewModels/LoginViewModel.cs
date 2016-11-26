@@ -47,6 +47,9 @@ namespace GoodVibrations.ViewModels
         {
             Username = KeyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainUsername);
             Password = KeyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainPassword);
+
+            Username = "test@test.de";
+            Password = "!Test123";
         }
 
         private async Task OnRegister()
