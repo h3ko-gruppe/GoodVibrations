@@ -3,7 +3,7 @@ using ReactiveUI;
 
 namespace GoodVibrations.ViewModels.ItemViewModels
 {
-    public class BaseItemViewModel : ReactiveObject
+    public abstract class BaseItemViewModel : ReactiveObject
     {
     }
 }

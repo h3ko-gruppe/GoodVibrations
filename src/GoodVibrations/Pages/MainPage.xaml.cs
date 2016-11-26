@@ -7,25 +7,44 @@ using GoodVibrations.Extensions;
 using GoodVibrations.ViewModels;
 using ReactiveUI;
 using Xamarin.Forms;
+using System.Linq;
+using GoodVibrations.TemplateSelectors;
+using System.Collections.Specialized;
 
 namespace GoodVibrations.Pages
 {
     public partial class MainPage
     {
+        private readonly MainTemplateSelector _templateSelector;
+
         public MainPage()
         {
             InitializeComponent();
             this.AutoWireViewModel();
 
+            _templateSelector = new MainTemplateSelector();
+
             this.WhenActivated(dispose =>
             {
                 dispose(this.BindToTitle(ViewModel));
 
-                dispose(ViewModel.WhenAnyValue(x => x.MenuItems)
-                     .ObserveOn(RxApp.MainThreadScheduler)
-                        .Subscribe(newValue => ListView.ItemsSource = newValue));
+                dispose(ViewModel.MenuItems
+                        .Changed
+                        .Select(_ => Unit.Default)
+                        .Merge(ViewModel.MenuItems.ItemChanged.Select(_ => Unit.Default))
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(_ => FillTableView()));
 
-                dispose(ViewModel.ShowSelectedNotificator.RegisterHandler(OnShowNotificator));
+                dispose(ViewModel.ToolBarItems
+                        .Changed
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(_ => SetupToolBar()));
+
+                dispose(ViewModel.ShowSelectedNotificator.RegisterHandler(async notificator =>
+                {
+                    await Navigation.PushAsync(new EditNotificatorPage(notificator.Input)).ConfigureAwait(false);
+                    notificator.SetOutput(Unit.Default);
+                }));
 
                 dispose(ViewModel.ShowSelectedPhoneCallTemplate.RegisterHandler(async phoneCallTemplate =>
                 {
@@ -35,10 +54,48 @@ namespace GoodVibrations.Pages
             });
         }
 
-        private async Task OnShowNotificator(InteractionContext<ViewModels.ItemViewModels.NotificatorItemViewModel, Unit> notificator)
+        protected override void OnAppearing()
         {
-            await Navigation.PushAsync(new EditNotificatorPage(notificator.Input)).ConfigureAwait(false);
-            notificator.SetOutput(Unit.Default);
+            base.OnAppearing();
+
+            FillTableView();
+            SetupToolBar();
         }
-   }
+
+        private void SetupToolBar()
+        {
+            this.ToolbarItems.Clear();
+
+            foreach (var item in ViewModel.ToolBarItems)
+            {
+                this.ToolbarItems.Add(new ToolbarItem()
+                {
+                    Text = item.Title,
+                    Command = item.SelectedCommand,
+                });
+            }
+        }
+
+        private void FillTableView()
+        {
+            var newRoot = new TableRoot();
+
+            foreach (var section in ViewModel.MenuItems)
+            {
+                var newSection = new TableSection(section.Title);
+
+                foreach (var item in section.Items)
+                {
+                    var template = _templateSelector.SelectTemplate(item, newSection);
+                    var view = template.CreateContent() as Cell;
+                    view.BindingContext = item;
+                    newSection.Add(view);
+                }
+
+                newRoot.Add(newSection);
+            }
+
+            TableView.Root = newRoot;
+        }
+    }
 }

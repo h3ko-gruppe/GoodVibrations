@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Reactive.Linq;
+using GoodVibrations.Extensions;
 using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
+using Xamarin.Forms;
 
 namespace GoodVibrations.Views.Cells
 {
-    public partial class PhoneCallTemplateCell : IViewFor<PhoneCallTemplateItemViewModel>
+    public class PhoneCallTemplateCell : ImageCell, IViewFor<PhoneCallTemplateItemViewModel>
     {
-        public PhoneCallTemplateCell()
-        {
-            InitializeComponent();
-        }
-
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
@@ -23,9 +20,20 @@ namespace GoodVibrations.Views.Cells
             {
                 dispose(ViewModel.WhenAnyValue(x => x.Name)
                         .Distinct()
-                        .Subscribe(newValue => NameLabel.Text = newValue));
+                        .Subscribe(newValue => Text = newValue));
+
+                dispose(ViewModel.WhenAnyValue(x => x.PhoneNumber)
+                        .Distinct()
+                        .Subscribe(newValue => Detail = newValue));
+
+                dispose(ViewModel.WhenAnyValue(x => x.ImagePath)
+                        .Distinct()
+                        .Subscribe(newValue => ImageSource = ImageSource.FromFile(newValue)));
+
+                dispose(this.SubscribeToTap(ViewModel));
+                dispose(this.SubscribeToDelete(ViewModel));
             });
-         }
+        }
 
         #region IViewFor implementation
 
@@ -33,6 +41,7 @@ namespace GoodVibrations.Views.Cells
         {
             get { return BindingContext as PhoneCallTemplateItemViewModel; }
             set { BindingContext = value; }
+
         }
 
         object IViewFor.ViewModel
