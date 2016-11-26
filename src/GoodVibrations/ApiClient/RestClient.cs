@@ -43,12 +43,12 @@ namespace GoodVibrations.ApiClient
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> MakePhoneCall ()
+        public async Task<bool> MakePhoneCall (PhoneCallRequest request)
         {
             if (string.IsNullOrEmpty (AuthorizationHeaderValue))
                 throw new NotSupportedException ("Authentication token required! Please instantiate with valid basic token argument");
 
-            var result = await _api.MakePhoneCall (AuthorizationHeaderValue);
+            var result = await _api.MakePhoneCall (request, AuthorizationHeaderValue);
             return result.IsSuccessStatusCode;
         }
     }

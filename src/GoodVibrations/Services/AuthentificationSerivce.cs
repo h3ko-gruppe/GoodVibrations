@@ -49,5 +49,10 @@ namespace GoodVibrations.Services
             return token;
         }
 
+        public string BasicAuthToken {
+            get { 
+                return CreateBasicAuthToken (Username, Password);
+            }          
+        }
 	}
 }

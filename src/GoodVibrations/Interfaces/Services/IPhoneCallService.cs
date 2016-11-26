@@ -6,6 +6,7 @@ namespace GoodVibrations.Interfaces.Services
 {
 	public interface IPhoneCallService
 	{
-        Task<bool> StartCall (PhoneCall call);
-    }
+	    Task<bool> StartCall(string message, string toPhoneNumber, string fromPhoneNumber = null,
+	        string currentLocation = null);
+	}
 }

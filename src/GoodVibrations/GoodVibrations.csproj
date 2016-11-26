@@ -116,6 +116,7 @@
     <Compile Include="ApiClient\RestClient.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ApiClient\RegistrationRequest.cs" />
+    <Compile Include="ApiClient\PhoneCallRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DotNetCross.Memory.Unsafe">
