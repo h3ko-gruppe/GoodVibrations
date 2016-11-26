@@ -7,11 +7,10 @@ import time
 # Create function to record reference sound file
 
 def sendTagToWebService():
-    params = urllib.urlencode({"eventId" : "sound1" })
-    print params
+    content = "{\"eventId\" : \"sound1\" }"
     headers = {"Content-Type": "application/json"}
     conn = httplib.HTTPSConnection("goodvibrations-app.azurewebsites.net")
-    conn.request("POST", "/api/notify", params, headers)
+    conn.request("POST", "/api/notify", content, headers)
     response = conn.getresponse()
     print response.status, response.reason
     data = response.read()
