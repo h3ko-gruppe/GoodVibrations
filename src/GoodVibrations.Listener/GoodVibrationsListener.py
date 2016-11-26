@@ -8,12 +8,12 @@ import time
 
 def sendTagToWebService():
     params = urllib.urlencode({"eventId" : "sound1" })
-    print params
+    print(params)
     headers = {"Content-Type": "application/json"}
     conn = httplib.HTTPSConnection("goodvibrations-app.azurewebsites.net")
     conn.request("POST", "/api/notify", params, headers)
     response = conn.getresponse()
-    print response.status, response.reason
+    print(response.status, response.reason)
     data = response.read()
     conn.close()
 
