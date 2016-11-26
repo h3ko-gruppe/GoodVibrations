@@ -17,6 +17,8 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		GoodVibration.Shared\GoodVibration.Shared.projitems*{80572cd9-3cab-4445-8796-cf02e7e0a6cb}*SharedItemsImports = 4
+		GoodVibration.Shared\GoodVibration.Shared.projitems*{a0a93a98-f10c-483c-83c4-a0cd814f8981}*SharedItemsImports = 4
+		GoodVibration.Shared\GoodVibration.Shared.projitems*{bc5d33f5-827d-482a-a0fd-372be4d8969d}*SharedItemsImports = 4
 		GoodVibration.Shared\GoodVibration.Shared.projitems*{fe2063b9-3da0-470f-a43f-d36702858684}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
