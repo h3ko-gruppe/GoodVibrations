@@ -13,18 +13,11 @@ namespace GoodVibrations.Web.Controllers
     [Route("api/[controller]")]
     public class NotifyController : Controller
     {
-        // GET: api/values
-        [HttpGet]
-        public string Get()
-        {
-            return "This method is not supported. Please use POST";
-        }
-
         // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody]NotifyRequest notifyRequest)
         {
-            return Ok($"notification successfull: {notifyRequest.Tag}");
+            return Ok($"notification successfull: {notifyRequest.EventId}");
         }
     }
 }

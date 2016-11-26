@@ -15,7 +15,7 @@ namespace GoodVibrations.Services
             var isSuccessful = await client.Login();
 
             Username = isSuccessful ? username : string.Empty;
-            password = isSuccessful ? password : string.Empty;
+            Password = isSuccessful ? password : string.Empty;
 
             return isSuccessful;
         }
@@ -26,7 +26,7 @@ namespace GoodVibrations.Services
             var isSuccessful = await client.CreateAccount(username, password);
 
             Username = isSuccessful ? username : string.Empty;
-            password = isSuccessful ? password : string.Empty;
+            Password = isSuccessful ? password : string.Empty;
 
             return isSuccessful;
         }
@@ -49,5 +49,10 @@ namespace GoodVibrations.Services
             return token;
         }
 
-    }
+        public string BasicAuthToken {
+            get { 
+                return CreateBasicAuthToken (Username, Password);
+            }          
+        }
+	}
 }

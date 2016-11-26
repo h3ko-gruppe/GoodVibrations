@@ -9,7 +9,7 @@ namespace GoodVibrations.Web.Models
 {
     public class NotifyRequest
     {
-        [JsonProperty("tag")]
-        public string Tag { get; set; }
+        [JsonProperty("EventId")]
+        public string EventId { get; set; }
     }
 }
