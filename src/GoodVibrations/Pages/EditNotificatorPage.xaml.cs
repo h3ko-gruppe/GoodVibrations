@@ -18,6 +18,12 @@ namespace GoodVibrations.Pages
             this.WhenActivated(dispose =>
             {
                 dispose(this.BindToTitle(ViewModel));
+                dispose(this.BindToToolBarItems(ViewModel));
+                dispose(ViewModel.Close.RegisterHandler(async param =>
+                {
+                    await Navigation.PopAsync();
+                    param.SetOutput(Unit.Default);
+                }));
             });
         }
     }
