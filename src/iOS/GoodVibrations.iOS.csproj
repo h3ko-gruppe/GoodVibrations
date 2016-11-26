@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -138,8 +138,11 @@
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.7.0.0\lib\Xamarin.iOS10\ReactiveUI.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band">
-      <HintPath>..\packages\Microsoft.Band.1.3.20628\lib\portable-net45+win+wpa81\Microsoft.Band.dll</HintPath>
+    <Reference Include="ReactiveUI.XamForms">
+      <HintPath>..\packages\reactiveui-xamforms.7.0.0\lib\portable-net45+netcore45+wp8+wpa81+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.XamForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Band.iOS">
+      <HintPath>..\packages\Xamarin.Microsoft.Band.Native.1.3.10.1\lib\XamariniOS\Microsoft.Band.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

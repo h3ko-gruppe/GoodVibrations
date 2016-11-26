@@ -7,5 +7,10 @@ namespace GoodVibrations.Consts
 		{
 			public const string DatabaseFileName = "GoodVibration_SQLite_Database.db";
 		}
+
+		public static class Band
+		{
+			public const string BandTileId = "012131414";
+		}
 	}
 }
