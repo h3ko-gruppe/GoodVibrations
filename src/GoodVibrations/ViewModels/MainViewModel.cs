@@ -161,11 +161,8 @@ namespace GoodVibrations.ViewModels
 
         private async Task OnCreateNewNotificator()
         {
-            // TODO: Show BarcodeScanner, Create notificator
-            NotificationItemViewModel createdNotificator = null;
-
             // show edit
-            await ShowSelectedNotificator.Handle(createdNotificator.Notification);
+            await ShowSelectedNotificator.Handle(null);
         }
 
         private async Task OnShowNewPhoneCallTemplate()

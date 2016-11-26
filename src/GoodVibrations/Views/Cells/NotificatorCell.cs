@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace GoodVibrations.Views.Cells
 {
-    public class NotificatorCell : TextCell, IViewFor<NotificationItemViewModel>
+    public class NotificatorCell : ImageCell, IViewFor<NotificationItemViewModel>
     {
         protected override void OnBindingContextChanged()
         {
@@ -22,6 +22,10 @@ namespace GoodVibrations.Views.Cells
                         .Distinct()
                         .Subscribe(newValue => Text = newValue));
 
+                dispose(ViewModel.WhenAnyValue(x => x.Notification.NotificationIcon)
+                        .Distinct()
+                        .Subscribe(newValue => ImageSource = ImageSource.FromFile(newValue)));
+
                 dispose(this.SubscribeToTap(ViewModel));
                 dispose(this.SubscribeToDelete(ViewModel));
             });
@@ -33,7 +37,6 @@ namespace GoodVibrations.Views.Cells
         {
             get { return BindingContext as NotificationItemViewModel; }
             set { BindingContext = value; }
-
         }
 
         object IViewFor.ViewModel

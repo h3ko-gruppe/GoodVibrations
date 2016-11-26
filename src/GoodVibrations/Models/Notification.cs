@@ -16,6 +16,14 @@ namespace GoodVibrations.Models
 			set;
 		}
 
+        [Column("QrCode")]
+        [Reactive]
+        public string QrCode
+        {
+            get;
+            set;
+        }
+
         [Column ("EventId")]
         [Reactive]
         public string EventId {
