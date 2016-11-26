@@ -14,7 +14,7 @@ namespace GoodVibrations.Web.BasicAuthentication
             var manager = actionExecutingContext.HttpContext.RequestServices.GetService(typeof (UserManager<ApplicationUser>)) as UserManager<ApplicationUser>;
             if (manager != null)
             {
-                var user = manager.FindByEmailAsync(credential.UserName).Result;
+                var user = manager.FindByNameAsync(credential.UserName).Result;
                 isValid = manager.CheckPasswordAsync(user, credential.Password).Result;
             }
 
