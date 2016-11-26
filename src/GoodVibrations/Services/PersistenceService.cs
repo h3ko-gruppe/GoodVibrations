@@ -30,7 +30,6 @@ namespace GoodVibrations.Services
 
 		public void Initialize()
 		{
-
 			GoodVibrationsConnectionFactory.Instance.Initialize(_platform, Constants.DataBase.DatabaseFileName);
 			var fileExists = FileSystem.Current.LocalStorage.CheckExistsAsync(Constants.DataBase.DatabaseFileName);
 					
