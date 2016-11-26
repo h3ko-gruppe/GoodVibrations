@@ -30,19 +30,30 @@ namespace GoodVibrations.Pages
 
                 dispose(ViewModel.MenuItems
                         .Changed
+                        .Select(_ => Unit.Default)
+                        .Merge(ViewModel.MenuItems.ItemChanged.Select(_ => Unit.Default))
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(_ => FillTableView()));
 
-                dispose(ViewModel.ShowSelectedNotificator.RegisterHandler(OnShowNotificator));
+                dispose(ViewModel.ShowSelectedNotificator.RegisterHandler(async notificator =>
+                {
+                    await Navigation.PushAsync(new EditNotificatorPage(notificator.Input)).ConfigureAwait(false);
+                    notificator.SetOutput(Unit.Default);
+                }));
 
                 dispose(ViewModel.ShowSelectedPhoneCallTemplate.RegisterHandler(async phoneCallTemplate =>
                 {
                     await Navigation.PushAsync(new PhoneCallTemplatePage(phoneCallTemplate.Input)).ConfigureAwait(false);
                     phoneCallTemplate.SetOutput(Unit.Default);
                 }));
-
-                FillTableView();
             });
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            FillTableView();
         }
 
         private void FillTableView()
@@ -65,12 +76,6 @@ namespace GoodVibrations.Pages
             }
 
             TableView.Root = newRoot;
-        }
-
-        private async Task OnShowNotificator(InteractionContext<ViewModels.ItemViewModels.NotificatorItemViewModel, Unit> notificator)
-        {
-            await Navigation.PushAsync(new EditNotificatorPage(notificator.Input)).ConfigureAwait(false);
-            notificator.SetOutput(Unit.Default);
         }
     }
 }

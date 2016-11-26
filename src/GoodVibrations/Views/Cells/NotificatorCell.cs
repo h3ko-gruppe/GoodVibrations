@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using GoodVibrations.Extensions;
 using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
 using Xamarin.Forms;
@@ -20,8 +21,11 @@ namespace GoodVibrations.Views.Cells
                 dispose(ViewModel.WhenAnyValue(x => x.Name)
                         .Distinct()
                         .Subscribe(newValue => Text = newValue));
+
+                dispose(this.SubscribeToTap(ViewModel));
+                dispose(this.SubscribeToDelete(ViewModel));
             });
-        }
+        }  
 
         #region IViewFor implementation
 

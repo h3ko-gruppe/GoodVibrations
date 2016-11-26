@@ -2,7 +2,7 @@
 
 namespace GoodVibrations.ViewModels.ItemViewModels
 {
-    public class NotificatorItemViewModel : BaseItemViewModel
+    public class NotificatorItemViewModel : SelectableItemViewModel
     {
         [Reactive]
         public string Name { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using GoodVibrations.Extensions;
 using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
 using Xamarin.Forms;
@@ -28,6 +29,9 @@ namespace GoodVibrations.Views.Cells
                 dispose(ViewModel.WhenAnyValue(x => x.ImagePath)
                         .Distinct()
                         .Subscribe(newValue => ImageSource = ImageSource.FromFile(newValue)));
+
+                dispose(this.SubscribeToTap(ViewModel));
+                dispose(this.SubscribeToDelete(ViewModel));
             });
         }
 
