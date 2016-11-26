@@ -1,15 +1,5 @@
 using System;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using GoodVibrations.Consts;
 using GoodVibrations.Interfaces.Services;
-using Microsoft.Band;
-using Microsoft.Band.Tiles;
-using Microsoft.Band.Tiles.Pages;
-using PCLStorage;
-using Splat;
 
 namespace GoodVibrations.Shared
 {
