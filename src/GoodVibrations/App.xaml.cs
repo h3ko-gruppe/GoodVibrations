@@ -1,5 +1,8 @@
-﻿using GoodVibrations.Pages;
+﻿using System.Threading.Tasks;
+using GoodVibrations.Pages;
 using GoodVibrations.ViewModels;
+using KeyChain.Net;
+using Splat;
 using Xamarin.Forms;
 
 namespace GoodVibrations
@@ -8,11 +11,14 @@ namespace GoodVibrations
     {
         public App ()
         {
+            TaskScheduler.UnobservedTaskException += (sender, e) => 
+                System.Diagnostics.Debug.WriteLine($"Unhandled Error: {e.Exception}");
+
             InitializeComponent ();
 
             RegisterViewModels();
 
-            MainPage = new NavigationPage(new MainPage ());
+            MainPage = new NavigationPage(new LoginPage ());
         }
 
         protected override void OnStart ()
@@ -32,11 +38,12 @@ namespace GoodVibrations
 
         private void RegisterViewModels()
         {
-            var resolver = Splat.Locator.CurrentMutable;
+            var resolver = Locator.CurrentMutable;
 
             resolver.Register(() => new MainViewModel(), typeof(MainViewModel));
+            resolver.Register(() => new RegistrationViewModel(), typeof(RegistrationViewModel));
             resolver.Register(() => new EditNotificatorViewModel(), typeof(EditNotificatorViewModel));
-            resolver.Register(() => new LoginViewModel(), typeof(LoginViewModel));
+            resolver.Register(() => new LoginViewModel(resolver.GetService<IKeyChainHelper>()), typeof(LoginViewModel));
             resolver.Register(() => new PhoneCallTemplateViewModel(), typeof(PhoneCallTemplateViewModel));
         }
     }

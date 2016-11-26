@@ -8,5 +8,10 @@ namespace GoodVibrations.ViewModels
     {
         [Reactive]
         public string Title { get; set; }
+
+        public virtual void Init(object parameters)
+        {
+
+        }
     }
 }

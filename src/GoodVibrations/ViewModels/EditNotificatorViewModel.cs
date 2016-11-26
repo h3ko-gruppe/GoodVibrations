@@ -6,11 +6,12 @@ namespace GoodVibrations.ViewModels
 {
     public class EditNotificatorViewModel : BaseViewModel
     {
-        public EditNotificatorViewModel()
-        {
-        }
-
         [Reactive]
-        public NotificatorItemViewModel Notificator { get; set; }
+        public NotificatorItemViewModel Notificator { get; private set; }
+
+        public override void Init(object parameters)
+        {
+            Notificator = parameters as NotificatorItemViewModel;
+        }
     }
 }

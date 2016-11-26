@@ -9,7 +9,7 @@ namespace GoodVibrations.Extensions
 {
     public static class ReactivePageExtensions
     {
-        public static void AutoWireViewModel<TViewModel>(this IViewFor<TViewModel> view) where TViewModel : class
+        public static void AutoWireViewModel<TViewModel>(this IViewFor<TViewModel> view, object parameters = null) where TViewModel : BaseViewModel
         {
             var viewModel = Locator.Current.GetService<TViewModel>();
 
@@ -17,6 +17,14 @@ namespace GoodVibrations.Extensions
                 throw new Exception($"Could not resolve {typeof(TViewModel).Name}. Please register in App.cs");
 
             view.ViewModel = viewModel;
+
+            var bindable = view as BindableObject;
+
+            if (bindable != null)
+                bindable.BindingContext = viewModel;
+
+            // init
+            viewModel.Init(parameters);
         }
 
         public static IDisposable BindToTitle(this Page page, BaseViewModel viewModel)

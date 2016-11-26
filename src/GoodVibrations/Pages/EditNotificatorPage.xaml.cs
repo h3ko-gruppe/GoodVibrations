@@ -13,9 +13,7 @@ namespace GoodVibrations.Pages
         public EditNotificatorPage(NotificatorItemViewModel notificator)
         {
             InitializeComponent();
-            this.AutoWireViewModel();
-
-            ViewModel.Notificator = notificator;
+            this.AutoWireViewModel(notificator);
         }
     }
 }
