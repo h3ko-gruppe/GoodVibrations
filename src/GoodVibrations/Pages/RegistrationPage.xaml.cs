@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive;
 using GoodVibrations.Extensions;
+using ReactiveUI;
 using Xamarin.Forms;
 
 namespace GoodVibrations.Pages
@@ -11,6 +13,15 @@ namespace GoodVibrations.Pages
         {
             InitializeComponent();
             this.AutoWireViewModel();
+
+            this.WhenActivated(dispose =>
+            {
+                dispose(ViewModel.ShowLogin.RegisterHandler(interaction =>
+                {
+                    Navigation.PopAsync();
+                    interaction.SetOutput(Unit.Default);
+                }));
+            });
         }
     }
 }

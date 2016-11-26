@@ -11,9 +11,7 @@ namespace GoodVibrations.Pages
         public PhoneCallTemplatePage(PhoneCallTemplateItemViewModel template)
         {
             InitializeComponent();
-            this.AutoWireViewModel();
-
-            ViewModel.PhoneCallTemplate = template;
+            this.AutoWireViewModel(template);
         }
     }
 }

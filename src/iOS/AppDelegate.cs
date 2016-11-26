@@ -1,22 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
+using GoodVibrations.Consts;
+using KeyChain.Net;
+using KeyChain.Net.XamarinIOS;
+using Security;
+using Splat;
 using UIKit;
 
 namespace GoodVibrations.iOS
 {
-    [Register ("AppDelegate")]
+    [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-        public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+        public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
-            global::Xamarin.Forms.Forms.Init ();
+            Xamarin.Forms.Forms.Init();
 
-            LoadApplication (new App ());
+            RegisterPlatformServices();
 
-            return base.FinishedLaunching (app, options);
+            LoadApplication(new App());
+
+            return base.FinishedLaunching(uiApplication, launchOptions);
+        }
+
+        private void RegisterPlatformServices()
+        {
+            var resolver = Locator.CurrentMutable;
+            resolver.RegisterLazySingleton(() => new KeyChainHelper(Constants.KeyChain.CommonKeyChainNamespace, false, SecAccessible.Always), typeof(IKeyChainHelper));
         }
     }
 }

@@ -6,11 +6,12 @@ namespace GoodVibrations.ViewModels
 {
     public class PhoneCallTemplateViewModel : BaseViewModel
     {
-        public PhoneCallTemplateViewModel()
-        {
-        }
-
         [Reactive]
         public PhoneCallTemplateItemViewModel PhoneCallTemplate { get; set; }
+
+        public override void Init(object parameters)
+        {
+            PhoneCallTemplate = parameters as PhoneCallTemplateItemViewModel;
+        }
     }
 }

@@ -3,7 +3,17 @@
     x:TypeArguments="viewModels:LoginViewModel"
         xmlns:xamForms="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
         xmlns:viewModels="clr-namespace:GoodVibrations.ViewModels;assembly=GoodVibrations"
+        xmlns:styles="clr-namespace:GoodVibrations.Styles;assembly=GoodVibrations"
         xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="GoodVibrations.Pages.LoginPage">
-    <ContentPage.Content>
-    </ContentPage.Content>
+    <Page.Resources>
+        <ResourceDictionary MergedWith="styles:AppStyles" />
+    </Page.Resources>
+	<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="250">
+        <Entry Text="{Binding Username}" Placeholder="{Binding UsernamePlaceholder}" TextColor="Black" />
+		<Entry Text="{Binding Password}" Placeholder="{Binding PasswordPlaceholder}" IsPassword="true" />
+		<StackLayout Orientation="Horizontal" HorizontalOptions="End">
+            <Button Command="{Binding Login}" Text="{Binding LoginText}"/>
+            <Button Command="{Binding Register}" Text="{Binding RegisterText}"/>
+        </StackLayout>
+	</StackLayout>
 </xamForms:ReactiveContentPage>
