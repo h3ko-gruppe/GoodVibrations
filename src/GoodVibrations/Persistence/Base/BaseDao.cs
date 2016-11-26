@@ -44,10 +44,7 @@ namespace GoodVibrations.Persistence.Base
         /// <param name="model">Model.</param>
         public virtual int Delete (TModel model)
         {
-			if(model.Id.HasValue)
-            	return DeleteById (model.Id.Value);
-			
-			return 0;
+            return DeleteById (model.Id);
         }
 
         /// <summary>
@@ -55,7 +52,7 @@ namespace GoodVibrations.Persistence.Base
         /// </summary>
         /// <returns>The by identifier.</returns>
         /// <param name="id">Identifier.</param>
-        public virtual int DeleteById (Guid id)
+        public virtual int DeleteById (int id)
         {
             lock (Connection) {
                 var result = Connection.Delete<TModel> (id);
@@ -80,9 +77,9 @@ namespace GoodVibrations.Persistence.Base
         /// </summary>
         /// <returns>The or replace.</returns>
         /// <param name="obj">Object.</param>
-        public virtual Guid? InsertOrReplace (TModel obj)
+        public virtual int InsertOrReplace (TModel obj)
         {
-            Guid? result = InvalidId;
+            int result = InvalidId;
             lock (Connection) {
                 Connection.BeginTransaction ();
                 try {
@@ -137,7 +134,7 @@ namespace GoodVibrations.Persistence.Base
         /// <summary>
         /// Invalid Id.
         /// </summary>
-        public virtual Guid? InvalidId => null;
+        public virtual int InvalidId => -1;
 
         /// <summary>
         /// Loads the children.
@@ -255,7 +252,7 @@ namespace GoodVibrations.Persistence.Base
                 try {
                     var count = Connection.ExecuteScalar<int> (
                         $"SELECT EXISTS(SELECT 1 FROM {TablenName} WHERE Id={id} LIMIT 1);");
-                    return (count > 0) ? true : false;
+                    return count > 0;
                 } catch (Exception) {
                     throw;
                 }

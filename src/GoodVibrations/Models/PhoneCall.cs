@@ -1,5 +1,6 @@
 ﻿using System;
 using GoodVibrations.Models.Base;
+using ReactiveUI.Fody.Helpers;
 using SQLite.Net.Attributes;
 
 namespace GoodVibrations.Models
@@ -9,6 +10,7 @@ namespace GoodVibrations.Models
 	{
 
 		[Column("Name")]
+        [Reactive]
 		public string Name
 		{
 			get;
@@ -16,6 +18,7 @@ namespace GoodVibrations.Models
 		}
 
 		[Column("DestinationNumber")]
+        [Reactive]
 		public string DestinationNumber
 		{
 			get;
@@ -23,6 +26,7 @@ namespace GoodVibrations.Models
 		}
 
 		[Column("Icon")]
+        [Reactive]
 		public string Icon
 		{
 			get;
@@ -30,6 +34,7 @@ namespace GoodVibrations.Models
 		}
 
 		[Column("Text")]
+        [Reactive]
 		public string Text
 		{
 			get;

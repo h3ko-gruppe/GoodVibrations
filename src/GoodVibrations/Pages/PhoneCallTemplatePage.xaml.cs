@@ -1,5 +1,6 @@
 ﻿using System.Reactive;
 using GoodVibrations.Extensions;
+using GoodVibrations.Models;
 using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
 
@@ -7,7 +8,7 @@ namespace GoodVibrations.Pages
 {
     public partial class PhoneCallTemplatePage
     {
-        public PhoneCallTemplatePage(PhoneCallTemplateItemViewModel template)
+        public PhoneCallTemplatePage(PhoneCall template)
         {
             InitializeComponent();
             this.AutoWireViewModel(template);

@@ -5,13 +5,19 @@ using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
 using System.Reactive.Linq;
 using ReactiveUI.Fody.Helpers;
+using GoodVibrations.Interfaces.Services;
+using GoodVibrations.Models;
 
 namespace GoodVibrations.ViewModels
 {
     public class PhoneCallTemplateViewModel : BaseViewModel
     {
-        public PhoneCallTemplateViewModel()
+        private readonly IPersistenceService _persistence;
+        
+        public PhoneCallTemplateViewModel(IPersistenceService persistence)
         {
+            _persistence = persistence;
+
             ChooseImage = ReactiveCommand.CreateFromTask(OnChooseImage);
             Save = ReactiveCommand.CreateFromTask(OnSave);
             Test = ReactiveCommand.CreateFromTask(OnTest);
@@ -21,7 +27,7 @@ namespace GoodVibrations.ViewModels
         }
 
         [Reactive]
-        public PhoneCallTemplateItemViewModel PhoneCallTemplate { get; set; }
+        public PhoneCall PhoneCall { get; set; }
 
         [Reactive]
         public bool IsNewTemplate { get; set; }
@@ -53,12 +59,12 @@ namespace GoodVibrations.ViewModels
 
         public override void Init(object parameters)
         {
-            PhoneCallTemplate = parameters as PhoneCallTemplateItemViewModel;
+            PhoneCall = parameters as PhoneCall;
 
-            if (PhoneCallTemplate == null)
+            if (PhoneCall == null)
             {
                 IsNewTemplate = true;
-                PhoneCallTemplate = new PhoneCallTemplateItemViewModel();
+                PhoneCall = new PhoneCall();
             }
 
             SetUiTexts();
@@ -94,7 +100,7 @@ namespace GoodVibrations.ViewModels
 
         private async Task OnSave()
         {
-            // TODO: save template
+            await Task.Run(() => _persistence.PhoneCall.InsertOrReplace(PhoneCall));
 
             await Close.Handle(Unit.Default);
         }
@@ -105,7 +111,7 @@ namespace GoodVibrations.ViewModels
 
             if (result == DeleteText)
             {
-                // TODO: delete template
+                await Task.Run(() => _persistence.PhoneCall.Delete(PhoneCall));
 
                 await Close.Handle(Unit.Default);
             }
@@ -117,7 +123,7 @@ namespace GoodVibrations.ViewModels
             // TODO: Start Camera or Gallery
             // TODO: set ImagePath
 
-            PhoneCallTemplate.ImagePath = "dummy.png";
+            PhoneCall.Icon = "dummy.png";
 
             return Task.FromResult(true);
         }

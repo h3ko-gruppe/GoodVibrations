@@ -61,9 +61,7 @@
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\PhoneCallService.cs" />
     <Compile Include="Persistence\Base\BaseDao.cs" />
-    <Compile Include="Persistence\DAO%27s\UserDao.cs" />
     <Compile Include="Models\Base\BaseModel.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Interfaces\Services\IMicrosoftBandService.cs" />
     <Compile Include="Interfaces\Services\INotificationService.cs" />
     <Compile Include="Interfaces\Services\IPhoneCallService.cs" />
@@ -93,7 +91,7 @@
     <Compile Include="ViewModels\PhoneCallTemplateViewModel.cs" />
     <Compile Include="ViewModels\EditNotificatorViewModel.cs" />
     <Compile Include="TemplateSelectors\MainTemplateSelector.cs" />
-    <Compile Include="ViewModels\ItemViewModels\NotificatorItemViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\NotificationItemViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\BaseItemViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\PhoneCallTemplateItemViewModel.cs" />
     <Compile Include="Extensions\ReactivePageExtensions.cs" />
