@@ -35,10 +35,7 @@ namespace GoodVibrations.Pages
                         .ObserveOn(RxApp.MainThreadScheduler)
                         .Subscribe(_ => FillTableView()));
 
-                dispose(ViewModel.ToolBarItems
-                        .Changed
-                        .ObserveOn(RxApp.MainThreadScheduler)
-                        .Subscribe(_ => SetupToolBar()));
+                dispose(this.BindToToolBarItems(ViewModel));
 
                 dispose(ViewModel.ShowSelectedNotificator.RegisterHandler(async notificator =>
                 {
@@ -59,21 +56,6 @@ namespace GoodVibrations.Pages
             base.OnAppearing();
 
             FillTableView();
-            SetupToolBar();
-        }
-
-        private void SetupToolBar()
-        {
-            this.ToolbarItems.Clear();
-
-            foreach (var item in ViewModel.ToolBarItems)
-            {
-                this.ToolbarItems.Add(new ToolbarItem()
-                {
-                    Text = item.Title,
-                    Command = item.SelectedCommand,
-                });
-            }
         }
 
         private void FillTableView()

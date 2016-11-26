@@ -14,6 +14,11 @@ namespace GoodVibrations.Pages
         {
             InitializeComponent();
             this.AutoWireViewModel(notificator);
+
+            this.WhenActivated(dispose =>
+            {
+                dispose(this.BindToTitle(ViewModel));
+            });
         }
     }
 }

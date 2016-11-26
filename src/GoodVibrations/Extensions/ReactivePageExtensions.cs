@@ -33,5 +33,29 @@ namespace GoodVibrations.Extensions
                             .ObserveOn(RxApp.MainThreadScheduler)
                             .Subscribe(newValue => page.Title = newValue);
         }
+
+        public static IDisposable BindToToolBarItems(this Page page, BaseViewModel viewModel)
+        {
+            page.SetupToolBar(viewModel);
+             
+            return viewModel.ToolBarItems
+                        .Changed
+                        .ObserveOn(RxApp.MainThreadScheduler)
+                        .Subscribe(_ => page.SetupToolBar(viewModel));
+        }
+
+        private static void SetupToolBar(this Page page, BaseViewModel viewModel)
+        {
+            page.ToolbarItems.Clear();
+
+            foreach (var item in viewModel.ToolBarItems)
+            {
+                page.ToolbarItems.Add(new ToolbarItem()
+                {
+                    Text = item.Title,
+                    Command = item.SelectedCommand,
+                });
+            }
+        }
     }
 }

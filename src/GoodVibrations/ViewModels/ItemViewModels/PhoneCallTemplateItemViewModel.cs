@@ -13,5 +13,8 @@ namespace GoodVibrations.ViewModels.ItemViewModels
 
         [Reactive]
         public string ImagePath { get; set; }
+
+        [Reactive]
+        public string Text { get; set; }
     }
 }

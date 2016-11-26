@@ -12,7 +12,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-	<ContentPage.Content>
-		<TableView x:Name="TableView" />
-    </ContentPage.Content>
+	<TableView x:Name="TableView" />
+   
 </xamForms:ReactiveContentPage>
