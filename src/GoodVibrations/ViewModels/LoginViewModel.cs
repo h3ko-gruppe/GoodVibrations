@@ -63,10 +63,13 @@ namespace GoodVibrations.ViewModels
                 SaveCredentials ();
 
                 await ShowMain.Handle (Unit.Default);
+            } 
+            else 
+            {
+                await App.Current.MainPage.DisplayAlert ("Error", "Invalid Login", "OK");
             }
 
-            Password = string.Empty;
-            await App.Current.MainPage.DisplayAlert ("Error", "Invalid Login", "OK");
+            Password = string.Empty;           
         }
    }
 }
