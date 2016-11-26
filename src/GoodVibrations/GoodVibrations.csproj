@@ -41,12 +41,6 @@
     <EmbeddedResource Include="Pages\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Cells\NotificatorCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Cells\PhoneCallTemplateCell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="Pages\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -80,15 +74,9 @@
     <Compile Include="ViewModels\PhoneCallTemplateViewModel.cs" />
     <Compile Include="ViewModels\EditNotificatorViewModel.cs" />
     <Compile Include="TemplateSelectors\MainTemplateSelector.cs" />
-    <Compile Include="Views\Cells\NotificatorCell.xaml.cs">
-      <DependentUpon>NotificatorCell.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\ItemViewModels\NotificatorItemViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\BaseItemViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModels\PhoneCallTemplateItemViewModel.cs" />
-    <Compile Include="Views\Cells\PhoneCallTemplateCell.xaml.cs">
-      <DependentUpon>PhoneCallTemplateCell.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\ReactivePageExtensions.cs" />
     <Compile Include="Pages\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
@@ -99,6 +87,9 @@
       <DependentUpon>AppStyles.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\UserBaseViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\SectionViewModel.cs" />
+    <Compile Include="Views\Cells\NotificatorCell.cs" />
+    <Compile Include="Views\Cells\PhoneCallTemplateCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Remotion.Linq">

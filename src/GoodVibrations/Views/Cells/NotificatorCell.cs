@@ -2,16 +2,12 @@
 using System.Reactive.Linq;
 using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
+using Xamarin.Forms;
 
 namespace GoodVibrations.Views.Cells
 {
-    public partial class PhoneCallTemplateCell : IViewFor<PhoneCallTemplateItemViewModel>
+    public class NotificatorCell : TextCell, IViewFor<NotificatorItemViewModel>
     {
-        public PhoneCallTemplateCell()
-        {
-            InitializeComponent();
-        }
-
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
@@ -23,22 +19,23 @@ namespace GoodVibrations.Views.Cells
             {
                 dispose(ViewModel.WhenAnyValue(x => x.Name)
                         .Distinct()
-                        .Subscribe(newValue => NameLabel.Text = newValue));
+                        .Subscribe(newValue => Text = newValue));
             });
-         }
+        }
 
         #region IViewFor implementation
 
-        public PhoneCallTemplateItemViewModel ViewModel
+        public NotificatorItemViewModel ViewModel
         {
-            get { return BindingContext as PhoneCallTemplateItemViewModel; }
+            get { return BindingContext as NotificatorItemViewModel; }
             set { BindingContext = value; }
+
         }
 
         object IViewFor.ViewModel
         {
             get { return ViewModel; }
-            set { ViewModel = value as PhoneCallTemplateItemViewModel; }
+            set { ViewModel = value as NotificatorItemViewModel; }
         }
 
         #endregion

@@ -10,7 +10,8 @@ namespace GoodVibrations.ViewModels
     {
         public MainViewModel()
         {
-            MenuItems = new ReactiveList<BaseItemViewModel>();
+            MenuItems = new ReactiveList<SectionViewModel>();
+            MenuItems.ChangeTrackingEnabled = true;
 
             // commands
             CreateNewPhoneCallTemplate = ReactiveCommand.Create(OnShowNewPhoneCallTemplate);
@@ -25,7 +26,7 @@ namespace GoodVibrations.ViewModels
             LoadData().ConfigureAwait(false);
         }
 
-        public ReactiveList<BaseItemViewModel> MenuItems { get; }
+        public ReactiveList<SectionViewModel> MenuItems { get; }
 
         #region Commands
         public ReactiveCommand CreateNewPhoneCallTemplate { get; }
@@ -41,21 +42,34 @@ namespace GoodVibrations.ViewModels
         public Interaction<PhoneCallTemplateItemViewModel,Unit> ShowSelectedPhoneCallTemplate { get; }
         #endregion
 
-        private Task LoadData()
+        private async Task LoadData()
         {
-            // demo
-            MenuItems.Add(new NotificatorItemViewModel() { Name = "Notificator 1" });
-            MenuItems.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 1" });
-            MenuItems.Add(new NotificatorItemViewModel() { Name = "Notificator 2" });
-            MenuItems.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 2" });
-            MenuItems.Add(new NotificatorItemViewModel() { Name = "Notificator 3" });
-            MenuItems.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 3" });
-            MenuItems.Add(new NotificatorItemViewModel() { Name = "Notificator 4" });
-            MenuItems.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 4" });
-
             Title = "Overview";
 
-            return Task.FromResult(true);
+            // create sections
+            var phoneCallSection = new SectionViewModel<PhoneCallTemplateItemViewModel>()
+            {
+                Title = "Phonecall templates"
+            };
+
+            var notificatorsSection = new SectionViewModel<NotificatorItemViewModel>()
+            {
+                Title = "Notificators"
+            };
+
+            // demo
+            notificatorsSection.Items.Add(new NotificatorItemViewModel() { Name = "Notificator 1" });
+            notificatorsSection.Items.Add(new NotificatorItemViewModel() { Name = "Notificator 2" });
+            notificatorsSection.Items.Add(new NotificatorItemViewModel() { Name = "Notificator 3" });
+            notificatorsSection.Items.Add(new NotificatorItemViewModel() { Name = "Notificator 4" });
+
+            phoneCallSection.Items.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 1", PhoneNumber="110", ImagePath="dummy.png" });
+            phoneCallSection.Items.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 2", PhoneNumber = "112", ImagePath = "dummy.png" });
+            phoneCallSection.Items.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 3", PhoneNumber = "01721234567", ImagePath = "dummy.png" });
+            phoneCallSection.Items.Add(new PhoneCallTemplateItemViewModel() { Name = "PhoneCall 4", PhoneNumber = "030123456", ImagePath = "dummy.png" });
+
+            MenuItems.Add(phoneCallSection);
+            MenuItems.Add(notificatorsSection);
         }
 
         #region Command Handler

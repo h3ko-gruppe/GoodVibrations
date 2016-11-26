@@ -6,6 +6,12 @@ namespace GoodVibrations.ViewModels.ItemViewModels
     public class PhoneCallTemplateItemViewModel : BaseItemViewModel
     {
         [Reactive]
-        public string Name { get; set;}
+        public string Name { get; set; }
+
+        [Reactive]
+        public string PhoneNumber { get; set; }
+
+        [Reactive]
+        public string ImagePath { get; set; }
     }
 }

@@ -13,8 +13,6 @@
     </ContentPage.Resources>
 
 	<ContentPage.Content>
-		<ListView 
-			x:Name="ListView" 
-			ItemTemplate="{StaticResource MainTemplateSelector}" />
+		<TableView x:Name="TableView" />
     </ContentPage.Content>
 </xamForms:ReactiveContentPage>

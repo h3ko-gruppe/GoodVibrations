@@ -1,5 +1,4 @@
-﻿using System;
-using ReactiveUI.Fody.Helpers;
+﻿using ReactiveUI.Fody.Helpers;
 
 namespace GoodVibrations.ViewModels.ItemViewModels
 {
