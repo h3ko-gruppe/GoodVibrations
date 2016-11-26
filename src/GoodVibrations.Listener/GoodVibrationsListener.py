@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import speech_recognition as sr
 import httplib, urllib
+import time
 
 # TODOs
 # Create function to record reference sound file
@@ -18,7 +20,11 @@ def sendTagToWebService():
 def recordReferenceSound():
     recordedSound = False
 
-    while recordedSound != True:
+    while True:
+        print("A moment of silence, please...")
+        with m as source: r.adjust_for_ambient_noise(source)
+        print("Set minimum energy threshold to {}".format(r.energy_threshold))
+
         print("Listening for reference sound...")
         with m as source: audio = r.listen(source)
         print("Got it! Now to recognize it...")
@@ -36,14 +42,12 @@ def recordReferenceSound():
         except sr.RequestError as e:
             print("Uh oh! Couldn't request results from Google Speech Recognition service; {0}".format(e))
 
+        time.sleep(5)
+
 r = sr.Recognizer()
 m = sr.Microphone()
 
 try:
-    print("A moment of silence, please...")
-    with m as source: r.adjust_for_ambient_noise(source)
-    print("Set minimum energy threshold to {}".format(r.energy_threshold))
-
     recordReferenceSound()
 
     # Good vibrations
