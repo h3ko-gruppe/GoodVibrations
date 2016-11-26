@@ -8,6 +8,7 @@ using GoodVibrations.EventArgs;
 using GoodVibrations.Interfaces.Services;
 using GoodVibrations.Models;
 using Microsoft.AspNet.SignalR.Client;
+using Xamarin.Forms;
 
 namespace GoodVibrations.Services
 {
@@ -30,7 +31,7 @@ namespace GoodVibrations.Services
 
 	    public event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
 
-        private async void OnNotificationReceived (string eventId)
+        private void OnNotificationReceived (string eventId)
         {
             Debug.WriteLine ($"SignalR notification recieved: {eventId}");
             if (NotificationReceived != null) {
@@ -38,7 +39,12 @@ namespace GoodVibrations.Services
                 var notification = _persistenceService.Notification.LoadWhere(x => x.EventId == eventId).FirstOrDefault() ;
                 var e = new NotificationRecievedEventArgs (eventId, notification);
                 NotificationReceived (this, e);
-             }
+            }
+            Device.BeginInvokeOnMainThread (async() => {
+                await App.Current.MainPage.DisplayAlert ("eventId", $"Notification recieved: {eventId}", "Ok");
+            });
+
+
         }
 
     }

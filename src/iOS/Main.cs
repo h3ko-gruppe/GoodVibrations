@@ -13,7 +13,7 @@ namespace GoodVibrations.iOS
         static void Main (string [] args)
         {
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-                System.Console.WriteLine($"Unhandled Error: {e}");
+                System.Console.WriteLine($"Unhandled Error: {e.ExceptionObject}");
 
             try
             {
