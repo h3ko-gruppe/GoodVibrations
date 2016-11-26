@@ -25,17 +25,17 @@ namespace GoodVibrations.Web.Controllers
         public async Task<IActionResult> Get()
         {
             var token = "wesrbhjknlm";
-            var callbackUrl = Url.RouteUrl(PhoneCallBackController.GetPhoneCallbackRoute, new {token}, Request.Scheme, Request.Host.ToUriComponent());
-            //var callbackUrl = "http://goodvibrations-app.azurewebsites.net/api/phonecallback";
+            //var callbackUrl = Url.RouteUrl(PhoneCallBackController.GetPhoneCallbackRoute, new {token}, Request.Scheme, Request.Host.ToUriComponent());
+            var callbackUrl = "http://goodvibrations-app.azurewebsites.net/api/phonecallback";
             var toPhoneNumber = "+4915208982338";
             var twilioClient = new TwilioRestClient();
             var request = new TwilioRequest(_twilioSettings.Value.AccountSid, _twilioSettings.Value.AuthToken, _twilioSettings.Value.FromPhoneNumber, toPhoneNumber, callbackUrl);
             var result = await twilioClient.Post(request, _twilioSettings.Value);
 
             if (result.IsSuccessStatusCode)
-                return Ok();
+                return Ok(await result.Content.ReadAsStringAsync());
             else
-                return Ok(result);
+                return Ok(result.StatusCode);
         }
     }
 }
