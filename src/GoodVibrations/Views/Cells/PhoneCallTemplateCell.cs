@@ -41,7 +41,6 @@ namespace GoodVibrations.Views.Cells
         {
             get { return BindingContext as PhoneCallTemplateItemViewModel; }
             set { BindingContext = value; }
-
         }
 
         object IViewFor.ViewModel
