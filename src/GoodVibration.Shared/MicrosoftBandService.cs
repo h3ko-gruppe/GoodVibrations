@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using System.Net;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,27 +9,28 @@ using Foundation;
 using Microsoft.Band;
 using Microsoft.Band.Tiles;
 using Microsoft.Band.Tiles.Pages;
-using ReactiveUI;
+using PCLStorage;
+using Splat;
 
 namespace GoodVibrations.Shared
 {
 	public class MicrosoftBandService : IMicrosoftBandService, IDisposable
 	{
-		private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-		NSError bla = new NSError();
-		private BandClient _connectedBand;
-
+		private static CancellationToken _cancellationToken;
 		public async Task ConnectAndReadData()
 		{
-			_cancellationTokenSource?.Cancel();
-			_cancellationTokenSource = new CancellationTokenSource();
-			//  await AddBandTileIfNotExist();
-			//await ClearTilePages();
+			_cancellationToken = CancellationToken.None;
+			await AddBandTileIfNotExist();
+			await ClearTilePages();
 		}
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+		}
+
+		private void ErrorHandler(NSError error)
+		{
+
 		}
 
 		public async Task AddBandTile()
@@ -44,20 +43,19 @@ namespace GoodVibrations.Shared
 					// Connect to Microsoft Band.
 					using (band)
 					{
+						NSError errorHandler;
 						BandTile tile = new BandTile();
-						tile.SetName("Alarm", null); //Localization.BandTileTitle
-						tile.SetTileIcon = await LoadIcon("ms-appx:///Assets/BandShield48x48.png");
-						tile.SmallIcon = await LoadIcon("ms-appx:///Assets/BandShield24x24.png");
+						tile.SetName("Alarm", out errorHandler); //Localization.BandTileTitle
+						tile.SetTileIcon(await LoadIcon("ms-appx:///Assets/BandShield48x48.png"), out errorHandler);
+						tile.SetSmallIcon(await LoadIcon("ms-appx:///Assets/BandShield24x24.png"), out errorHandler);
 
-						var button = new TextButton { ElementId = 1, Rect = new PageRect(10, 10, 200, 90) };
+						var button = new PageRect(10, 10, 200, 90);
 						var panel = new FilledPanel(button) { Rect = new PageRect(0, 0, 220, 150) };
 						tile.PageLayouts.Add(new PageLayout(panel));
 
 						// Create the Tile on the Band.
-						await band.TileManager.AddTileAsync(tile, _cancellationTokenSource.Token);
-						await band.TileManager.SetPagesAsync(tile.TileId, _cancellationTokenSource.Token,
-							 new PageData(new Guid(""), 0, //Const.BandPageDataId), 0,
-						new TextButtonData(1, ""))); //Localization.InitiateEmergencyCall)));
+						await band.TileManager.AddTileTaskAsync(tile);
+						//await band.TileManager.SetPagesTaskAsync(new PageData(),tile.TileId);
 					}
 				}
 			}
@@ -67,7 +65,20 @@ namespace GoodVibrations.Shared
 			}
 		}
 
-		public async Task RemoveBandTile()
+		public async Task GetBandTiles()
+		{
+			var band = await GetConnectedBand();
+			if (band != null)
+			{
+				using (band)
+				{
+					BandTiles = await band.TileManager.GetTilesTaskAsync();
+				}
+			}
+		}
+
+
+		public async Task RemoveBandTile(string bandTileId)
 		{
 			var band = await GetConnectedBand();
 			if (band != null)
@@ -77,12 +88,7 @@ namespace GoodVibrations.Shared
 					var tileExits = await CheckIfTileExists(band);
 					if (tileExits)
 					{
-						var tiles = await band.TileManager.GetTilesTaskAsync();
-						var tileToRemove = tiles.FirstOrDefault(x => x.TileId == new NSUuid(Constants.Band.BandTileId));
-
-						// Create a Tile with a TextButton on it.
-						//var tileId = new Guid(Constants.Band.BandTileId);
-						//BandTile bla = new BandTile();
+						var tileToRemove = BandTiles.FirstOrDefault(x => x.TileId == new NSUuid(bandTileId));
 
 						// Remove the Tile from the Band, if present. An application won't need to do this everytime it runs. 
 						// But in case you modify this sample code and run it again, let's make sure to start fresh.
@@ -105,19 +111,18 @@ namespace GoodVibrations.Shared
 			}
 		}
 
-		//private async void HandleTileButtonPressed(object sender,
-		//    BandTileEventArgs<IBandTileButtonPressedEvent> e)
+		//private async void HandleTileButtonPressed(object sender, BandTileEventArgs<IBandTileButtonPressedEvent> e)
 		//{
-		//    if (_emergencyClient == null)
-		//        return;
+		//	//if (_emergencyClient == null)
+		//	//    return;
 
-		//    var result = await _emergencyClient.InitiateEmergencyCall(CancellationToken.None);
+		//	//var result = await _emergencyClient.InitiateEmergencyCall(CancellationToken.None);
 
-		//    // Send a notification.
-		//    var callresult = result.StatusCode == HttpStatusCode.OK ? "succeeded" : "failed";
-		//    await ((BandClient) sender).NotificationManager.SendMessageAsync(new Guid(Constants.Band.BandTileId), "Robin",
-		//            $"Call {callresult}",
-		//            DateTimeOffset.Now);
+		//	//// Send a notification.
+		//	//var callresult = result.StatusCode == HttpStatusCode.OK ? "succeeded" : "failed";
+		//	//await ((BandClient) sender).NotificationManager.SendMessageAsync(new Guid(Constants.Band.BandTileId), "Robin",
+		//	//        $"Call {callresult}",
+		//	//        DateTimeOffset.Now);
 		//}
 
 		private async Task AddBandTileIfNotExist()
@@ -133,8 +138,7 @@ namespace GoodVibrations.Shared
 
 		private async Task<bool> CheckIfTileExists(BandClient band)
 		{
-			var tiles = await band.TileManager.GetTilesAsync(_cancellationTokenSource.Token);
-			var tileExits = tiles.Any(x => x.TileId == new Guid(Constants.Band.BandTileId));
+			var tileExits = BandTiles.Any(x => x.TileId == new NSUuid(Constants.Band.BandTileId));
 			return tileExits;
 		}
 
@@ -149,27 +153,57 @@ namespace GoodVibrations.Shared
 			}
 
 			// Connect to Microsoft Band.
-			if (_connectedBand == null)
+			if (ConnectedBand == null)
 			{
 				var bandClient = pairedBands.First();
 				await BandClientManager.Instance.ConnectTaskAsync(bandClient);
 				if (bandClient.IsConnected)
-					_connectedBand = bandClient;
+					ConnectedBand = bandClient;
 				//OnConnectionStateChanged(new WearableConnectionChangedEventArgs(ConnectionState.Connected));
 			}
-			return _connectedBand;
+			return ConnectedBand;
 		}
 
-		//private static async Task<BandIcon> LoadIcon(string uri)
-		//{
-		//    var imageFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
+		private static async Task<BandIcon> LoadIcon(string uri)
+		{
+			NSError errorHandler = new NSError();
+			var imageFile = await FileSystem.Current.GetFileFromPathAsync(uri, _cancellationToken);
 
-		//    using (var fileStream = await imageFile.OpenAsync(FileAccessMode.Read))
-		//    {
-		//        var bitmap = new WriteableBitmap(1, 1);
-		//        await bitmap.SetSourceAsync(fileStream);
-		//        return bitmap.ToBandIcon();
-		//    }
-		//}
+			using (var fileStream = await imageFile.OpenAsync(FileAccess.Read))
+			{
+				//IBitmap profileImage = await BitmapLoader.Current.Load(fileStream, null, null); // null = orig width/height
+
+				var bandIcon = BandIcon.FromUIImage(new UIKit.UIImage(uri), out errorHandler);
+				return bandIcon;
+			}
+		}
+
+		private BandTile[] _bandTiles;
+		public BandTile[] BandTiles
+		{
+			get
+			{
+				return _bandTiles;
+			}
+
+			set
+			{
+				_bandTiles = value;
+			}
+		}
+
+		private BandClient _connectedBand;
+		public BandClient ConnectedBand
+		{
+			get
+			{
+				return _connectedBand;
+			}
+
+			set
+			{
+				_connectedBand = value;
+			}
+		}
 	}
 }

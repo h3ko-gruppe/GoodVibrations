@@ -4,18 +4,18 @@ using SQLite.Net.Attributes;
 
 namespace GoodVibrations.Core.Models
 {
-    [Table("UserUserModel")]
-	public class UserModel : BaseModel
+    [Table("User")]
+	public class User : BaseModel
 	{
-		[Column("LoginName")]
+		[Column("Name")]
 		public string FirstName
 		{
 			get;
 			set;
 		}
 
-		[Column("Passwort")]
-		public string LastName
+		[Column("RingCount")]
+		public int RingCount
 		{
 			get;
 			set;

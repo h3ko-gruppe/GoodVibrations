@@ -1,10 +1,11 @@
 ﻿using System;
+using GoodVibrations.Models.Base;
 using SQLite.Net.Attributes;
 
 namespace GoodVibrations.Models
 {
-	[Table("PhoneCallModel")]
-	public class PhoneCallModel
+	[Table("PhoneCall")]
+	public class PhoneCall : BaseModel
 	{
 
 		[Column("Name")]

@@ -4,8 +4,8 @@ using GoodVibrations.Core.Models;
 
 namespace GoodVibrations.Interfaces.Services
 {
-	public interface IUserService
+	public interface IAuthentificationSerivce
 	{
-		Task Login(UserModel user);
+		Task Login();
 	}
 }

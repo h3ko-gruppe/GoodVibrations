@@ -40,13 +40,14 @@ namespace GoodVibrations.Services
 
 			try
 			{
-				db.CreateTable<UserModel>();
-				db.CreateTable<PhoneCallModel>();
-				db.CreateTable<SoundModel>();
+				db.CreateTable<User>();
+				db.CreateTable<PhoneCall>();
+				db.CreateTable<Sound>();
 			}
 			catch (Exception ex)
 			{
 				db.Rollback();
+				var stackTrace = ex.StackTrace;
 			}
 
 			db.Commit();

@@ -5,13 +5,13 @@ using GoodVibrations.Interfaces.Services;
 
 namespace GoodVibrations.Services
 {
-	public class UserService : IUserService
+	public class AuthentificationSerivce : IAuthentificationSerivce
 	{
-		public UserService()
+		public AuthentificationSerivce()
 		{
 		}
 
-		public Task Login(UserModel user)
+		public Task Login()
 		{
 			throw new NotImplementedException();
 		}
