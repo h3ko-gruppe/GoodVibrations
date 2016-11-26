@@ -17,16 +17,29 @@ def sendTagToWebService():
     data = response.read()
     conn.close()
 
+def listenCallback():
+    print("callback fired.")
+    sendTagToWebService()
+
 def recordReferenceSound():
     recordedSound = False
+    # with m as source: r.energy_threshold
+    # r.listen_in_background(source, listenCallback)
+
+    counter = 0
 
     while True:
         print("A moment of silence, please...")
-        with m as source: r.adjust_for_ambient_noise(source)
+
+        #r.energy_threshold = 4000
+        with m as source: r.energy_threshold #adjust_for_ambient_noise(source)
+
         print("Set minimum energy threshold to {}".format(r.energy_threshold))
 
         print("Listening for reference sound...")
         with m as source: audio = r.listen(source)
+        counter += 1
+        print(counter)
         print("Got it! Now to recognize it...")
 
         try:
@@ -42,9 +55,13 @@ def recordReferenceSound():
         except sr.RequestError as e:
             print("Uh oh! Couldn't request results from Google Speech Recognition service; {0}".format(e))
 
-        time.sleep(5)
+        # time.sleep(5)
 
 r = sr.Recognizer()
+r.dynamic_energy_threshold = False
+r.energy_threshold = 550
+r.phrase_threshold = 0.2
+
 m = sr.Microphone()
 
 try:
