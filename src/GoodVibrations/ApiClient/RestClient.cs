@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GoodVibrations.Consts;
 using GoodVibrations.Interfaces.Services;
 using Refit;
 
@@ -12,22 +13,21 @@ namespace GoodVibrations.ApiClient
        
         private readonly IRestApi _api;
 
-        public RestClient (HttpClient httpClient, string basicToken)
-        {
-            _api = RestService.For<IRestApi> (httpClient);
-            AuthorizationHeaderValue = $"Basic {basicToken}";
-        }
 
-        public RestClient (string hostUrl, string basicToken)
+        public RestClient (string basicToken = null)
         {
-            _api = RestService.For<IRestApi> (hostUrl);
-            AuthorizationHeaderValue = $"Basic {basicToken}";
+            _api = RestService.For<IRestApi> (Constants.RestApi.HostUrl);
+            if (!string.IsNullOrEmpty(basicToken))
+                AuthorizationHeaderValue = $"Basic {basicToken}";
         }
 
         protected string AuthorizationHeaderValue { get; set; }
 
-        public async Task<bool> Login (string username, string password)
+        public async Task<bool> Login ()
         {
+            if (string.IsNullOrEmpty (AuthorizationHeaderValue))
+                throw new NotSupportedException ("Authentication token required! Please instantiate with valid basic token argument");
+            
             var result = await _api.Login (AuthorizationHeaderValue);
             return result.IsSuccessStatusCode;
         }
@@ -40,6 +40,9 @@ namespace GoodVibrations.ApiClient
 
         public async Task<bool> MakePhoneCall ()
         {
+            if (string.IsNullOrEmpty (AuthorizationHeaderValue))
+                throw new NotSupportedException ("Authentication token required! Please instantiate with valid basic token argument");
+
             var result = await _api.MakePhoneCall (AuthorizationHeaderValue);
             return result.IsSuccessStatusCode;
         }

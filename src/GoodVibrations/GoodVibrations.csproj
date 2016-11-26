@@ -114,8 +114,7 @@
     <Compile Include="EventArgs\NotificationRecievedEventArgs.cs" />
     <Compile Include="ApiClient\IRestApi.cs" />
     <Compile Include="ApiClient\RestClient.cs" />
-    <Compile Include="Services\RestApiService.cs" />
-    <Compile Include="Interfaces\Services\IRestApiService.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DotNetCross.Memory.Unsafe">

@@ -32,16 +32,19 @@ namespace GoodVibrations.ViewModels
         {
             base.SetUiTexts();
 
-            Title = "Register";
+            Title = "Create Account";
         }
 
 
         private async Task OnRegister()
         {
-            var successfull = await _authService.Register (Username, Password);
+            var successfull = await _authService.CreateAccount (Username, Password);
 
             if (successfull)
-                await ShowLogin.Handle(Unit.Default);
+                await ShowLogin.Handle (Unit.Default);
+            else {
+                await App.Current.MainPage.DisplayAlert ("Error", "The account could not be created.", "OK");            
+            }
         }
     }
 }
