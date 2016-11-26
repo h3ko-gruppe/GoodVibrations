@@ -26,6 +26,10 @@ namespace GoodVibrations.Services
         {
             var client = new RestClient ();
             var isSuccessful = await client.CreateAccount (username, password);
+
+            Username = isSuccessful ? username : string.Empty;
+            password = isSuccessful ? password : string.Empty;
+
             return isSuccessful;
         }
 

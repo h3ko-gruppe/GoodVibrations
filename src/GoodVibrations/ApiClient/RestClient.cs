@@ -34,7 +34,12 @@ namespace GoodVibrations.ApiClient
 
         public async Task<bool> CreateAccount (string username, string password)
         {
-            var result = await _api.CreateAccount (username, password);
+            var req = new RegistrationRequest {
+                Email = username,
+                Password = password,
+            };
+
+            var result = await _api.CreateAccount (req);
             return result.IsSuccessStatusCode;
         }
 
