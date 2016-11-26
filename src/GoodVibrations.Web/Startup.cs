@@ -55,7 +55,8 @@ namespace GoodVibrations.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
-            
+            services.AddSignalR(options => options.Hubs.EnableDetailedErrors = true);
+
             services.AddOptions();
             // Configure MySubOptions using a sub-section of the appsettings.json file
             services.Configure<TwilioOptions>(Configuration.GetSection("TwilioApiKey"));
@@ -99,6 +100,8 @@ namespace GoodVibrations.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseSignalR();
         }
     }
 }

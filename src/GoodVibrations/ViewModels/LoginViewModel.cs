@@ -12,9 +12,10 @@ namespace GoodVibrations.ViewModels
 {
     public class LoginViewModel : UserBaseViewModel
     {
-        public LoginViewModel(IKeyChainHelper keyChainHelper, IAuthentificationSerivce authService) : base(keyChainHelper)
+        public LoginViewModel(IKeyChainHelper keyChainHelper, IAuthentificationSerivce authService, INotificationService notificationService) : base(keyChainHelper)
         {
             _authService = authService;
+            _notificationService = notificationService;
             var canExecuteLogin = this.WhenAnyValue(x => x.Username, x => x.Password)
                                                    .Select(valueTuple => !string.IsNullOrWhiteSpace(valueTuple.Item1) &&
                                                            !string.IsNullOrWhiteSpace(valueTuple.Item2));
@@ -34,6 +35,7 @@ namespace GoodVibrations.ViewModels
         public Interaction<Unit, Unit> ShowMain { get; }
         public Interaction<Unit, Unit> ShowRegistration { get; }
         private readonly IAuthentificationSerivce _authService;
+        private readonly INotificationService _notificationService;
 
         protected override void SetUiTexts()
         {
@@ -66,6 +68,7 @@ namespace GoodVibrations.ViewModels
                 SaveCredentials ();
 
                 await ShowMain.Handle (Unit.Default);
+                await _notificationService.ConnectToSignalRHub();
             } 
             else 
             {
