@@ -8,6 +8,11 @@ namespace GoodVibrations.Consts
 			public const string DatabaseFileName = "GoodVibration_SQLite_Database.db";
 		}
 
+        public static class RestApi
+        {
+            public const string HostUrl = "https://goodvibrations-app.azurewebsites.net";
+        }
+
 		public static class Band
 		{
 			public const string BandTileId = "012131414";

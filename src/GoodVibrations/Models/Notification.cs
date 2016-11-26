@@ -5,8 +5,8 @@ using SQLite.Net.Attributes;
 
 namespace GoodVibrations.Models
 {
-	[Table("Sound")]
-	public class Sound : BaseModel
+	[Table("Notification")]
+	public class Notification : BaseModel
 	{
 		[Column("Description")]
 		public string Description
@@ -14,6 +14,12 @@ namespace GoodVibrations.Models
 			get;
 			set;
 		}
+
+        [Column ("EventId")]
+        public string EventId {
+            get;
+            set;
+        }
 
 		[Column("Sound")]
 		public string SoundFilePath
