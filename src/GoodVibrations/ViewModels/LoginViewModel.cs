@@ -59,10 +59,14 @@ namespace GoodVibrations.ViewModels
            
             bool loginSuccessful = await _authService.Login(Username, Password);
 
-            if (loginSuccessful)
-                SaveCredentials();
+            if (loginSuccessful) {
+                SaveCredentials ();
 
-            await ShowMain.Handle(Unit.Default);
+                await ShowMain.Handle (Unit.Default);
+            }
+
+            Password = string.Empty;
+            await App.Current.MainPage.DisplayAlert ("Error", "Invalid Login", "OK");
         }
    }
 }

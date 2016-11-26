@@ -39,7 +39,7 @@ namespace GoodVibrations.ViewModels
         {
             UsernamePlaceholder = "Email";
             PasswordPlaceholder = "Password";
-            RegisterText = "Register";
+            RegisterText = "Create Account";
         }
 
         public override void Init(object parameters)
