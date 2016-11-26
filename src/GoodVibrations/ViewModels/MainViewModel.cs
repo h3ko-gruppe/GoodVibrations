@@ -25,11 +25,11 @@ namespace GoodVibrations.ViewModels
             DeleteItem = ReactiveCommand.Create<BaseItemViewModel,Unit>(OnDeleteItem);
 
             // interactions
-            ShowNewPhoneCallTemplate = new Interaction<Unit, Unit>();
             ShowSelectedNotificator = new Interaction<NotificatorItemViewModel, Unit>();
             ShowSelectedPhoneCallTemplate = new Interaction<PhoneCallTemplateItemViewModel, Unit>();
 
             LoadData().ConfigureAwait(false);
+            CreateToolBarItems();
         }
 
         public ReactiveList<SectionViewModel> MenuItems { get; }
@@ -44,7 +44,6 @@ namespace GoodVibrations.ViewModels
         #endregion
 
         #region Interactions
-        public Interaction<Unit, Unit> ShowNewPhoneCallTemplate { get; }
         public Interaction<NotificatorItemViewModel, Unit> ShowSelectedNotificator { get; }
         public Interaction<PhoneCallTemplateItemViewModel,Unit> ShowSelectedPhoneCallTemplate { get; }
         #endregion
@@ -80,6 +79,23 @@ namespace GoodVibrations.ViewModels
             MenuItems.Add(_notificatorSection);
         }
 
+        protected override void CreateToolBarItems()
+        {
+            ToolBarItems.Clear();
+
+            ToolBarItems.Add(new ActionItemViewModel()
+            {
+                Title = "New Tile",
+                SelectedCommand = CreateNewPhoneCallTemplate
+            });
+
+            ToolBarItems.Add(new ActionItemViewModel()
+            {
+                Title = "New Notificator",
+                SelectedCommand = CreateNewNotificator
+            });
+        }
+
         #region Command Handler
         private async Task<Unit> OnItemSelected(BaseItemViewModel selectedItem)
         {
@@ -112,7 +128,8 @@ namespace GoodVibrations.ViewModels
 
         private async Task OnShowNewPhoneCallTemplate()
         {
-            await ShowNewPhoneCallTemplate.Handle(Unit.Default);
+            var newItem = new PhoneCallTemplateItemViewModel();
+            await ShowSelectedPhoneCallTemplate.Handle(newItem);
         }
         #endregion
     }

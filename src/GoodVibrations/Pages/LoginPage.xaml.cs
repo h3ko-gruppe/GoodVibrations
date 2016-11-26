@@ -18,7 +18,7 @@ namespace GoodVibrations.Pages
             {
                 dispose(ViewModel.ShowMain.RegisterHandler(interaction =>
                 {
-                    Navigation.PushAsync(new MainPage());
+                    App.Current.MainPage = new NavigationPage (new MainPage());
                     interaction.SetOutput(Unit.Default);
                 }));
 

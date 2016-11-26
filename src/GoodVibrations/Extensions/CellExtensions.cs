@@ -30,7 +30,8 @@ namespace GoodVibrations.Extensions
                     cell.ContextActions.Add(new MenuItem()
                     {
                         Text = "Delete",
-                        Command = newValue
+                        Command = newValue,
+                        IsDestructive = true
                     });
                 }
             });

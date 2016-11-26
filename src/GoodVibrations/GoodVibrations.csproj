@@ -91,6 +91,7 @@
     <Compile Include="Views\Cells\PhoneCallTemplateCell.cs" />
     <Compile Include="ViewModels\ItemViewModels\SelectableItemViewModel.cs" />
     <Compile Include="Extensions\CellExtensions.cs" />
+    <Compile Include="ViewModels\ItemViewModels\ActionItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DotNetCross.Memory.Unsafe">
