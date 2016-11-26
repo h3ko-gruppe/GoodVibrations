@@ -9,9 +9,11 @@
         <ResourceDictionary MergedWith="styles:AppStyles" />
     </Page.Resources>
 
-	<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="250">
-        <Entry Text="{Binding Username}" Placeholder="{Binding UsernamePlaceholder}" TextColor="Black" />
-        <Entry Text="{Binding Password}" Placeholder="{Binding PasswordPlaceholder}" IsPassword="true" />
-        <Button Command="{Binding Register}" Text="{Binding RegisterText}" HorizontalOptions="End" />
-    </StackLayout>
+	<ScrollView>
+    	<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="250">
+            <Entry Text="{Binding Username}" Placeholder="{Binding UsernamePlaceholder}" />
+            <Entry Text="{Binding Password}" Placeholder="{Binding PasswordPlaceholder}" IsPassword="true" />
+            <Button Command="{Binding Register}" Text="{Binding RegisterText}" HorizontalOptions="End" />
+        </StackLayout>
+	</ScrollView>
 </xamForms:ReactiveContentPage>

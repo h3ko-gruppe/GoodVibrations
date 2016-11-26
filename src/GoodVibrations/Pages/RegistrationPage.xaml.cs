@@ -16,6 +16,8 @@ namespace GoodVibrations.Pages
 
             this.WhenActivated(dispose =>
             {
+                dispose(this.BindToTitle(ViewModel));
+                
                 dispose(ViewModel.ShowLogin.RegisterHandler(interaction =>
                 {
                     Navigation.PopAsync();

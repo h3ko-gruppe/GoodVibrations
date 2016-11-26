@@ -128,8 +128,7 @@ namespace GoodVibrations.ViewModels
 
         private async Task OnShowNewPhoneCallTemplate()
         {
-            var newItem = new PhoneCallTemplateItemViewModel();
-            await ShowSelectedPhoneCallTemplate.Handle(newItem);
+            await ShowSelectedPhoneCallTemplate.Handle(null);
         }
         #endregion
     }

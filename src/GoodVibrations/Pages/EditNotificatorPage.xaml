@@ -9,6 +9,6 @@
         <ResourceDictionary MergedWith="styles:AppStyles" />
 	</Page.Resources>
 
-	<ContentPage.Content>
-    </ContentPage.Content>
+    <ScrollView>
+	</ScrollView>
 </xamForms:ReactiveContentPage>

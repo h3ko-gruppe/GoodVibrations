@@ -16,6 +16,8 @@ namespace GoodVibrations.Pages
 
             this.WhenActivated(dispose =>
             {
+                dispose(this.BindToTitle(ViewModel));
+
                 dispose(ViewModel.ShowMain.RegisterHandler(interaction =>
                 {
                     App.Current.MainPage = new NavigationPage (new MainPage());

@@ -8,6 +8,16 @@
     <Page.Resources>
         <ResourceDictionary MergedWith="styles:AppStyles" />
     </Page.Resources>
-	<ContentPage.Content>
-    </ContentPage.Content>
+	
+    <ScrollView>
+    	<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="250">
+            <Entry Text="{Binding PhoneCallTemplate.Name}" Placeholder="{Binding NamePlaceholder}" />
+            <Entry Text="{Binding PhoneCallTemplate.PhoneNumber}" Placeholder="{Binding PhoneNumberPlaceholder}" />
+    		<Image Source="{Binding PhoneCallTemplate.ImagePath}"/>
+            <Button Text="{Binding ChooseImageText}" Command="{Binding ChooseImage}" />
+    		<Label Text="{Binding TextLabel}" />
+    		<Editor Text="{Binding PhoneCallTemplate.Text}" BackgroundColor="#EEEEEE" HeightRequest="60" />
+    	</StackLayout>
+	</ScrollView>
+	
 </xamForms:ReactiveContentPage>

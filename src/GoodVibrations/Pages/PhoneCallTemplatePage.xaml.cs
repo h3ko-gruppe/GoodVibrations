@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GoodVibrations.Extensions;
 using GoodVibrations.ViewModels.ItemViewModels;
+using ReactiveUI;
 using Xamarin.Forms;
 
 namespace GoodVibrations.Pages
@@ -12,6 +13,12 @@ namespace GoodVibrations.Pages
         {
             InitializeComponent();
             this.AutoWireViewModel(template);
+
+            this.WhenActivated(dispose =>
+            {
+                dispose(this.BindToTitle(ViewModel));
+                dispose(this.BindToToolBarItems(ViewModel));
+            });
         }
     }
 }
