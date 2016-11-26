@@ -86,6 +86,7 @@
       "Views",
       "Areas/**/Views",
       "appsettings.json",
+      "twiliocredentials.json",
       "web.config"
     ]
   },

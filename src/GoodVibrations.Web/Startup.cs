@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using GoodVibrations.Web.Data;
 using GoodVibrations.Web.Models;
 using GoodVibrations.Web.Services;
+using GoodVibrations.Web.Twilio;
 
 namespace GoodVibrations.Web
 {
@@ -21,8 +22,9 @@ namespace GoodVibrations.Web
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("twiliocredentials.json", optional: true, reloadOnChange: true);
+            //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -53,6 +55,11 @@ namespace GoodVibrations.Web
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            
+            services.AddOptions();
+            // Configure MySubOptions using a sub-section of the appsettings.json file
+            services.Configure<TwilioOptions>(Configuration.GetSection("TwilioApiKey"));
+
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
