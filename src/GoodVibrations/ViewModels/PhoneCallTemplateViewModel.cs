@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Reactive;
 using System.Threading.Tasks;
 using GoodVibrations.ViewModels.ItemViewModels;
 using ReactiveUI;
+using System.Reactive.Linq;
 using ReactiveUI.Fody.Helpers;
 
 namespace GoodVibrations.ViewModels
@@ -12,6 +14,10 @@ namespace GoodVibrations.ViewModels
         {
             ChooseImage = ReactiveCommand.CreateFromTask(OnChooseImage);
             Save = ReactiveCommand.CreateFromTask(OnSave);
+            Test = ReactiveCommand.CreateFromTask(OnTest);
+            Delete = ReactiveCommand.CreateFromTask(OnDelete);
+
+            Close = new Interaction<Unit, Unit>();
         }
 
         [Reactive]
@@ -30,10 +36,20 @@ namespace GoodVibrations.ViewModels
         public string NamePlaceholder { get; set; }
 
         [Reactive]
+        public string SaveText { get; set; }
+
+        [Reactive]
+        public string DeleteText { get; set; }
+
+        [Reactive]
         public string PhoneNumberPlaceholder { get; set; }
 
         public ReactiveCommand ChooseImage { get; }
         public ReactiveCommand Save { get; }
+        public ReactiveCommand Delete { get; }
+        public ReactiveCommand Test { get; }
+
+        public Interaction<Unit, Unit> Close { get; }
 
         public override void Init(object parameters)
         {
@@ -46,6 +62,7 @@ namespace GoodVibrations.ViewModels
             }
 
             SetUiTexts();
+            CreateToolBarItems();
         }
 
         protected override void CreateToolBarItems()
@@ -54,8 +71,8 @@ namespace GoodVibrations.ViewModels
 
             ToolBarItems.Add(new ActionItemViewModel()
             {
-                Title = "Save",
-                SelectedCommand = Save
+                Title = "Test",
+                SelectedCommand = Test
             });
         }
 
@@ -66,11 +83,32 @@ namespace GoodVibrations.ViewModels
             PhoneNumberPlaceholder = "123456";
             ChooseImageText = "Choose Image";
             TextLabel = "Text";
+            SaveText = "Save";
+            DeleteText = "Delete";
+        }
+
+        private async Task OnTest()
+        {
+            await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
         }
 
         private async Task OnSave()
         {
             // TODO: save template
+
+            await Close.Handle(Unit.Default);
+        }
+
+        private async Task OnDelete()
+        {
+            var result = await App.Current.MainPage.DisplayActionSheet("Delete Template", "Cancel", DeleteText);
+
+            if (result == DeleteText)
+            {
+                // TODO: delete template
+
+                await Close.Handle(Unit.Default);
+            }
         }
 
         private Task OnChooseImage()

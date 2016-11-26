@@ -17,6 +17,11 @@
             <Button Text="{Binding ChooseImageText}" Command="{Binding ChooseImage}" />
     		<Label Text="{Binding TextLabel}" />
     		<Editor Text="{Binding PhoneCallTemplate.Text}" BackgroundColor="#EEEEEE" HeightRequest="60" />
+
+			<StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Button Command="{Binding Save}" Text="{Binding SaveText}"/>
+                <Button Command="{Binding Delete}" Text="{Binding DeleteText}" />
+            </StackLayout>
     	</StackLayout>
 	</ScrollView>
 	
