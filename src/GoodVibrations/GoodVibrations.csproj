@@ -98,6 +98,7 @@
     <Compile Include="Styles\AppStyles.xaml.cs">
       <DependentUpon>AppStyles.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\UserBaseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Remotion.Linq">

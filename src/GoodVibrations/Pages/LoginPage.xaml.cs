@@ -29,5 +29,12 @@ namespace GoodVibrations.Pages
                 }));
             });
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            ViewModel?.CheckForCredentials();
+        }
     }
 }

@@ -8,14 +8,10 @@ using ReactiveUI.Fody.Helpers;
 
 namespace GoodVibrations.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : UserBaseViewModel
     {
-        private readonly IKeyChainHelper _keyChainHelper;
-
-        public LoginViewModel(IKeyChainHelper keyChainHelper)
+        public LoginViewModel(IKeyChainHelper keyChainHelper) : base(keyChainHelper)
         {
-            _keyChainHelper = keyChainHelper;
-
             var canExecuteLogin = this.WhenAnyValue(x => x.Username, x => x.Password)
                                                    .Select(valueTuple => !string.IsNullOrWhiteSpace(valueTuple.Item1) &&
                                                            !string.IsNullOrWhiteSpace(valueTuple.Item2));
@@ -24,29 +20,10 @@ namespace GoodVibrations.ViewModels
 
             ShowMain = new Interaction<Unit, Unit>();
             ShowRegistration = new Interaction<Unit, Unit>();
-
-            SetUITexts();
-
-            CheckForCredentials();
         }
 
         [Reactive]
-        public string Username { get; set; }
-
-        [Reactive]
-        public string Password { get; set; }
-
-        [Reactive]
-        public string UsernamePlaceholder { get; set; }
-
-        [Reactive]
-        public string PasswordPlaceholder { get; set; }
-
-        [Reactive]
         public string LoginText { get; set; }
-        
-        [Reactive]
-        public string RegisterText { get; set; }
 
         public ReactiveCommand Login { get; }
         public ReactiveCommand Register { get; }
@@ -54,25 +31,18 @@ namespace GoodVibrations.ViewModels
         public Interaction<Unit, Unit> ShowMain { get; }
         public Interaction<Unit, Unit> ShowRegistration { get; }
 
-        private void SetUITexts()
+        protected override void SetUiTexts()
         {
+            base.SetUiTexts();
+
             Title = "Login";
-            UsernamePlaceholder = "Email";
-            PasswordPlaceholder = "Password";
             LoginText = "Login";
-            RegisterText = "Register";
         }
 
-        private void CheckForCredentials()
+        public void CheckForCredentials()
         {
-            Username = _keyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainUsername);
-            Password = _keyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainPassword);
-        }
-
-        private void SaveCredentials()
-        {
-            _keyChainHelper.SetKey(Constants.KeyChain.CommonKeyChainUsername, Username);
-            _keyChainHelper.SetKey(Constants.KeyChain.CommonKeyChainPassword, Password);
+            Username = KeyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainUsername);
+            Password = KeyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainPassword);
         }
 
         private async Task OnRegister()

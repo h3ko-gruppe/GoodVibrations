@@ -4,7 +4,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace GoodVibrations.ViewModels
 {
-    public class BaseViewModel : ReactiveObject
+    public abstract class BaseViewModel : ReactiveObject
     {
         [Reactive]
         public string Title { get; set; }

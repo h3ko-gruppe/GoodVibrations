@@ -41,7 +41,7 @@ namespace GoodVibrations
             var resolver = Locator.CurrentMutable;
 
             resolver.Register(() => new MainViewModel(), typeof(MainViewModel));
-            resolver.Register(() => new RegistrationViewModel(), typeof(RegistrationViewModel));
+            resolver.Register(() => new RegistrationViewModel(resolver.GetService<IKeyChainHelper>()), typeof(RegistrationViewModel));
             resolver.Register(() => new EditNotificatorViewModel(), typeof(EditNotificatorViewModel));
             resolver.Register(() => new LoginViewModel(resolver.GetService<IKeyChainHelper>()), typeof(LoginViewModel));
             resolver.Register(() => new PhoneCallTemplateViewModel(), typeof(PhoneCallTemplateViewModel));
