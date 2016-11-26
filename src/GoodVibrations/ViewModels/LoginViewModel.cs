@@ -3,6 +3,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using GoodVibrations.Consts;
+using GoodVibrations.Interfaces.Services;
 using KeyChain.Net;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -11,8 +12,9 @@ namespace GoodVibrations.ViewModels
 {
     public class LoginViewModel : UserBaseViewModel
     {
-        public LoginViewModel(IKeyChainHelper keyChainHelper) : base(keyChainHelper)
+        public LoginViewModel(IKeyChainHelper keyChainHelper, IAuthentificationSerivce authService) : base(keyChainHelper)
         {
+            _authService = authService;
             var canExecuteLogin = this.WhenAnyValue(x => x.Username, x => x.Password)
                                                    .Select(valueTuple => !string.IsNullOrWhiteSpace(valueTuple.Item1) &&
                                                            !string.IsNullOrWhiteSpace(valueTuple.Item2));
@@ -31,6 +33,7 @@ namespace GoodVibrations.ViewModels
 
         public Interaction<Unit, Unit> ShowMain { get; }
         public Interaction<Unit, Unit> ShowRegistration { get; }
+        private readonly IAuthentificationSerivce _authService;
 
         protected override void SetUiTexts()
         {
@@ -53,8 +56,8 @@ namespace GoodVibrations.ViewModels
 
         private async Task OnLogin()
         {
-            // TODO: Login
-            bool loginSuccessful = true;
+           
+            bool loginSuccessful = await _authService.Login(Username, Password);
 
             if (loginSuccessful)
                 SaveCredentials();

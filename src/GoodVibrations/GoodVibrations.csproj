@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,6 +10,8 @@
     <AssemblyName>GoodVibrations</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,21 +58,21 @@
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\SoundService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\PhoneCallService.cs" />
     <Compile Include="Persistence\Base\BaseDao.cs" />
     <Compile Include="Persistence\DAO%27s\UserDao.cs" />
     <Compile Include="Models\Base\BaseModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Interfaces\Services\IMicrosoftBandService.cs" />
-    <Compile Include="Interfaces\Services\ISoundService.cs" />
+    <Compile Include="Interfaces\Services\INotificationService.cs" />
     <Compile Include="Interfaces\Services\IPhoneCallService.cs" />
     <Compile Include="Interfaces\Services\IAuthentificationSerivce.cs" />
     <Compile Include="Interfaces\Services\IPersistenceService.cs" />
     <Compile Include="Services\AuthentificationSerivce.cs" />
-    <Compile Include="Models\Sound.cs" />
+    <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\PhoneCall.cs" />
-    <Compile Include="Persistence\DAO%27s\SoundDao.cs" />
+    <Compile Include="Persistence\DAO%27s\NotificationDao.cs" />
     <Compile Include="Persistence\DAO%27s\PhoneCallDao.cs" />
     <Compile Include="Persistence\ConnectionFactories\GoodVibrationsConnectionFactory.cs" />
     <Compile Include="Utils\AssemblyVersionHelper.cs" />
@@ -109,6 +111,11 @@
     <Compile Include="ViewModels\ItemViewModels\SelectableItemViewModel.cs" />
     <Compile Include="Extensions\CellExtensions.cs" />
     <Compile Include="ViewModels\ItemViewModels\ActionItemViewModel.cs" />
+    <Compile Include="EventArgs\NotificationRecievedEventArgs.cs" />
+    <Compile Include="ApiClient\IRestApi.cs" />
+    <Compile Include="ApiClient\RestClient.cs" />
+    <Compile Include="Services\RestApiService.cs" />
+    <Compile Include="Interfaces\Services\IRestApiService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DotNetCross.Memory.Unsafe">
@@ -129,9 +136,13 @@
     <Reference Include="ReactiveUI">
       <HintPath>..\packages\reactiveui-core.7.0.0\lib\portable-net45+netcore45+wpa81+win8+wp8+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.dll</HintPath>
     </Reference>
+    <Reference Include="Refit, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\refit.2.4.1\lib\Portable-Net45+NetCore45+WP8+WPA81\Refit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Remotion.Linq">
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\portable-net45+win+wpa81+wp80\Remotion.Linq.dll</HintPath>
-   </Reference>
+    </Reference>
     <Reference Include="ReactiveUI.Fody.Helpers">
       <HintPath>..\packages\ReactiveUI.Fody.2.0.65\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\ReactiveUI.Fody.Helpers.dll</HintPath>
     </Reference>
@@ -189,28 +200,16 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
-    <Folder Include="Pages\" />
-    <Folder Include="Persistence\" />
-    <Folder Include="Persistence\Base\" />
-    <Folder Include="Persistence\DAO%27s\" />
-    <Folder Include="Models\Base\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Interfaces\Services\" />
     <Folder Include="Resources\" />
-    <Folder Include="Persistence\ConnectionFactories\" />
-    <Folder Include="Utils\" />
-    <Folder Include="Consts\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="TemplateSelectors\" />
-    <Folder Include="Views\" />
-    <Folder Include="Views\Cells\" />
-    <Folder Include="ViewModels\ItemViewModels\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Styles\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.4\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.1.29.4\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.168\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.168\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+  <Import Project="..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets" Condition="Exists('..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets'))" />
+  </Target>
 </Project>

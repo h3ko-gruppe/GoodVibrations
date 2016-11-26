@@ -44,12 +44,12 @@ namespace GoodVibrations
             var resolver = Locator.CurrentMutable;
 
             resolver.Register(() => new MainViewModel(), typeof(MainViewModel));
-            resolver.Register(() => new RegistrationViewModel(resolver.GetService<IKeyChainHelper>()), typeof(RegistrationViewModel));
+            resolver.Register(() => new RegistrationViewModel(resolver.GetService<IKeyChainHelper>(), resolver.GetService<IAuthentificationSerivce> ()), typeof(RegistrationViewModel));
             resolver.Register(() => new EditNotificatorViewModel(), typeof(EditNotificatorViewModel));
-            resolver.Register(() => new LoginViewModel(resolver.GetService<IKeyChainHelper>()), typeof(LoginViewModel));
+            resolver.Register(() => new LoginViewModel(resolver.GetService<IKeyChainHelper>(), resolver.GetService<IAuthentificationSerivce> ()), typeof(LoginViewModel));
 			resolver.Register(() => new PhoneCallTemplateViewModel(), typeof(PhoneCallTemplateViewModel));
 
-			resolver.RegisterLazySingleton(() => new SoundService(), typeof(ISoundService));
+			resolver.RegisterLazySingleton(() => new NotificationService(), typeof(INotificationService));
 			resolver.RegisterLazySingleton(() => new PersistenceService(resolver.GetService<ISQLitePlatform>()), typeof(IPersistenceService));
 			resolver.RegisterLazySingleton(() => new PhoneCallService(), typeof(IPhoneCallService));
 			resolver.RegisterLazySingleton(() => new AuthentificationSerivce(), typeof(IAuthentificationSerivce));

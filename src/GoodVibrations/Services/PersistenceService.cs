@@ -24,7 +24,7 @@ namespace GoodVibrations.Services
 		{
 			_platform = platform;
 			User = new UserDao();
-			Sound = new SoundDao();
+			Notification = new NotificationDao();
 			PhoneCall = new PhoneCallDao();
 		}
 
@@ -40,7 +40,7 @@ namespace GoodVibrations.Services
 			{
 				db.CreateTable<User>();
 				db.CreateTable<PhoneCall>();
-				db.CreateTable<Sound>();
+                db.CreateTable<Notification>();
 			}
 			catch (Exception ex)
 			{
@@ -75,7 +75,7 @@ namespace GoodVibrations.Services
 			private set;
 		}
 
-		public SoundDao Sound
+		public NotificationDao Notification
 		{
 			get;
 			private set;

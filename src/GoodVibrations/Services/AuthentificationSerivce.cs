@@ -7,13 +7,27 @@ namespace GoodVibrations.Services
 {
 	public class AuthentificationSerivce : IAuthentificationSerivce
 	{
-		public AuthentificationSerivce()
+			
+        public async Task<bool> Login(string username, string password)
 		{
+            await Task.Delay (1000);
+            return true;
 		}
 
-		public Task Login()
-		{
-			throw new NotImplementedException();
-		}
+        public async Task<bool> Register (string username, string password)
+        {
+            await Task.Delay (1000);
+            return true;
+        }
+
+        public string Username {
+            get;
+            set;
+        }
+
+        public string Password {
+            get;
+            set;
+        }
 	}
 }

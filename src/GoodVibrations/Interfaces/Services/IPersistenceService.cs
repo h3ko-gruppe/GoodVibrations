@@ -9,7 +9,7 @@ namespace GoodVibrations.Interfaces.Services
 	{
 		void Initialize();
 		UserDao User { get; }
-		SoundDao Sound  { get; }
+		NotificationDao Notification  { get; }
 		PhoneCallDao PhoneCall { get; }
 
     	GoodVibrationsBaseDao<T> GetDao<T>() where T : BaseModel, new();
