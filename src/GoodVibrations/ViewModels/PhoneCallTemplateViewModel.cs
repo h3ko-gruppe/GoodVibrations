@@ -13,11 +13,11 @@ namespace GoodVibrations.ViewModels
     public class PhoneCallTemplateViewModel : BaseViewModel
     {
         private readonly IPersistenceService _persistence;
-        
-        public PhoneCallTemplateViewModel(IPersistenceService persistence)
+        private readonly IPhoneCallService _phoneCallService;
+        public PhoneCallTemplateViewModel(IPersistenceService persistence, IPhoneCallService phoneCallService)
         {
             _persistence = persistence;
-
+            _phoneCallService = phoneCallService;
             ChooseImage = ReactiveCommand.CreateFromTask(OnChooseImage);
             Save = ReactiveCommand.CreateFromTask(OnSave);
             Test = ReactiveCommand.CreateFromTask(OnTest);
@@ -95,7 +95,9 @@ namespace GoodVibrations.ViewModels
 
         private async Task OnTest()
         {
-            await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
+            var isSuccessful = await _phoneCallService.StartCall (PhoneCall.Text, PhoneCall.DestinationNumber, string.Empty, string.Empty);
+            var not = isSuccessful ? " " : "NOT ";
+            await App.Current.MainPage.DisplayAlert("Phone call test", $"The test was {not}started successfully", "Ok");
         }
 
         private async Task OnSave()
