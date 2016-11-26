@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Droid", "Dro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Uwp", "Uwp\GoodVibrations.Uwp.csproj", "{A0A93A98-F10C-483C-83C4-A0CD814F8981}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GoodVibration.Shared", "GoodVibration.Shared\GoodVibration.Shared.shproj", "{FE2063B9-3DA0-470F-A43F-D36702858684}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

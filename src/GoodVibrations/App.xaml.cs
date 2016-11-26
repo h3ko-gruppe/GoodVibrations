@@ -9,6 +9,10 @@ namespace GoodVibrations
             InitializeComponent ();
 
             MainPage = new GoodVibrationsPage ();
+			var resolver = Splat.Locator.CurrentMutable;
+
+			//var persistenceService = resolver.Register<IUserSerive>();
+			//persistenceService.Initialize();
         }
 
         protected override void OnStart ()
