@@ -6,6 +6,8 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using ReactiveUI.Fody.Helpers;
 using GoodVibrations.ViewModels.ItemViewModels;
+using Plugin.Media.Abstractions;
+using Plugin.Media;
 
 namespace GoodVibrations.ViewModels
 {
@@ -74,21 +76,28 @@ namespace GoodVibrations.ViewModels
             }
         }
 
+        private async Task OnChooseImage()
+        {
+            var gallery = "Gallery";
+            var camera = "Camera";
+            var result = await App.Current.MainPage.DisplayActionSheet("Delete Template", "Cancel", null, gallery, camera);
+
+            MediaFile pickerResult = null;
+            if (result == gallery)
+                pickerResult = await CrossMedia.Current.PickPhotoAsync();
+            else if (result == camera)
+                pickerResult = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions() { SaveToAlbum = true });
+            
+            if (pickerResult == null)
+                return;
+
+            var imagePath = pickerResult.Path;
+
+            SetImagePath(imagePath);
+        }
+
         protected abstract Task OnSaveRequested();
         protected abstract Task OnDeletionRequested();
         protected abstract void SetImagePath(string imagePath);
-
-        private Task OnChooseImage()
-        {
-            // TODO: show ActionSheet => Gallary or Camera
-            // TODO: Start Camera or Gallery
-            // TODO: set ImagePath
-
-           var imagePath = "dummy.png";
-
-            SetImagePath(imagePath);
-
-            return Task.FromResult(true);
-        }
     }
 }
