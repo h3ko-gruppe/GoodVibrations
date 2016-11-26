@@ -25,7 +25,6 @@ namespace GoodVibrations.Services
                 CurrentLocation = currentLocation
             };
 
-
             var client = new RestClient(_authentificationService.BasicAuthToken);
 		    var isSuccessful = await client.MakePhoneCall(req);
             return isSuccessful;
