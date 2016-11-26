@@ -1,9 +1,8 @@
-﻿using System;
-using ReactiveUI.Fody.Helpers;
+﻿using ReactiveUI.Fody.Helpers;
 
 namespace GoodVibrations.ViewModels.ItemViewModels
 {
-    public class NotificatorItemViewModel : BaseItemViewModel
+    public class NotificatorItemViewModel : SelectableItemViewModel
     {
         [Reactive]
         public string Name { get; set; }
