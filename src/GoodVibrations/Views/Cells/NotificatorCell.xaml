@@ -14,6 +14,6 @@ x:TypeArguments="viewModels:NotificationItemViewModel"
 		</Grid.ColumnDefinitions>
         <Image Grid.Column="0" x:Name="Image" Source="{Binding Notification.NotificationIcon}" />
 		<Label Grid.Column="1" x:Name="TitleLabel" Text="{Binding Notification.Name}" VerticalTextAlignment="Center" />
-		<Switch Grid.Column="2" x:Name="ActivatedSwitch" IsToggled="{Binding Notification.Active}" VerticalOptions="Center" HorizontalOptions="End" Margin="16,0,0,0"/>
+		<Switch Grid.Column="2" x:Name="ActivatedSwitch" IsToggled="{Binding Notification.Active, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="End" Margin="16,0,0,0"/>
 	</Grid>
 </xamForms:ReactiveViewCell>
