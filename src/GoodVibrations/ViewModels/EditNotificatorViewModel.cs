@@ -53,6 +53,11 @@ namespace GoodVibrations.ViewModels
             TextLabel = "Text";
         }
 
+        protected override async Task OnTest()
+        {
+            await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
+        }
+
         protected override async Task OnSaveRequested()
         {
             await Task.Run(() => _persistence.Notification.InsertOrReplace(Notification));

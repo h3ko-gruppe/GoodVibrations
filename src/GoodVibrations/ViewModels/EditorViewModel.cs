@@ -55,10 +55,7 @@ namespace GoodVibrations.ViewModels
             ChooseImageText = "Choose Image";
         }
 
-        protected virtual async Task OnTest()
-        {
-            await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
-        }
+        protected abstract Task OnTest();
 
         private async Task OnSave()
         {
