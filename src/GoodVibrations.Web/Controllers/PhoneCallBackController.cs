@@ -26,11 +26,11 @@ namespace GoodVibrations.Web.Controllers
         {
 
             var message = "GoodVibrations ruft dich an, voll Geil!";
-
+            var actionUrl = "http://goodvibrations-app.azurewebsites.net/api/recordingstatuscallback?token=ijlsdfnajdfgnfg";
             var twilioCallbackXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
                                     "<Response>\r\n" +
                                     $"    <Say voice=\"{_twilioSettings.Value.CallVoice}\" language=\"{_twilioSettings.Value.CallLanguage}\">{message}</Say>\r\n" +
-                                    // $"    <Dial timeout=\"60\" record=\"true\">{user.PhoneNumber}</Dial>\r\n" +
+                                    $"    <Record action=\"{actionUrl}\" method=\"POST\" />\r\n" +
                                     "</Response>";
 
             return Content(twilioCallbackXml, "application/xml");
