@@ -8,6 +8,8 @@ using ReactiveUI.Fody.Helpers;
 using GoodVibrations.ViewModels.ItemViewModels;
 using Plugin.Media.Abstractions;
 using Plugin.Media;
+using System.Linq;
+using System.IO;
 
 namespace GoodVibrations.ViewModels
 {
@@ -91,9 +93,27 @@ namespace GoodVibrations.ViewModels
             if (pickerResult == null)
                 return;
 
-            var imagePath = pickerResult.Path;
+            var imagePath = await SaveFile(pickerResult);
 
             SetImagePath(imagePath);
+        }
+
+        private async Task<string> SaveFile(MediaFile file)
+        {
+            var folderPath = Path.Combine(PCLStorage.FileSystem.Current.LocalStorage.Path, "Images");
+
+            var folder = await PCLStorage.FileSystem.Current.LocalStorage.CreateFolderAsync(folderPath, PCLStorage.CreationCollisionOption.OpenIfExists);
+            var fileName = "Image.jpg";
+            var savedFile = await folder.CreateFileAsync(fileName, PCLStorage.CreationCollisionOption.GenerateUniqueName);
+
+            using (var fileStream = await savedFile.OpenAsync(PCLStorage.FileAccess.ReadAndWrite)) {
+                using (var originalStream = file.GetStream())
+                {
+                    await originalStream.CopyToAsync(fileStream);
+                }
+            };
+
+            return savedFile.Path;
         }
 
         protected abstract Task OnSaveRequested();

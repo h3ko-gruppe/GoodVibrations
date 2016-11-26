@@ -17,11 +17,13 @@ namespace GoodVibrations.ViewModels
 
         private SectionViewModel<NotificationItemViewModel> _notificatorSection;
         private SectionViewModel<PhoneCallTemplateItemViewModel> _phoneCallTemplateSection;
+        private List<IDisposable> _itemSubscriptions;
 
         public MainViewModel(IPersistenceService persistence)
         {
             _persistence = persistence;
 
+            _itemSubscriptions = new List<IDisposable>();
             MenuItems = new ReactiveList<SectionViewModel>();
             MenuItems.ChangeTrackingEnabled = true;
 
@@ -64,6 +66,12 @@ namespace GoodVibrations.ViewModels
             Title = "Overview";
 
             MenuItems.Clear();
+
+            foreach (var item in _itemSubscriptions)
+                item?.Dispose();
+
+            _itemSubscriptions.Clear();
+
             // create sections
             _phoneCallTemplateSection = new SectionViewModel<PhoneCallTemplateItemViewModel>()
             {
@@ -75,19 +83,7 @@ namespace GoodVibrations.ViewModels
                 Title = "Notificators"
             };
 
-            //#region Demo
-            //// demo
-            //_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 1" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-            //_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 2" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-            //_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 3" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-            //_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 4" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-
-            //_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 1", DestinationNumber = "110", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-            //_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 2", DestinationNumber = "112", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-            //_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 3", DestinationNumber = "01721234567", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-            //_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 4", DestinationNumber = "030123456", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-            //#endregion
-
+            // load items
             IList<Models.Notification> notifications = null;
             IList<Models.PhoneCall> phoneCalls = null;
 
@@ -97,9 +93,14 @@ namespace GoodVibrations.ViewModels
                 phoneCalls = _persistence.PhoneCall.LoadAll();
             });
 
+            // map notifications
             foreach (var item in notifications)
+            {
                 _notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = item, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
+                _itemSubscriptions.Add(item.WhenAnyValue(x => x.Active).Subscribe(_ => Task.Run(() => _persistence.Notification.InsertOrReplace(item))));
+            }
 
+            // map phone calls
             foreach (var item in phoneCalls)
                 _phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = item, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
 
