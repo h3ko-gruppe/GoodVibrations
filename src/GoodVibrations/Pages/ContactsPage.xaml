@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xamForms:ReactiveContentPage
+    x:TypeArguments="viewModels:ContactsViewModel"
+        xmlns:xamForms="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+        xmlns:viewModels="clr-namespace:GoodVibrations.ViewModels;assembly=GoodVibrations"
+        xmlns:styles="clr-namespace:GoodVibrations.Styles;assembly=GoodVibrations"
+        xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="GoodVibrations.Pages.ContactsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary MergedWith="styles:AppStyles"></ResourceDictionary>
+    </ContentPage.Resources>
+
+	<ListView x:Name="ListView" />
+
+</xamForms:ReactiveContentPage>

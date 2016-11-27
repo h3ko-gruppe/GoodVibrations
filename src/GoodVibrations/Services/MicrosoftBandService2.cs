@@ -8,8 +8,10 @@ using GoodVibrations.Interfaces.Services;
 using Microsoft.Band.Portable;
 using Microsoft.Band.Portable.Tiles;
 using Microsoft.Band.Portable.Tiles.Pages;
+using Microsoft.Band.Portable.Tiles.Pages.Data;
 using PCLStorage;
 using Xamarin.Forms;
+using Splat;
 
 namespace GoodVibrations.Services
 {
@@ -17,6 +19,9 @@ namespace GoodVibrations.Services
 	{
 		private static CancellationToken _cancellationToken;
         private const string _bandTileId = "d012ad68-b25c-4bb7-a586-6bace6b9601d";
+        private const string _pageTileId = "90ae4727-33d0-411e-9ff4-0ab4f768f868";
+        private const short _textBlockId = 1;
+        private const short _textButtonId = 2;
         private static IImageService _imageService;
 
         public MicrosoftBandService2 (IImageService imageService)
@@ -27,21 +32,62 @@ namespace GoodVibrations.Services
         public async Task ConnectAndReadData()
 		{
 			_cancellationToken = CancellationToken.None;
-            await RemoveBandTile (_bandTileId);
-			await AddBandTileIfNotExist();
+
+            try
+            {
+                await RemoveBandTile(_bandTileId);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error while: {nameof(RemoveBandTile)} Error: {ex}");
+                
+            }
+            try
+            {
+			    await AddBandTileIfNotExist();
+            } 
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error while: {nameof(AddBandTileIfNotExist)} Error: {ex}");
+
+            }
+
+            await StartReadingFromBand();
 			//await ClearTilePages();
 		}
 
-        public async Task NotifyIfConnected (Guid notificationId, string eventId, string notificationName) {
+        public async Task NotifyIfConnected (string eventId, string notificationName) {
 
             if (ConnectedBand != null) {
                 var message = $"Received sound '{eventId} ' on '{notificationName} '.";
-                await ConnectedBand.NotificationManager.SendMessageAsync (notificationId, "Notification Info", message, DateTime.Now);
+                await ConnectedBand.NotificationManager.SendMessageAsync (new Guid(_bandTileId), "Notification Info", message, DateTime.Now);
                 await ConnectedBand.NotificationManager.VibrateAsync (Microsoft.Band.Portable.Notifications.VibrationType.NotificationAlarm);
             }        
         }
 
-		public void Dispose()
+        private async Task StartReadingFromBand()
+        {
+            var band = await GetConnectedBand();
+
+            if (band != null)
+            {
+
+                band.TileManager.TileButtonPressed -= TileManager_TileButtonPressed;
+                band.TileManager.TileButtonPressed += TileManager_TileButtonPressed;
+
+                await band.TileManager.StartEventListenersAsync();
+            }
+        }
+
+        private void TileManager_TileButtonPressed(object sender, BandTileButtonPressedEventArgs e)
+        {
+            if (e.ElementId == _textButtonId)
+            {
+                
+            }
+        }
+
+        public void Dispose()
 		{
 		}
 
@@ -53,7 +99,7 @@ namespace GoodVibrations.Services
 				if (band != null)
 				{
                     try
-                    {                       
+                    {   
                         var imageSmall = await LoadImage("BandTileSmall.png");
                         var imageLarge = await LoadImage("BandTileLarge.png");
                         var tile = new Microsoft.Band.Portable.Tiles.BandTile (new Guid (_bandTileId), "Good Vibrations", imageLarge, imageSmall);
@@ -67,16 +113,16 @@ namespace GoodVibrations.Services
                                 Orientation = FlowPanelOrientation.Vertical,
                                 Elements = {
                                     new TextBlock {
-                                        ElementId = 1,
+                                        ElementId = _textBlockId,
                                         Rect = new PageRect(0, 0, 229, 30),
                                         ColorSource = ElementColorSource.BandBase,
                                         HorizontalAlignment = HorizontalAlignment.Left,
-                                        VerticalAlignment = VerticalAlignment.Bottom
+                                        VerticalAlignment = VerticalAlignment.Bottom,
                                     },
                                     new TextButton {
-                                        ElementId = 2,
+                                        ElementId = _textButtonId,
                                         Rect = new PageRect(0, 0, 229, 43),
-                                        PressedColor = new BandColor(0, 127, 0)
+                                        PressedColor = new BandColor(0, 127, 0),
                                     },
                                     //new Image {
                                     //    ElementId = imageId,
@@ -95,21 +141,39 @@ namespace GoodVibrations.Services
                         //tile.PageImages.Add (await BandImage.FromStreamAsync (additionalImageStream));
                         // add the tile to the Band
                         await band.TileManager.AddTileAsync (tile);
-                          
 
-                        //tile.PageLayouts.Add (panel);
+                        //declare the data for the page
+                        var pageData = new PageData
+                        {
+                            PageId = new Guid(_pageTileId),
+                            PageLayoutIndex = 0,
+                            Data = {
+                                new TextBlockData {
+                                    ElementId = _textBlockId,
+                                    Text = "Buttons"
+                                },
+                                new TextButtonData {
+                                    ElementId = _textButtonId,
+                                    Text = "Call Rico!"
+                                },
+                                //new ImageData {
+                                //    ElementId = 888,
+                                //    ImageIndex = 0
+                                //}
+                            }
+                        };
 
-                        //// Create the Tile on the Band.
-                        //await band.TileManager.AddTileAsync (tile);
-                        //await band.TileManager.SetPagesTaskAsync(new PageData(),tile.TileId);
+                         //apply the data to the tile
+                        await band.TileManager.SetTilePageDataAsync(new Guid(_bandTileId), pageData);
                     } 
-                    catch (Exception x) {
-                        string s = x.Message;
+                    catch (Exception ex) {
+                        System.Diagnostics.Debug.WriteLine($"Error while: {nameof(AddBandTile)} Error: {ex}");
                     }
 				}
 			}
 			catch (Exception ex)
 			{
+                System.Diagnostics.Debug.WriteLine($"Error while: {nameof(AddBandTile)} With {nameof(GetConnectedBand)} Error: {ex}");
 				throw;
 			}
 		}
@@ -143,12 +207,12 @@ namespace GoodVibrations.Services
 			var band = await GetConnectedBand();
 			if (band != null)
 			{			
-                var tileExits = await CheckIfTileExists (band);
-                if (tileExits) {
+                //var tileExits = await CheckIfTileExists (band);
+                //if (tileExits) {
                    // Remove the Tile from the Band, if present. An application won't need to do this everytime it runs. 
                     // But in case you modify this sample code and run it again, let's make sure to start fresh.
                     await band.TileManager.RemoveTileAsync (new Guid (bandTileId));
-                }
+                //}
 			}
 		}
 
@@ -183,8 +247,8 @@ namespace GoodVibrations.Services
             var band = await GetConnectedBand ();
             if (band != null) {
                 await GetBandTiles ();
-                var tileExits = await CheckIfTileExists (band);
-                if (!tileExits)
+                //var tileExits = await CheckIfTileExists (band);
+                //if (!tileExits)
                     await AddBandTile ();
             }
         }
