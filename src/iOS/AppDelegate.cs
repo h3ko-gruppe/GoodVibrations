@@ -1,7 +1,9 @@
 ﻿
 using Foundation;
 using GoodVibrations.Consts;
+using GoodVibrations.Interfaces;
 using GoodVibrations.Interfaces.Services;
+using GoodVibrations.iOS.Utils;
 using GoodVibrations.Shared;
 using KeyChain.Net;
 using KeyChain.Net.XamarinIOS;
@@ -42,6 +44,8 @@ namespace GoodVibrations.iOS
 
             resolver.RegisterLazySingleton(() => new KeyChainHelper(Constants.KeyChain.CommonKeyChainNamespace, false, SecAccessible.Always), typeof(IKeyChainHelper));
 			resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
+			resolver.RegisterLazySingleton(() => new LocationManager(), typeof(ILocationManager));
+			
         }
     }
 }

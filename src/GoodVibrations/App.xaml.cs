@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using GoodVibrations.Interfaces;
 using GoodVibrations.Interfaces.Services;
 using GoodVibrations.Pages;
 using GoodVibrations.Services;
@@ -60,7 +61,7 @@ namespace GoodVibrations
             resolver.Register(() => new EditNotificatorViewModel(resolver.GetService<IPersistenceService>()), typeof(EditNotificatorViewModel));
             resolver.Register(() => new LoginViewModel(resolver.GetService<IKeyChainHelper>(), resolver.GetService<IAuthentificationSerivce> (), resolver.GetService<INotificationService>()), typeof(LoginViewModel));
             resolver.Register(() => new PhoneCallTemplateViewModel(resolver.GetService<IPersistenceService>(), resolver.GetService<IPhoneCallService> ()), typeof(PhoneCallTemplateViewModel));
-            resolver.Register(() => new PhoneCallViewModel(resolver.GetService<IPhoneCallService>()), typeof(PhoneCallViewModel));
+			resolver.Register(() => new PhoneCallViewModel(resolver.GetService<IPhoneCallService>(), resolver.GetService<ILocationManager>()), typeof(PhoneCallViewModel));
             resolver.Register(() => new ContactsViewModel(), typeof(ContactsViewModel));
 
 			resolver.RegisterLazySingleton(() => new NotificationService(resolver.GetService<IPersistenceService> ()), typeof(INotificationService));

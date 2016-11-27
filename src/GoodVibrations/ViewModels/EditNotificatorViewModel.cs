@@ -51,15 +51,15 @@ namespace GoodVibrations.ViewModels
             base.SetUiTexts();
 
             Title = IsNewTemplate ? "Create Notification" : "Edit Notification";
-            NamePlaceholder = "i.e. Kitchen";
+            NamePlaceholder = "i.e. Microwave";
             PhoneNumberPlaceholder = "i.e. +4901701234567";
             TextLabel = "Text";
-            EventIdPlaceholder = "i.e. Microwave";
+            EventIdPlaceholder = "select sound";
         }
 
         protected override async Task OnTest()
         {
-            await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
+            //await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
         }
 
         protected override async Task OnSaveRequested()

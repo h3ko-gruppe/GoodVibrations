@@ -47,7 +47,7 @@ namespace GoodVibrations.ViewModels
 
             ToolBarItems.Add(new ActionItemViewModel()
             {
-                Title = "Test",
+                Title = "",
                 SelectedCommand = Test
             });
         }
