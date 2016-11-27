@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using GoodVibrations.Services;
+using Xamarin.Forms;
 
 namespace GoodVibrations
 {
@@ -8,8 +9,8 @@ namespace GoodVibrations
         {
             InitializeComponent ();
 
-            var service = new Services.PersistenceService ();
-            var y = service.Load<Models.Sample> (x => x.Test == 3);
+            //var service = new PersistenceService ();
+            //var y = service.Load<Models.Sample> (x => x.Test == 3);
         }
     }
 }

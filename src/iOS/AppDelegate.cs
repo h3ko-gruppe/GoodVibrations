@@ -1,22 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
+using GoodVibrations.Consts;
+using GoodVibrations.Interfaces;
+using GoodVibrations.Interfaces.Services;
+using GoodVibrations.iOS.Utils;
+using GoodVibrations.Shared;
+using KeyChain.Net;
+using KeyChain.Net.XamarinIOS;
+using Security;
+using Splat;
+using SQLite.Net.Interop;
+using SQLite.Net.Platform.XamarinIOS;
 using UIKit;
 
 namespace GoodVibrations.iOS
 {
-    [Register ("AppDelegate")]
+    [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-        public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+        public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
-            global::Xamarin.Forms.Forms.Init ();
+            Xamarin.Forms.Forms.Init();
 
-            LoadApplication (new App ());
+            RegisterPlatformServices();
 
-            return base.FinishedLaunching (app, options);
+            LoadApplication(new App());
+
+            var settings = UIUserNotificationSettings.GetSettingsForTypes(
+         UIUserNotificationType.Alert
+         | UIUserNotificationType.Badge
+         | UIUserNotificationType.Sound,
+         new NSSet());
+            UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+
+            return base.FinishedLaunching(uiApplication, launchOptions);
+        }
+
+        private void RegisterPlatformServices()
+        {
+            var resolver = Locator.CurrentMutable;
+
+			resolver.Register(() => new SQLitePlatformIOS(), typeof(ISQLitePlatform));
+
+            resolver.RegisterLazySingleton(() => new KeyChainHelper(Constants.KeyChain.CommonKeyChainNamespace, false, SecAccessible.Always), typeof(IKeyChainHelper));
+			resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
+			resolver.RegisterLazySingleton(() => new LocationManager(), typeof(ILocationManager));
+			
         }
     }
 }
