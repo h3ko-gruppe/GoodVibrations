@@ -56,5 +56,7 @@
 	<string>New Entry</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>New Entry</string>
+	<key>NSContactsUsageDescription</key>
+	<string>needed to Call without enter number</string>
 </dict>
 </plist>
