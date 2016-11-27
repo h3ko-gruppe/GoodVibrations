@@ -14,6 +14,13 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using GoodVibrations.Consts;
+using GoodVibrations.Interfaces.Services;
+using GoodVibrations.Shared;
+using KeyChain.Net;
+using Splat;
+using SQLite.Net.Interop;
+using SQLite.Net.Platform.WinRT;
 
 namespace GoodVibrations.Uwp
 {
@@ -55,9 +62,10 @@ namespace GoodVibrations.Uwp
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-                
-                Xamarin.Forms.Forms.Init(e); // requires the `e` parameter
 
+                RegisterPlatformServices();
+
+                Xamarin.Forms.Forms.Init(e); // requires the `e` parameter
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application
@@ -79,6 +87,16 @@ namespace GoodVibrations.Uwp
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        private void RegisterPlatformServices()
+        {
+            var resolver = Locator.CurrentMutable;
+
+            resolver.Register(() => new SQLitePlatformWinRT(), typeof(ISQLitePlatform));
+
+            resolver.RegisterLazySingleton(() => new KeyChainHelper(), typeof(IKeyChainHelper));
+            resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
         }
 
         /// <summary>
