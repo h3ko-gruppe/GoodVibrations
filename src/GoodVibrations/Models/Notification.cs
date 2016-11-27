@@ -8,7 +8,12 @@ namespace GoodVibrations.Models
 	[Table("Notification")]
 	public class Notification : BaseModel
 	{
-		[Column("Name")]
+        public Notification()
+        {
+            Active = true;
+        }
+
+        [Column("Name")]
         [Reactive]
         public string Name
 		{

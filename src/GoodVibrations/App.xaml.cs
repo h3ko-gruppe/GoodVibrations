@@ -24,6 +24,15 @@ namespace GoodVibrations
             var persistence = Locator.Current.GetService<IPersistenceService>();
             persistence.Initialize();
 
+            var notificationService = Locator.Current.GetService<INotificationService>();
+            notificationService.NotificationReceived += (sender, e) =>
+            {
+                var notification = e.Notification;
+
+                var message = $"Received sound '{notification.EventId}' on '{notification.Name}'.";
+                Plugin.LocalNotifications.CrossLocalNotifications.Current.Show("Soundnotification", message);
+            };
+
             MainPage = new NavigationPage(new LoginPage ());
         }
 

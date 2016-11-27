@@ -34,14 +34,21 @@ namespace GoodVibrations.Services
         private void OnNotificationReceived (string eventId)
         {
             Debug.WriteLine ($"SignalR notification recieved: {eventId}");
-            if (NotificationReceived != null) {
-
+            Device.BeginInvokeOnMainThread(async () =>
+            {
                 var notification = _persistenceService.Notification.LoadWhere(x => x.EventId == eventId).FirstOrDefault() ;
-                var e = new NotificationRecievedEventArgs (eventId, notification);
-                NotificationReceived (this, e);
-            }
-            Device.BeginInvokeOnMainThread (async() => {
-                await App.Current.MainPage.DisplayAlert ("eventId", $"Notification recieved: {eventId}", "Ok");
+
+                if (notification?.Active != true)
+                    return;
+
+                if (NotificationReceived != null)
+                {
+                    var e = new NotificationRecievedEventArgs(eventId, notification);
+                    NotificationReceived(this, e);
+                }
+
+                var message = $"Received sound '{notification.EventId}' on '{notification.Name}'.";
+                await App.Current.MainPage.DisplayAlert("Soundnotification", message, "Ok");
             });
 
 
