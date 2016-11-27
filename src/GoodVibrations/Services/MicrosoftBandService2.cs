@@ -57,12 +57,19 @@ namespace GoodVibrations.Services
 		}
 
         public async Task NotifyIfConnected (string eventId, string notificationName) {
-
-            if (ConnectedBand != null) {
-                var message = $"Received sound '{eventId} ' on '{notificationName} '.";
-                await ConnectedBand.NotificationManager.SendMessageAsync (new Guid(_bandTileId), "Notification Info", message, DateTime.Now);
-                await ConnectedBand.NotificationManager.VibrateAsync (Microsoft.Band.Portable.Notifications.VibrationType.NotificationAlarm);
-            }        
+            try
+            {
+                if (ConnectedBand != null && ConnectedBand.IsConnected)
+                {
+                    var message = $"Received sound '{eventId} ' on '{notificationName} '.";
+                    await ConnectedBand.NotificationManager.SendMessageAsync(new Guid(_bandTileId), "Notification Info", message, DateTime.Now);
+                    await ConnectedBand.NotificationManager.VibrateAsync(Microsoft.Band.Portable.Notifications.VibrationType.NotificationAlarm);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error while: {nameof(NotifyIfConnected)} Error: {ex}");
+            }
         }
 
         private async Task StartReadingFromBand()
