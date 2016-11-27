@@ -48,6 +48,12 @@ namespace GoodVibrations.Pages
                     await Navigation.PushAsync(new PhoneCallTemplatePage(phoneCallTemplate.Input)).ConfigureAwait(false);
                     phoneCallTemplate.SetOutput(Unit.Default);
                 }));
+
+				dispose(ViewModel.ShowPhoneCall.RegisterHandler(async input =>
+			   {
+					await Navigation.PushAsync(new PhoneCallPage()).ConfigureAwait(false);
+				   input.SetOutput(Unit.Default);
+			   }));
             });
         }
 

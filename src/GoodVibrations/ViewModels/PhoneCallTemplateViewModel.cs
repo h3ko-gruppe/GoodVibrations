@@ -86,7 +86,7 @@ namespace GoodVibrations.ViewModels
         {
             Title = IsNewTemplate ? "Create Template" : "Edit Template";
             NamePlaceholder = "Name";
-            PhoneNumberPlaceholder = "123456";
+            PhoneNumberPlaceholder = "+49162111111";
             ChooseImageText = "Choose Image";
             TextLabel = "Text";
             SaveText = "Save";

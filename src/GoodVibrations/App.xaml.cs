@@ -50,7 +50,8 @@ namespace GoodVibrations
             resolver.Register(() => new RegistrationViewModel(resolver.GetService<IKeyChainHelper>(), resolver.GetService<IAuthentificationSerivce> ()), typeof(RegistrationViewModel));
             resolver.Register(() => new EditNotificatorViewModel(), typeof(EditNotificatorViewModel));
             resolver.Register(() => new LoginViewModel(resolver.GetService<IKeyChainHelper>(), resolver.GetService<IAuthentificationSerivce> ()), typeof(LoginViewModel));
-            resolver.Register(() => new PhoneCallTemplateViewModel(resolver.GetService<IPersistenceService>()), typeof(PhoneCallTemplateViewModel));
+			resolver.Register(() => new PhoneCallTemplateViewModel(resolver.GetService<IPersistenceService>()), typeof(PhoneCallTemplateViewModel));
+			resolver.Register(() => new PhoneCallViewModel(resolver.GetService<IPhoneCallService>()), typeof(PhoneCallViewModel));
 
 			resolver.RegisterLazySingleton(() => new NotificationService(resolver.GetService<IPersistenceService> ()), typeof(INotificationService));
 			resolver.RegisterLazySingleton(() => new PersistenceService(resolver.GetService<ISQLitePlatform>()), typeof(IPersistenceService));
