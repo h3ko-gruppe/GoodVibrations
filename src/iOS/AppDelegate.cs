@@ -1,7 +1,8 @@
-﻿
+
 using Foundation;
 using GoodVibrations.Consts;
 using GoodVibrations.Interfaces.Services;
+using GoodVibrations.iOS.Services;
 using GoodVibrations.Shared;
 using KeyChain.Net;
 using KeyChain.Net.XamarinIOS;
@@ -37,11 +38,10 @@ namespace GoodVibrations.iOS
         private void RegisterPlatformServices()
         {
             var resolver = Locator.CurrentMutable;
-
 			resolver.Register(() => new SQLitePlatformIOS(), typeof(ISQLitePlatform));
-
             resolver.RegisterLazySingleton(() => new KeyChainHelper(Constants.KeyChain.CommonKeyChainNamespace, false, SecAccessible.Always), typeof(IKeyChainHelper));
-			resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
+            resolver.Register (() => new ImageService (), typeof (IImageService));
+
         }
     }
 }

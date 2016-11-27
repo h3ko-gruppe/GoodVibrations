@@ -191,9 +191,6 @@
     <Reference Include="ReactiveUI.XamForms">
       <HintPath>..\packages\reactiveui-xamforms.7.0.0\lib\portable-net45+netcore45+wp8+wpa81+UAP10+MonoAndroid403+MonoTouch10+Xamarin.iOS10\ReactiveUI.XamForms.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Band.iOS">
-      <HintPath>..\packages\Xamarin.Microsoft.Band.Native.1.3.10.1\lib\XamariniOS\Microsoft.Band.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="PCLStorage.Abstractions">
       <HintPath>..\packages\PCLStorage.1.0.2\lib\portable-Xamarin.iOS+Xamarin.Mac\PCLStorage.Abstractions.dll</HintPath>
     </Reference>
@@ -208,6 +205,12 @@
     </Reference>
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\Xamarin.iOS10\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Band.iOS">
+      <HintPath>..\packages\Xamarin.Microsoft.Band.Native.1.3.10.1\lib\XamariniOS\Microsoft.Band.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Band.Portable">
+      <HintPath>..\packages\Xamarin.Microsoft.Band.1.3.10.1\lib\XamariniOS\Microsoft.Band.Portable.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -247,10 +250,13 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Services\ImageService.cs" />
   </ItemGroup>
   <Import Project="..\GoodVibration.Shared\GoodVibration.Shared.projitems" Label="Shared" Condition="Exists('..\GoodVibration.Shared\GoodVibration.Shared.projitems')" />
   <ItemGroup>
     <BundleResource Include="Resources\dummy.png" />
+    <BundleResource Include="Resources\BandTileLarge.png" />
+    <BundleResource Include="Resources\BandTileSmall.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.168\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.168\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
@@ -261,4 +267,5 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\refit.2.4.1\build\portable-net45+netcore45+wp8+wpa81+monoandroid+xamarin.ios10\refit.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
 </Project>

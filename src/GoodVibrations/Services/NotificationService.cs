@@ -15,13 +15,15 @@ namespace GoodVibrations.Services
 	public class NotificationService : INotificationService
     {
         private readonly IPersistenceService _persistenceService;
-
-        public NotificationService (IPersistenceService persistenceService)
-        {
+        private readonly IMicrosoftBandService _microsoftBandService;
+       
+		public NotificationService (IPersistenceService persistenceService, IMicrosoftBandService microsoftBandService) 
+		{
             _persistenceService = persistenceService;
-        }
+			_microsoftBandService = microsoftBandService;
+		}    
 
-	    public async Task ConnectToSignalRHub()
+        public async Task ConnectToSignalRHub()
 	    {
             var hubConnection = new HubConnection("https://goodvibrations-app.azurewebsites.net/");
             var stockTickerHubProxy = hubConnection.CreateHubProxy("NotifyHub");
@@ -29,6 +31,10 @@ namespace GoodVibrations.Services
             await hubConnection.Start();
         }
 
+        public async Task ConnectToMsBand ()
+        {
+            await _microsoftBandService.ConnectAndReadData();
+        }
 	    public event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
 
         private void OnNotificationReceived (string eventId)
@@ -46,6 +52,8 @@ namespace GoodVibrations.Services
                     var e = new NotificationRecievedEventArgs(eventId, notification);
                     NotificationReceived(this, e);
                 }
+
+                await _microsoftBandService.NotifyIfConnected (eventId, notification.Name);
 
                 var message = $"Received sound '{notification.EventId}' on '{notification.Name}'.";
                 await App.Current.MainPage.DisplayAlert("Soundnotification", message, "Ok");
