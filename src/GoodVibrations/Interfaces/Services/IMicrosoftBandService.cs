@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace GoodVibrations.Interfaces.Services
 {
     public interface IMicrosoftBandService
@@ -15,5 +17,9 @@ namespace GoodVibrations.Interfaces.Services
         //void CancelBandConnection();
         //void Dispose();
         //Task ConnectAndReadData();
+
+        Task ConnectAndReadData ()
+        Task Notify ();
+
     }
 }

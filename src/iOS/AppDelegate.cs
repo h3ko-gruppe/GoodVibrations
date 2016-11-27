@@ -24,6 +24,9 @@ namespace GoodVibrations.iOS
 
             LoadApplication(new App());
 
+            var ss = new MicrosoftBandService ();
+            ss.ConnectAndReadData ().ConfigureAwait (false);
+
             return base.FinishedLaunching(uiApplication, launchOptions);
         }
 
@@ -32,7 +35,7 @@ namespace GoodVibrations.iOS
             var resolver = Locator.CurrentMutable;
 
 			resolver.Register(() => new SQLitePlatformIOS(), typeof(ISQLitePlatform));
-
+            resolver.RegisterLazySingleton (() => new MicrosoftBandService (), typeof (IMicrosoftBandService));
             resolver.RegisterLazySingleton(() => new KeyChainHelper(Constants.KeyChain.CommonKeyChainNamespace, false, SecAccessible.Always), typeof(IKeyChainHelper));
 			resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
         }
