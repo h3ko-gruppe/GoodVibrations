@@ -10,6 +10,8 @@ using Xamarin.Forms;
 using System.Linq;
 using GoodVibrations.TemplateSelectors;
 using System.Collections.Specialized;
+using GoodVibrations.Interfaces.Services;
+using Splat;
 
 namespace GoodVibrations.Pages
 {
@@ -78,6 +80,17 @@ namespace GoodVibrations.Pages
             }
 
             TableView.Root = newRoot;
+
+            TestBand();
+        }
+
+        private async void TestBand()
+        {
+            var bandService = Splat.Locator.Current.GetService<IMicrosoftBandService>();
+
+            await bandService.AddBandTile();
+            await bandService.ConnectAndReadData();
+
         }
     }
 }

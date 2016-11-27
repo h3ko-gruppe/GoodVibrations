@@ -5,6 +5,7 @@ using GoodVibrations.Interfaces.Services;
 using GoodVibrations.Shared;
 using KeyChain.Net;
 using KeyChain.Net.XamarinIOS;
+using ReactiveUI;
 using Security;
 using Splat;
 using SQLite.Net.Interop;
@@ -34,7 +35,7 @@ namespace GoodVibrations.iOS
 			resolver.Register(() => new SQLitePlatformIOS(), typeof(ISQLitePlatform));
 
             resolver.RegisterLazySingleton(() => new KeyChainHelper(Constants.KeyChain.CommonKeyChainNamespace, false, SecAccessible.Always), typeof(IKeyChainHelper));
-			resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
+            resolver.RegisterLazySingleton(() => new MicrosoftBandService(resolver.GetService<IAuthentificationSerivce>(), resolver.GetService<ISuspensionHost>()), typeof(IMicrosoftBandService));
         }
     }
 }

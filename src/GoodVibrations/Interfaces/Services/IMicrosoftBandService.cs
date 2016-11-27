@@ -1,3 +1,6 @@
+using System.Threading.Tasks;
+using GoodVibrations.EventArgs;
+
 namespace GoodVibrations.Interfaces.Services
 {
     public interface IMicrosoftBandService
@@ -10,10 +13,10 @@ namespace GoodVibrations.Interfaces.Services
         //void HandleTileButtonPressed(object sender, BandTileEventArgs<IBandTileButtonPressedEvent> e);
         //Task ClearTilePages();
         //void OnConnectionStateChanged(WearableConnectionChangedEventArgs e);
-        //Task RemoveBandTile();
-        //Task AddBandTile();
-        //void CancelBandConnection();
+        Task RemoveBandTile();
+        Task AddBandTile();
+        void CancelBandConnection();
         //void Dispose();
-        //Task ConnectAndReadData();
+        Task ConnectAndReadData();
     }
 }

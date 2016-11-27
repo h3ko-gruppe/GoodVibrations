@@ -3,7 +3,7 @@ using GoodVibrations.Interfaces.Services;
 
 namespace GoodVibrations.Shared
 {
-    public class MicrosoftBandService : IMicrosoftBandService, IDisposable
+    public class MicrosoftBandService : IDisposable
     {
         public void Dispose()
         {
