@@ -2,42 +2,39 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
-using Foundation;
 using GoodVibrations.Interfaces.Services;
-using Microsoft.Band;
+using Microsoft.Band.Portable;
+using Microsoft.Band.Portable.Tiles;
 using Microsoft.Band.Portable.Tiles.Pages;
 using PCLStorage;
-//using GoodVibrations.Interfaces.Services;
+using Xamarin.Forms;
 
-namespace GoodVibrations.Shared
+namespace GoodVibrations.Services
 {
-    //public class MicrosoftBandService //: IMicrosoftBandService, IDisposable
-    //{
-    //    public void Dispose()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
-    /*
-    public class MicrosoftBandService : IMicrosoftBandService, IDisposable
+   public class MicrosoftBandService2 : IMicrosoftBandService, IDisposable
 	{
 		private static CancellationToken _cancellationToken;
         private const string _bandTileId = "d012ad68-b25c-4bb7-a586-6bace6b9601d";
-		
+        private static IImageService _imageService;
+
+        public MicrosoftBandService2 (IImageService imageService)
+        { 
+            _imageService = imageService;
+        }
 
         public async Task ConnectAndReadData()
 		{
 			_cancellationToken = CancellationToken.None;
+            await RemoveBandTile (_bandTileId);
 			await AddBandTileIfNotExist();
-			await ClearTilePages();
+			//await ClearTilePages();
 		}
 
         public async Task NotifyIfConnected (Guid notificationId, string eventId, string notificationName) {
 
-            if (ConnectedBand != null && CheckIfTileExists(ConnectedBand)) {
+            if (ConnectedBand != null) {
                 var message = $"Received sound '{eventId} ' on '{notificationName} '.";
                 await ConnectedBand.NotificationManager.SendMessageAsync (notificationId, "Notification Info", message, DateTime.Now);
                 await ConnectedBand.NotificationManager.VibrateAsync (Microsoft.Band.Portable.Notifications.VibrationType.NotificationAlarm);
@@ -46,11 +43,6 @@ namespace GoodVibrations.Shared
 
 		public void Dispose()
 		{
-		}
-
-		private void ErrorHandler(NSError error)
-		{
-
 		}
 
 		public async Task AddBandTile()
@@ -69,21 +61,22 @@ namespace GoodVibrations.Shared
                         //var button = new PageRect (10, 10, 200, 90);
                         //var panel = new FlowPanel () { Rect = new PageRect (0, 0, 220, 150) };
                         var pageLayout = new PageLayout {
+                            
                             Root = new ScrollFlowPanel {
                                 Rect = new PageRect (0, 0, 245, 105),
                                 Orientation = FlowPanelOrientation.Vertical,
                                 Elements = {
                                     new TextBlock {
-                                        ElementId = 0,
-                                        Rect = new PageRect(0, 0, 229, 30), 
+                                        ElementId = 1,
+                                        Rect = new PageRect(0, 0, 229, 30),
                                         ColorSource = ElementColorSource.BandBase,
                                         HorizontalAlignment = HorizontalAlignment.Left,
                                         VerticalAlignment = VerticalAlignment.Bottom
                                     },
                                     new TextButton {
-                                        ElementId = 1,
+                                        ElementId = 2,
                                         Rect = new PageRect(0, 0, 229, 43),
-                                        PressedColor = BandColor.FromRgb(0, 127, 0)
+                                        PressedColor = new BandColor(0, 127, 0)
                                     },
                                     //new Image {
                                     //    ElementId = imageId,
@@ -93,13 +86,21 @@ namespace GoodVibrations.Shared
                                     //    HorizontalAlignment = HorizontalAlignment.Center
                                     //}
                                 }
-                            };
+                            }
+                        };
+
+                        // add the page layout to the tile
+                        tile.PageLayouts.Add (pageLayout);
+                        // add additional images
+                        //tile.PageImages.Add (await BandImage.FromStreamAsync (additionalImageStream));
+                        // add the tile to the Band
+                        await band.TileManager.AddTileAsync (tile);
                           
 
-                        tile.PageLayouts.Add (new PageLayout (panel));
+                        //tile.PageLayouts.Add (panel);
 
-                        // Create the Tile on the Band.
-                        await band.TileManager.AddTileAsync (tile);
+                        //// Create the Tile on the Band.
+                        //await band.TileManager.AddTileAsync (tile);
                         //await band.TileManager.SetPagesTaskAsync(new PageData(),tile.TileId);
                     } 
                     catch (Exception x) {
@@ -114,20 +115,26 @@ namespace GoodVibrations.Shared
 		}
 
         private async Task<Microsoft.Band.Portable.BandImage> LoadImage (string filename)
-        {
-            var path = Path.Combine (NSBundle.MainBundle.ResourcePath, filename);
+        {           
+            var path = Path.Combine (_imageService.BundlePrefix, filename);
             var imgStream = await LoadIconAsStream (path);
             var imageSmall = await Microsoft.Band.Portable.BandImage.FromStreamAsync (imgStream);
             return imageSmall;
         }
 
-        public async Task GetBandTiles()
+        public async Task<IEnumerable<BandTile>> GetBandTiles()
 		{
-			var band = await GetConnectedBand();
-			if (band != null)
-			{
-				BandTiles = await band.TileManager.GetTilesAsync();				
-			}
+            if (_bandTiles != null)
+                return _bandTiles;
+            else {
+
+                var band = await GetConnectedBand ();
+                if (band != null) {
+                    _bandTiles = await band.TileManager.GetTilesAsync ();
+                }
+
+                return _bandTiles;
+            }
 		}
 
 
@@ -135,29 +142,26 @@ namespace GoodVibrations.Shared
         {
 			var band = await GetConnectedBand();
 			if (band != null)
-			{
-				//using (band)
-                {
-                    var tileExits = CheckIfTileExists (band);
-                    if (tileExits) {
-                       // Remove the Tile from the Band, if present. An application won't need to do this everytime it runs. 
-                        // But in case you modify this sample code and run it again, let's make sure to start fresh.
-                        await band.TileManager.RemoveTileAsync (new Guid (bandTileId));
-                    }
+			{			
+                var tileExits = await CheckIfTileExists (band);
+                if (tileExits) {
+                   // Remove the Tile from the Band, if present. An application won't need to do this everytime it runs. 
+                    // But in case you modify this sample code and run it again, let's make sure to start fresh.
+                    await band.TileManager.RemoveTileAsync (new Guid (bandTileId));
                 }
 			}
 		}
 
 		private async Task ClearTilePages ()
         {
-            var band = await GetConnectedBand ();
-            if (band != null) {
-                var tileId = new Guid (""); //Const.BandTileId);
-                                            //await band.TileManager.RemovePagesAsync(tileId, _cancellationTokenSource.Token);
-                                            //await band.TileManager.SetPagesAsync(tileId, _cancellationTokenSource.Token,
-                                            //           new PageData(new Guid(Constants.Band.BandTileId), 0,
-                                            // new TextButtonData(1, ""))); //Localization.InitiateEmergencyCall)));
-            }
+            //var band = await GetConnectedBand ();
+            //if (band != null) {
+            //    var tileId = new Guid (_bandTileId); 
+            //    await band.TileManager.RemoveTilePagesAsync(tileId);
+            //    await band.TileManager.SetPagesAsync (tileId);
+            //    new PageData(new Guid(Constants.Band.BandTileId), 0,
+            //    new TextButtonData(1, ""))); //Localization.InitiateEmergencyCall)));
+            //}
         }
 
         //private async void HandleTileButtonPressed(object sender, BandTileEventArgs<IBandTileButtonPressedEvent> e)
@@ -179,16 +183,18 @@ namespace GoodVibrations.Shared
             var band = await GetConnectedBand ();
             if (band != null) {
                 await GetBandTiles ();
-                var tileExits = CheckIfTileExists (band);
+                var tileExits = await CheckIfTileExists (band);
                 if (!tileExits)
                     await AddBandTile ();
             }
         }
 
-        private bool CheckIfTileExists (Microsoft.Band.Portable.BandClient band)
+        private async Task<bool> CheckIfTileExists (Microsoft.Band.Portable.BandClient band)
         {
-            var tileExits = BandTiles.Any (x => x.Id == new Guid (_bandTileId));
-            return tileExits;
+            var id = new Guid (_bandTileId);
+            var tiles = await GetBandTiles ();
+            var exists = tiles.Any (x => x.Id == id);
+            return exists;
         }
 
         private async Task<Microsoft.Band.Portable.BandClient> GetConnectedBand()
@@ -234,18 +240,6 @@ namespace GoodVibrations.Shared
         }
 
 		private IEnumerable<Microsoft.Band.Portable.Tiles.BandTile> _bandTiles;
-        public IEnumerable<Microsoft.Band.Portable.Tiles.BandTile> BandTiles
-		{
-			get
-			{
-				return _bandTiles;
-			}
-
-			set
-			{
-				_bandTiles = value;
-			}
-		}
 
 		private Microsoft.Band.Portable.BandClient _connectedBand;
 		public Microsoft.Band.Portable.BandClient ConnectedBand
@@ -260,5 +254,5 @@ namespace GoodVibrations.Shared
 				_connectedBand = value;
 			}
 		}
-	}*/
+	}
 }

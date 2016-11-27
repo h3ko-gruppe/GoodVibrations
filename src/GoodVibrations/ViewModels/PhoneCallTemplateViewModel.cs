@@ -49,8 +49,8 @@ namespace GoodVibrations.ViewModels
             base.SetUiTexts();
 
             Title = IsNewTemplate ? "Create Template" : "Edit Template";
-            NamePlaceholder = "Name";
-            PhoneNumberPlaceholder = "123456";
+            NamePlaceholder = "i.e. Emergency";
+            PhoneNumberPlaceholder = "i.e. +4901701234567";
             TextLabel = "Text";
         }
 

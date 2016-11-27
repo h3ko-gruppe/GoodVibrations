@@ -1,7 +1,8 @@
-﻿
+
 using Foundation;
 using GoodVibrations.Consts;
 using GoodVibrations.Interfaces.Services;
+using GoodVibrations.iOS.Services;
 using GoodVibrations.Shared;
 using KeyChain.Net;
 using KeyChain.Net.XamarinIOS;
@@ -24,8 +25,12 @@ namespace GoodVibrations.iOS
 
             LoadApplication(new App());
 
-            var ss = new MicrosoftBandService ();
-            ss.ConnectAndReadData ().ConfigureAwait (false);
+            var settings = UIUserNotificationSettings.GetSettingsForTypes(
+         UIUserNotificationType.Alert
+         | UIUserNotificationType.Badge
+         | UIUserNotificationType.Sound,
+         new NSSet());
+            UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
 
             return base.FinishedLaunching(uiApplication, launchOptions);
         }
@@ -33,11 +38,10 @@ namespace GoodVibrations.iOS
         private void RegisterPlatformServices()
         {
             var resolver = Locator.CurrentMutable;
-
 			resolver.Register(() => new SQLitePlatformIOS(), typeof(ISQLitePlatform));
-            resolver.RegisterLazySingleton (() => new MicrosoftBandService (), typeof (IMicrosoftBandService));
             resolver.RegisterLazySingleton(() => new KeyChainHelper(Constants.KeyChain.CommonKeyChainNamespace, false, SecAccessible.Always), typeof(IKeyChainHelper));
-			resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
+            resolver.Register (() => new ImageService (), typeof (IImageService));
+
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace GoodVibrations.Interfaces.Services
@@ -18,8 +19,8 @@ namespace GoodVibrations.Interfaces.Services
         //void Dispose();
         //Task ConnectAndReadData();
 
-        Task ConnectAndReadData ()
-        Task Notify ();
+        Task ConnectAndReadData ();
+        Task NotifyIfConnected (Guid notificationId, string eventId, string notificationName);
 
     }
 }

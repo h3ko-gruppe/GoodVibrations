@@ -8,6 +8,7 @@ namespace GoodVibrations.Interfaces.Services
 	{
 		event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
 	    Task ConnectToSignalRHub();
+        Task ConnectToMsBand ();
 
 	}
 }

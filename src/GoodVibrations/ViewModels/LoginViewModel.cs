@@ -7,6 +7,7 @@ using GoodVibrations.Interfaces.Services;
 using KeyChain.Net;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Xamarin.Forms;
 
 namespace GoodVibrations.ViewModels
 {
@@ -68,10 +69,19 @@ namespace GoodVibrations.ViewModels
                 SaveCredentials ();
 
                 await ShowMain.Handle (Unit.Default);
-                await _notificationService.ConnectToSignalRHub();
-            } 
-            else 
-            {
+                await _notificationService.ConnectToSignalRHub ().ConfigureAwait (false);
+                try {
+                    
+                    Device.BeginInvokeOnMainThread (() => {
+                       _notificationService.ConnectToMsBand ();
+                    });
+                } catch (Exception ex) {
+                    Device.BeginInvokeOnMainThread (async () => { 
+                        await App.Current.MainPage.DisplayAlert ("Error", $"Coild not start connection\r\n{ex.Message}", "OK");
+                    });
+
+                }
+            } else {
                 await App.Current.MainPage.DisplayAlert ("Error", "Invalid Login", "OK");
             }
 

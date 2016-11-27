@@ -31,19 +31,32 @@ namespace GoodVibrations.Services
             await hubConnection.Start();
         }
 
+        public async Task ConnectToMsBand ()
+        {
+            await _microsoftBandService.ConnectAndReadData();
+        }
 	    public event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
 
         private void OnNotificationReceived (string eventId)
         {
             Debug.WriteLine ($"SignalR notification recieved: {eventId}");
-            if (NotificationReceived != null) {
-
+            Device.BeginInvokeOnMainThread(async () =>
+            {
                 var notification = _persistenceService.Notification.LoadWhere(x => x.EventId == eventId).FirstOrDefault() ;
-                var e = new NotificationRecievedEventArgs (eventId, notification);
-                NotificationReceived (this, e);
-            }
-            Device.BeginInvokeOnMainThread (async() => {
-                await App.Current.MainPage.DisplayAlert ("eventId", $"Notification recieved: {eventId}", "Ok");
+
+                if (notification?.Active != true)
+                    return;
+
+                if (NotificationReceived != null)
+                {
+                    var e = new NotificationRecievedEventArgs(eventId, notification);
+                    NotificationReceived(this, e);
+                }
+
+                await _microsoftBandService.NotifyIfConnected (Guid.NewGuid(), eventId, notification.Name);
+
+                var message = $"Received sound '{notification.EventId}' on '{notification.Name}'.";
+                await App.Current.MainPage.DisplayAlert("Soundnotification", message, "Ok");
             });
 
 
