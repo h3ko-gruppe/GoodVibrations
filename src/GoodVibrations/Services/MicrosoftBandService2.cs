@@ -8,6 +8,7 @@ using GoodVibrations.Interfaces.Services;
 using Microsoft.Band.Portable;
 using Microsoft.Band.Portable.Tiles;
 using Microsoft.Band.Portable.Tiles.Pages;
+using Microsoft.Band.Portable.Tiles.Pages.Data;
 using PCLStorage;
 using Xamarin.Forms;
 
@@ -32,11 +33,11 @@ namespace GoodVibrations.Services
 			//await ClearTilePages();
 		}
 
-        public async Task NotifyIfConnected (Guid notificationId, string eventId, string notificationName) {
+        public async Task NotifyIfConnected (string eventId, string notificationName) {
 
             if (ConnectedBand != null) {
                 var message = $"Received sound '{eventId} ' on '{notificationName} '.";
-                await ConnectedBand.NotificationManager.SendMessageAsync (notificationId, "Notification Info", message, DateTime.Now);
+                await ConnectedBand.NotificationManager.SendMessageAsync (new Guid(_bandTileId), "Notification Info", message, DateTime.Now);
                 await ConnectedBand.NotificationManager.VibrateAsync (Microsoft.Band.Portable.Notifications.VibrationType.NotificationAlarm);
             }        
         }
@@ -71,7 +72,7 @@ namespace GoodVibrations.Services
                                         Rect = new PageRect(0, 0, 229, 30),
                                         ColorSource = ElementColorSource.BandBase,
                                         HorizontalAlignment = HorizontalAlignment.Left,
-                                        VerticalAlignment = VerticalAlignment.Bottom
+                                        VerticalAlignment = VerticalAlignment.Bottom,
                                     },
                                     new TextButton {
                                         ElementId = 2,
@@ -96,20 +97,38 @@ namespace GoodVibrations.Services
                         // add the tile to the Band
                         await band.TileManager.AddTileAsync (tile);
                           
+                        // declare the data for the page
+                        //var pageData = new PageData
+                        //                        {
+                        //                            PageId = 1,
+                        //                            PageLayoutIndex = pageIndex,
+                        //                            Data = {
+                        //        new TextBlockData {
+                        //            ElementId = titleId,
+                        //            Text = "Buttons"
+                        //        },
+                        //        new TextButtonData {
+                        //            ElementId = buttonId,
+                        //            Text = "Press Me!"
+                        //        },
+                        //        new ImageData {
+                        //            ElementId = imageId,
+                        //            ImageIndex = 0
+                        //        }
+                        //    }
+                        //};
+                        //// apply the data to the tile
+                        //await tileManager.SetTilePageDataAsync(tileId, pageData);
 
-                        //tile.PageLayouts.Add (panel);
-
-                        //// Create the Tile on the Band.
-                        //await band.TileManager.AddTileAsync (tile);
-                        //await band.TileManager.SetPagesTaskAsync(new PageData(),tile.TileId);
                     } 
                     catch (Exception x) {
-                        string s = x.Message;
+                        System.Diagnostics.Debug.WriteLine($"Error while: {nameof(AddBandTile)} Error: {x}");
                     }
 				}
 			}
 			catch (Exception ex)
 			{
+                System.Diagnostics.Debug.WriteLine($"Error while: {nameof(AddBandTile)} With {nameof(GetConnectedBand)} Error: {ex}");
 				throw;
 			}
 		}

@@ -20,7 +20,6 @@ namespace GoodVibrations.Interfaces.Services
         //Task ConnectAndReadData();
 
         Task ConnectAndReadData ();
-        Task NotifyIfConnected (Guid notificationId, string eventId, string notificationName);
-
+        Task NotifyIfConnected (string eventId, string notificationName);
     }
 }

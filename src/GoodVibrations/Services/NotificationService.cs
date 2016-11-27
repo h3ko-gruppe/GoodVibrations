@@ -53,7 +53,7 @@ namespace GoodVibrations.Services
                     NotificationReceived(this, e);
                 }
 
-                await _microsoftBandService.NotifyIfConnected (Guid.NewGuid(), eventId, notification.Name);
+                await _microsoftBandService.NotifyIfConnected (eventId, notification.Name);
 
                 var message = $"Received sound '{notification.EventId}' on '{notification.Name}'.";
                 await App.Current.MainPage.DisplayAlert("Soundnotification", message, "Ok");
