@@ -48,12 +48,12 @@ namespace GoodVibrations.Web.Controllers
             var userEmail = await GetEmailByMessageToken(token);
             if (!string.IsNullOrEmpty(userEmail))
             {
-                var fromEmail = _smtpEmailOptions.DefaultFrom.ToMailBoxAddresses();
+                var fromEmail = new MailboxAddress[] { new MailboxAddress(_smtpEmailOptions.DefaultFrom) };
                 const string subject = "This is the Good Vibrations Phone Call Summary";
                 var body =
                     $"Hi,\r\nThis is an automatic email summary.\r\nCall Status:{callStatus}\r\nRecording Duration:{recordingDuration}\r\nMp3 Download Url:{recordingUrl}\r\n\r\n\r\nImagine we would have time to send this to a speech to text service! You would be able to read the answer of the person you where calling by text!";
-                var toEmail = userEmail.ToMailBoxAddresses();
-                await _emailService.SendMail(fromEmail, subject, body, toEmail);
+                var toEmail = new MailboxAddress[] {new MailboxAddress(userEmail)};
+                await _emailService.SendMail(fromEmail, subject, body, toEmail).ConfigureAwait(false);
                 
                 return Ok();
             }

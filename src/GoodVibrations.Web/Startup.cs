@@ -61,7 +61,7 @@ namespace GoodVibrations.Web
             services.AddOptions();
             // Configure MySubOptions using a sub-section of the appsettings.json file
             services.Configure<TwilioOptions>(Configuration.GetSection("TwilioApiKey"));
-            services.Configure<SmtpEmailOptions>(Configuration.GetSection("TwilioApiKey"));
+            services.Configure<SmtpEmailOptions>(Configuration.GetSection("SmtpServerConfig"));
 
 
             // Add application services.
