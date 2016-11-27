@@ -44,9 +44,9 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-   
     "Microsoft.AspNetCore.SignalR.Server": "0.2.0-*",
-    "Microsoft.AspNetCore.WebSockets": "0.2.0-*"
+    "Microsoft.AspNetCore.WebSockets": "0.2.0-*",
+    "MailKit": "1.10.0",
   },
 
   "tools": {

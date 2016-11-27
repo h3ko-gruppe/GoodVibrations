@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MimeKit;
 
 namespace GoodVibrations.Web.Extensions
 {
@@ -18,5 +19,23 @@ namespace GoodVibrations.Web.Extensions
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
+
+        public static MailboxAddress[] ToMailBoxAddresses(this string val)
+        {
+            if (string.IsNullOrEmpty(val) || val.EndsWith(" "))
+                return new MailboxAddress[0];
+            else
+            {
+                var multipleEmailsInOneStringSeperators = new[] { ',', ';' };
+                var result = val.Split(multipleEmailsInOneStringSeperators, StringSplitOptions.RemoveEmptyEntries).Select(x =>
+                {
+                    var emailSeperators = new[] { '<', '>', '(', ')', '[', ']', '{', '}' };
+                    var mailAddressPart = x.Split(emailSeperators, StringSplitOptions.RemoveEmptyEntries);
+                    return new MailboxAddress(mailAddressPart[0], mailAddressPart[1]);
+                }).ToArray();
+                return result;
+            }
+        }
+        
     }
 }

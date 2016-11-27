@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using GoodVibrations.Web.Data;
 using GoodVibrations.Web.Models;
 using GoodVibrations.Web.Services;
+using GoodVibrations.Web.SmtpEmail;
 using GoodVibrations.Web.Twilio;
 
 namespace GoodVibrations.Web
@@ -60,6 +61,7 @@ namespace GoodVibrations.Web
             services.AddOptions();
             // Configure MySubOptions using a sub-section of the appsettings.json file
             services.Configure<TwilioOptions>(Configuration.GetSection("TwilioApiKey"));
+            services.Configure<SmtpEmailOptions>(Configuration.GetSection("TwilioApiKey"));
 
 
             // Add application services.
