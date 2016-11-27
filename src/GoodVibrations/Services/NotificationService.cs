@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 using System.Threading.Tasks;
 using GoodVibrations.EventArgs;
 using GoodVibrations.Interfaces.Services;
 using GoodVibrations.Models;
+using Microsoft.AspNet.SignalR.Client;
+using Xamarin.Forms;
 
 namespace GoodVibrations.Services
 {
@@ -16,17 +21,30 @@ namespace GoodVibrations.Services
             _persistenceService = persistenceService;
         }
 
-        public event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
+	    public async Task ConnectToSignalRHub()
+	    {
+            var hubConnection = new HubConnection("https://goodvibrations-app.azurewebsites.net/");
+            var stockTickerHubProxy = hubConnection.CreateHubProxy("NotifyHub");
+            stockTickerHubProxy.On<string> ("Notify", eventId => OnNotificationReceived (eventId));
+            await hubConnection.Start();
+        }
 
-        public async void OnNotificationReceived (string eventId)
+	    public event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
+
+        private void OnNotificationReceived (string eventId)
         {
+            Debug.WriteLine ($"SignalR notification recieved: {eventId}");
             if (NotificationReceived != null) {
 
                 var notification = _persistenceService.Notification.LoadWhere(x => x.EventId == eventId).FirstOrDefault() ;
                 var e = new NotificationRecievedEventArgs (eventId, notification);
                 NotificationReceived (this, e);
-                await App.Current.MainPage.DisplayAlert ("eventId", $"Notification recieved: {eventId}", "Ok");
             }
+            Device.BeginInvokeOnMainThread (async() => {
+                await App.Current.MainPage.DisplayAlert ("eventId", $"Notification recieved: {eventId}", "Ok");
+            });
+
+
         }
 
     }
