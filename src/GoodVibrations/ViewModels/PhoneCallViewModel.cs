@@ -60,11 +60,7 @@ namespace GoodVibrations.ViewModels
 
         private async Task OnCall()
         {
-            var phoneCall = new PhoneCall();
-            phoneCall.DestinationNumber = DestinationNumber;
-            phoneCall.Text = MessageText;
-
-            await Task.Run(() => _phoneCallService.StartCall(phoneCall));
+            await Task.Run(() => _phoneCallService.StartCall(MessageText, DestinationNumber, string.Empty, string.Empty));
         }
 
         private async Task OnContact()

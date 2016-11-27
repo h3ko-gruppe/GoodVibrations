@@ -9,15 +9,13 @@ namespace GoodVibrations.Views.Cells
 {
     public class PhoneCallTemplateCell : ImageCell, IViewFor<PhoneCallTemplateItemViewModel>
     {
-        protected override void OnBindingContextChanged()
+        public PhoneCallTemplateCell()
         {
-            base.OnBindingContextChanged();
-
-            if (ViewModel == null)
-                return;
-
             this.WhenActivated(dispose =>
             {
+                if (ViewModel == null)
+                    return;
+
                 dispose(ViewModel.WhenAnyValue(x => x.PhoneCall.Name)
                         .Distinct()
                         .Subscribe(newValue => Text = newValue));
@@ -41,7 +39,6 @@ namespace GoodVibrations.Views.Cells
         {
             get { return BindingContext as PhoneCallTemplateItemViewModel; }
             set { BindingContext = value; }
-
         }
 
         object IViewFor.ViewModel

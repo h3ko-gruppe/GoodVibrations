@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive;
 using System.Threading.Tasks;
 using GoodVibrations.ViewModels.ItemViewModels;
@@ -18,13 +18,15 @@ namespace GoodVibrations.ViewModels
 		private SectionViewModel<NotificationItemViewModel> _notificatorSection;
 		private SectionViewModel<PhoneCallTemplateItemViewModel> _phoneCallTemplateSection;
 		private SectionViewModel<ActionItemViewModel> _directCallSection;
+        private List<IDisposable> _itemSubscriptions;
 
 		public MainViewModel(IPersistenceService persistence)
 		{
 			_persistence = persistence;
 
-			MenuItems = new ReactiveList<SectionViewModel>();
-			MenuItems.ChangeTrackingEnabled = true;
+            _itemSubscriptions = new List<IDisposable>();
+            MenuItems = new ReactiveList<SectionViewModel>();
+            MenuItems.ChangeTrackingEnabled = true;
 
 			// commands
 			CreateNewPhoneCallTemplate = ReactiveCommand.CreateFromTask(OnShowNewPhoneCallTemplate);
@@ -66,51 +68,50 @@ namespace GoodVibrations.ViewModels
 		{
 			Title = "Overview";
 
-			MenuItems.Clear();
-			// create sections
-			_phoneCallTemplateSection = new SectionViewModel<PhoneCallTemplateItemViewModel>()
-			{
-				Title = "Phonecall templates"
-			};
+            MenuItems.Clear();
+
+            foreach (var item in _itemSubscriptions)
+                item?.Dispose();
+
+            _itemSubscriptions.Clear();
+
+            // create sections
+            _phoneCallTemplateSection = new SectionViewModel<PhoneCallTemplateItemViewModel>()
+            {
+                Title = "Phonecall templates"
+            };
 
 			_notificatorSection = new SectionViewModel<NotificationItemViewModel>()
-			{
-				Title = "Notificators"
-			};
+            {
+                Title = "Notificators"
+            };
 
-			_directCallSection = new SectionViewModel<ActionItemViewModel>()
-			{
-				Title = "Directcall"
-			};
+            _directCallSection = new SectionViewModel<ActionItemViewModel>()
+            {
+                Title = "Directcall"
+            };
 
-			#region Demo
-			//_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 1" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-			//_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 2" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-			//_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 3" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-			//_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = new models.Notification() { Name = "Notificator 4" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
+            IList<Models.Notification> notifications = null;
+            IList<Models.PhoneCall> phoneCalls = null;
+            // load items
+            await Task.Run(() =>
+            {
+                notifications = _persistence.Notification.LoadAll();
+                phoneCalls = _persistence.PhoneCall.LoadAll();
+            });
 
-			//_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 1", DestinationNumber = "110", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-			//_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 2", DestinationNumber = "112", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-			//_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 3", DestinationNumber = "01721234567", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-			//_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = new models.PhoneCall() { Name = "PhoneCall 4", DestinationNumber = "030123456", Icon = "dummy.png" }, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-			#endregion
+            // map notifications
+            foreach (var item in notifications)
+            {
+                _notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = item, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
+                _itemSubscriptions.Add(item.WhenAnyValue(x => x.Active).Subscribe(_ => Task.Run(() => _persistence.Notification.InsertOrReplace(item))));
+            }
 
-			IList<Models.Notification> notifications = null;
-			IList<Models.PhoneCall> phoneCalls = null;
+            // map phone calls
+            foreach (var item in phoneCalls)
+                _phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = item, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
 
-			await Task.Run(() =>
-			{
-				notifications = _persistence.Notification.LoadAll();
-				phoneCalls = _persistence.PhoneCall.LoadAll();
-			});
-
-			foreach (var item in notifications)
-				_notificatorSection.Items.Add(new NotificationItemViewModel() { Notification = item, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-
-			foreach (var item in phoneCalls)
-				_phoneCallTemplateSection.Items.Add(new PhoneCallTemplateItemViewModel() { PhoneCall = item, SelectedCommand = ItemSelected, DeleteCommand = DeleteItem });
-
-			_directCallSection.Items.Add(new ActionItemViewModel() { Title = "do directcall", SelectedCommand = ItemSelected });
+			_directCallSection.Items.Add(new ActionItemViewModel() { Title = "Do directcall", SelectedCommand = ItemSelected });
 
 			MenuItems.Add(_directCallSection);
 			MenuItems.Add(_phoneCallTemplateSection);
@@ -129,7 +130,7 @@ namespace GoodVibrations.ViewModels
 
 			ToolBarItems.Add(new ActionItemViewModel()
 			{
-				Title = "New Notificator",
+				Title = "New Notifier",
 				SelectedCommand = CreateNewNotificator
 			});
 		}
@@ -173,11 +174,8 @@ namespace GoodVibrations.ViewModels
 
 		private async Task OnCreateNewNotificator()
 		{
-			// TODO: Show BarcodeScanner, Create notificator
-			NotificationItemViewModel createdNotificator = null;
-
 			// show edit
-			await ShowSelectedNotificator.Handle(createdNotificator.Notification);
+			await ShowSelectedNotificator.Handle(null);
 		}
 
 		private async Task OnShowNewPhoneCallTemplate()

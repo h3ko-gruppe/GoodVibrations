@@ -24,6 +24,13 @@ namespace GoodVibrations.iOS
 
             LoadApplication(new App());
 
+            var settings = UIUserNotificationSettings.GetSettingsForTypes(
+         UIUserNotificationType.Alert
+         | UIUserNotificationType.Badge
+         | UIUserNotificationType.Sound,
+         new NSSet());
+            UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+
             return base.FinishedLaunching(uiApplication, launchOptions);
         }
 

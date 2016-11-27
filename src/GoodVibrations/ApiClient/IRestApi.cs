@@ -15,6 +15,6 @@ namespace GoodVibrations.ApiClient
         Task<HttpResponseMessage> CreateAccount ([Body]RegistrationRequest request);
 
         [Post ("/api/phonecall/")]
-        Task<HttpResponseMessage> MakePhoneCall ([Header ("Authorization")]string authorization);
+        Task<HttpResponseMessage> MakePhoneCall ([Body]PhoneCallRequest request,[Header ("Authorization")]string authorization);
     }
 }

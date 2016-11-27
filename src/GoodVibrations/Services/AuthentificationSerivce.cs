@@ -10,13 +10,12 @@ namespace GoodVibrations.Services
 
         public async Task<bool> Login(string username, string password)
         {
-			return true;
             var testToken = CreateBasicAuthToken(username, password);
             var client = new RestClient(testToken);
             var isSuccessful = await client.Login();
 
             Username = isSuccessful ? username : string.Empty;
-            password = isSuccessful ? password : string.Empty;
+            Password = isSuccessful ? password : string.Empty;
 
             return isSuccessful;
         }
@@ -27,7 +26,7 @@ namespace GoodVibrations.Services
             var isSuccessful = await client.CreateAccount(username, password);
 
             Username = isSuccessful ? username : string.Empty;
-            password = isSuccessful ? password : string.Empty;
+            Password = isSuccessful ? password : string.Empty;
 
             return isSuccessful;
         }
@@ -50,5 +49,10 @@ namespace GoodVibrations.Services
             return token;
         }
 
-    }
+        public string BasicAuthToken {
+            get { 
+                return CreateBasicAuthToken (Username, Password);
+            }          
+        }
+	}
 }

@@ -8,13 +8,26 @@ namespace GoodVibrations.Models
 	[Table("Notification")]
 	public class Notification : BaseModel
 	{
-		[Column("Name")]
+        public Notification()
+        {
+            Active = true;
+        }
+
+        [Column("Name")]
         [Reactive]
         public string Name
 		{
 			get;
 			set;
 		}
+
+        [Column("QrCode")]
+        [Reactive]
+        public string QrCode
+        {
+            get;
+            set;
+        }
 
         [Column ("EventId")]
         [Reactive]

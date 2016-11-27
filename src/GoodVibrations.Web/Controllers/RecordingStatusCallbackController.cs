@@ -18,8 +18,9 @@ namespace GoodVibrations.Web.Controllers
     [Route("api/[controller]")]
     public class RecordingStatusCallbackController : Controller
     {
+        public const string GetRecordingStatusCallbackRoute = "GetRecordingStatusCallbackRoute";
         // POST api/values
-        [HttpPost]
+        [HttpPost(Name = GetRecordingStatusCallbackRoute)]
         public IActionResult Post([FromQuery(Name = "token")] string token,
             [FromForm(Name = "RecordingUrl")] string recordingUrl,
             [FromForm(Name = "RecordingSid")] string recordingSid,

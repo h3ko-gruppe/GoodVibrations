@@ -1,39 +1,25 @@
-﻿using System;
-using System.Reactive;
 using System.Threading.Tasks;
-using GoodVibrations.ViewModels.ItemViewModels;
-using ReactiveUI;
-using System.Reactive.Linq;
 using ReactiveUI.Fody.Helpers;
 using GoodVibrations.Interfaces.Services;
 using GoodVibrations.Models;
 
 namespace GoodVibrations.ViewModels
 {
-    public class PhoneCallTemplateViewModel : BaseViewModel
+    public class PhoneCallTemplateViewModel : EditorViewModel
     {
         private readonly IPersistenceService _persistence;
-        
-        public PhoneCallTemplateViewModel(IPersistenceService persistence)
+        private readonly IPhoneCallService _phoneCallService;
+        public PhoneCallTemplateViewModel(IPersistenceService persistence, IPhoneCallService phoneCallService)
         {
             _persistence = persistence;
-
-            ChooseImage = ReactiveCommand.CreateFromTask(OnChooseImage);
-            Save = ReactiveCommand.CreateFromTask(OnSave);
-            Test = ReactiveCommand.CreateFromTask(OnTest);
-            Delete = ReactiveCommand.CreateFromTask(OnDelete);
-
-            Close = new Interaction<Unit, Unit>();
+			_phoneCallService = phoneCallService;
         }
 
         [Reactive]
         public PhoneCall PhoneCall { get; set; }
 
         [Reactive]
-        public bool IsNewTemplate { get; set; }
-
-        [Reactive]
-        public string ChooseImageText { get; set; }
+        public bool IsNewTemplate { get; set; }       
 
         [Reactive]
         public string TextLabel { get; set; }
@@ -42,20 +28,7 @@ namespace GoodVibrations.ViewModels
         public string NamePlaceholder { get; set; }
 
         [Reactive]
-        public string SaveText { get; set; }
-
-        [Reactive]
-        public string DeleteText { get; set; }
-
-        [Reactive]
         public string PhoneNumberPlaceholder { get; set; }
-
-        public ReactiveCommand ChooseImage { get; }
-        public ReactiveCommand Save { get; }
-        public ReactiveCommand Delete { get; }
-        public ReactiveCommand Test { get; }
-
-        public Interaction<Unit, Unit> Close { get; }
 
         public override void Init(object parameters)
         {
@@ -71,61 +44,36 @@ namespace GoodVibrations.ViewModels
             CreateToolBarItems();
         }
 
-        protected override void CreateToolBarItems()
+        protected override void SetUiTexts()
         {
-            ToolBarItems.Clear();
+            base.SetUiTexts();
 
-            ToolBarItems.Add(new ActionItemViewModel()
-            {
-                Title = "Test",
-                SelectedCommand = Test
-            });
-        }
-
-        private void SetUiTexts()
-        {
             Title = IsNewTemplate ? "Create Template" : "Edit Template";
-            NamePlaceholder = "Name";
-            PhoneNumberPlaceholder = "+49162111111";
-            ChooseImageText = "Choose Image";
+            NamePlaceholder = "i.e. Emergency";
+            PhoneNumberPlaceholder = "i.e. +4901701234567";
             TextLabel = "Text";
-            SaveText = "Save";
-            DeleteText = "Delete";
         }
 
-        private async Task OnTest()
+        protected override async Task OnTest()
         {
-            await App.Current.MainPage.DisplayAlert("Test not implemented", $"{this.GetType().Name}.{nameof(OnTest)}", "Ok");
+            var isSuccessful = await _phoneCallService.StartCall (PhoneCall.Text, PhoneCall.DestinationNumber, string.Empty, string.Empty);
+            var not = isSuccessful ? " " : "NOT ";
+            await App.Current.MainPage.DisplayAlert("Phone call test", $"The test was {not}started successfully", "Ok");
         }
 
-        private async Task OnSave()
+        protected override async Task OnSaveRequested()
         {
             await Task.Run(() => _persistence.PhoneCall.InsertOrReplace(PhoneCall));
-
-            await Close.Handle(Unit.Default);
         }
 
-        private async Task OnDelete()
+        protected override async Task OnDeletionRequested()
         {
-            var result = await App.Current.MainPage.DisplayActionSheet("Delete Template", "Cancel", DeleteText);
-
-            if (result == DeleteText)
-            {
-                await Task.Run(() => _persistence.PhoneCall.Delete(PhoneCall));
-
-                await Close.Handle(Unit.Default);
-            }
+            await Task.Run(() => _persistence.PhoneCall.Delete(PhoneCall));
         }
 
-        private Task OnChooseImage()
+        protected override void SetImagePath(string imagePath)
         {
-            // TODO: show ActionSheet => Gallary or Camera
-            // TODO: Start Camera or Gallery
-            // TODO: set ImagePath
-
-            PhoneCall.Icon = "dummy.png";
-
-            return Task.FromResult(true);
+            PhoneCall.Icon = imagePath;
         }
     }
 }

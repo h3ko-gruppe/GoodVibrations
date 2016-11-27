@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xamForms:ReactiveViewCell 
+x:TypeArguments="viewModels:NotificationItemViewModel"
+    xmlns:xamForms="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+    xmlns:viewModels="clr-namespace:GoodVibrations.ViewModels.ItemViewModels;assembly=GoodVibrations"
+    xmlns:templateSelectors="clr-namespace:GoodVibrations.TemplateSelectors;assembly=GoodVibrations"
+    xmlns:styles="clr-namespace:GoodVibrations.Styles;assembly=GoodVibrations"
+	xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="GoodVibrations.Views.Cells.NotificatorCell">
+    <Grid Margin="16,0,16,0">
+		<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+        <Image Grid.Column="0" x:Name="Image" Source="{Binding Notification.NotificationIcon}" />
+		<Label Grid.Column="1" x:Name="TitleLabel" Text="{Binding Notification.Name}" VerticalTextAlignment="Center" />
+		<Switch Grid.Column="2" x:Name="ActivatedSwitch" IsToggled="{Binding Notification.Active, Mode=TwoWay}" VerticalOptions="Center" HorizontalOptions="End" Margin="16,0,0,0"/>
+	</Grid>
+</xamForms:ReactiveViewCell>
