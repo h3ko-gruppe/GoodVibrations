@@ -5,25 +5,25 @@ using System.Threading.Tasks;
 using GoodVibrations.ViewModels.ItemViewModels;
 using Plugin.Contacts;
 using ReactiveUI;
+using System.Reactive.Linq;
+using Plugin.Contacts.Abstractions;
 
 namespace GoodVibrations.ViewModels
 {
 	public class ContactsViewModel : BaseViewModel
 	{
-		private SectionViewModel<ActionItemViewModel> _contactsSection;
-
 		public ContactsViewModel()
 		{
-			MenuItems = new ReactiveList<SectionViewModel>();
+            MenuItems = new ReactiveList<ContactItemViewModel>();
 			MenuItems.ChangeTrackingEnabled = true;
-			ItemSelected = ReactiveCommand.CreateFromTask<BaseItemViewModel, Unit>(OnItemSelected);
-			SelectContact = new Interaction<Unit, Unit>();
+			ItemSelected = ReactiveCommand.CreateFromTask<ContactItemViewModel, Unit>(OnItemSelected);
+			SelectContact = new Interaction<Contact, Unit>();
 		}
 
-		public ReactiveList<SectionViewModel> MenuItems { get; }
+		public ReactiveList<ContactItemViewModel> MenuItems { get; }
 		public ReactiveCommand ItemSelected { get; }
 
-		public Interaction<Unit, Unit> SelectContact { get; }
+		public Interaction<Contact, Unit> SelectContact { get; }
 
 		public void OnAppear()
 		{
@@ -36,12 +36,6 @@ namespace GoodVibrations.ViewModels
 
 			MenuItems.Clear();
 
-			// create sections
-			_contactsSection = new SectionViewModel<ActionItemViewModel>()
-			{
-				Title = "oO Contacts Oo"
-			};
-
 			if (await CrossContacts.Current.RequestPermission())
 			{
 				CrossContacts.Current.PreferContactAggregation = false;
@@ -49,21 +43,22 @@ namespace GoodVibrations.ViewModels
 				if (CrossContacts.Current.Contacts == null)
 					return;
 
-				var contacts = CrossContacts.Current.Contacts.ToList();
+                var contacts = CrossContacts.Current.Contacts.ToArray();
 
-				foreach (var item in contacts)
-					_contactsSection.Items.Add(new ActionItemViewModel() { Title = item.DisplayName, SelectedCommand = ItemSelected });
+                MenuItems.AddRange(contacts.Where(x => !string.IsNullOrWhiteSpace(x.DisplayName))
+                                   .OrderBy(x => x.DisplayName)
+                                   .Select(item => new ContactItemViewModel() { Title = item.DisplayName, SelectedCommand = ItemSelected, Contact = item }));
+
+                // forms workaround
+                this.RaisePropertyChanged(nameof(MenuItems));
 			}
-
-			MenuItems.Add(_contactsSection);
-
 		}
 
 		#region Command Handler
-		private async Task<Unit> OnItemSelected(BaseItemViewModel selectedItem)
+		private async Task<Unit> OnItemSelected(ContactItemViewModel selectedItem)
 		{
-			//if (selectedItem is ActionItemViewModel)
-			//	await SelectContact.Handle(Unit.Default);
+            if (selectedItem != null)
+                await SelectContact.Handle(selectedItem.Contact);
 
 			return Unit.Default;
 		}

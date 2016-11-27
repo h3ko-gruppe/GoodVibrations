@@ -21,7 +21,7 @@ namespace GoodVibrations.Services
         public async void OnNotificationReceived (string eventId)
         {
             if (NotificationReceived != null) {
-
+                
                 var notification = _persistenceService.Notification.LoadWhere(x => x.EventId == eventId).FirstOrDefault() ;
                 var e = new NotificationRecievedEventArgs (eventId, notification);
                 NotificationReceived (this, e);

@@ -128,6 +128,7 @@
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ContactsViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModels\ContactItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DotNetCross.Memory.Unsafe">

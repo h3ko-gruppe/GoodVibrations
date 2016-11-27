@@ -12,12 +12,12 @@
 	<ScrollView>
     	<StackLayout Orientation="Vertical" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="250">
             <Entry Text="{Binding DestinationNumber}" Placeholder="{Binding PhoneNumberPlaceholder}" />
+			<Button Command="{Binding Contact}" Text="{Binding ContactText}" FontSize="14" />
     		<Label Text="{Binding TextLabel}" />
     		<Editor Text="{Binding MessageText}" BackgroundColor="#EEEEEE" HeightRequest="60" />
             <Button Command="{Binding Call}" Text="{Binding CallText}"/>
-            <Button Command="{Binding Contact}" Text="{Binding ContactText}"/>
+
 		</StackLayout>
 	</ScrollView>
-	
 	
 </xamForms:ReactiveContentPage>
