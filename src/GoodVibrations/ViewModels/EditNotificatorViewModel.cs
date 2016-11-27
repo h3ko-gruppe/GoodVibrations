@@ -29,6 +29,9 @@ namespace GoodVibrations.ViewModels
         [Reactive]
         public string PhoneNumberPlaceholder { get; set; }
 
+        [Reactive]
+        public string EventIdPlaceholder { get; set; }
+
         public override void Init(object parameters)
         {
             Notification = parameters as Notification;
@@ -48,9 +51,10 @@ namespace GoodVibrations.ViewModels
             base.SetUiTexts();
 
             Title = IsNewTemplate ? "Create Notification" : "Edit Notification";
-            NamePlaceholder = "Name";
-            PhoneNumberPlaceholder = "123456";
+            NamePlaceholder = "i.e. Kitchen";
+            PhoneNumberPlaceholder = "i.e. +4901701234567";
             TextLabel = "Text";
+            EventIdPlaceholder = "i.e. Microwave";
         }
 
         protected override async Task OnTest()
