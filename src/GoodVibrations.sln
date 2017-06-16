@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Uwp", "Uwp\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodVibrations.Web", "GoodVibrations.Web\GoodVibrations.Web.csproj", "{18A972B5-0F70-428B-B1E6-1A3877E90E26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.SignalRTestClient", "GoodVibrations.SignalRTestClient\GoodVibrations.SignalRTestClient.csproj", "{74495F7B-EB19-478A-A2C6-EBBFF1799677}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		GoodVibration.Shared\GoodVibration.Shared.projitems*{80572cd9-3cab-4445-8796-cf02e7e0a6cb}*SharedItemsImports = 4
@@ -158,6 +160,30 @@ Global
 		{18A972B5-0F70-428B-B1E6-1A3877E90E26}.Release|x64.Build.0 = Release|Any CPU
 		{18A972B5-0F70-428B-B1E6-1A3877E90E26}.Release|x86.ActiveCfg = Release|Any CPU
 		{18A972B5-0F70-428B-B1E6-1A3877E90E26}.Release|x86.Build.0 = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|ARM.Build.0 = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|x64.Build.0 = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Debug|x86.Build.0 = Debug|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|ARM.ActiveCfg = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|ARM.Build.0 = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|iPhone.Build.0 = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|x64.ActiveCfg = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|x64.Build.0 = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|x86.ActiveCfg = Release|Any CPU
+		{74495F7B-EB19-478A-A2C6-EBBFF1799677}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
