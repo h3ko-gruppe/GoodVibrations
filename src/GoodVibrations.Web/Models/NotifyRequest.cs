@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using NuGet.Protocol.Core.v3;
 
 namespace GoodVibrations.Web.Models
 {
