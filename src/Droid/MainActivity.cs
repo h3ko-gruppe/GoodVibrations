@@ -15,6 +15,7 @@ using SQLite.Net.Platform.XamarinAndroid;
 using KeyChain.Net.XamarinAndroid;
 using KeyChain.Net;
 using GoodVibrations.Shared;
+using GoodVibrations.Services;
 
 namespace GoodVibrations.Droid
 {
@@ -42,7 +43,6 @@ namespace GoodVibrations.Droid
             resolver.Register(() => new SQLitePlatformAndroid(), typeof(ISQLitePlatform));
 
             resolver.RegisterLazySingleton(() => new KeyChainHelper(() => Application.Context, Constants.KeyChain.CommonKeyChainKeyStoreFileProtectionPassword), typeof(IKeyChainHelper));
-            resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
         }
     }
 }
