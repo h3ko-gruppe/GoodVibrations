@@ -1,15 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Threading;
-using System.Threading.Tasks;
-using Foundation;
-using GoodVibrations.Interfaces.Services;
-using Microsoft.Band;
-using Microsoft.Band.Portable.Tiles.Pages;
-using PCLStorage;
+//using System;
+//using System.Collections.Generic;
+//using System.IO;
+//using System.Linq;
+//using System.Runtime.InteropServices.ComTypes;
+//using System.Threading;
+//using System.Threading.Tasks;
+//#if __IOS__
+//using Foundation;
+//#endif
+//using GoodVibrations.Interfaces.Services;
+//using PCLStorage;
+
+//#if !WINDOWS_UWP
+//using Microsoft.Band;
+//using Microsoft.Band.Portable.Tiles.Pages;
+//#endif
 //using GoodVibrations.Interfaces.Services;
 
 namespace GoodVibrations.Shared

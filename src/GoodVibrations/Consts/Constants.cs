@@ -10,7 +10,7 @@ namespace GoodVibrations.Consts
 
         public static class RestApi
         {
-            public const string HostUrl = "https://goodvibrations-app.azurewebsites.net";
+            public const string HostUrl = "https://goodvibrations-dev.azurewebsites.net";
         }
 
 		public static class Band

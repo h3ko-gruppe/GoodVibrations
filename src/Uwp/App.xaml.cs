@@ -96,7 +96,6 @@ namespace GoodVibrations.Uwp
             resolver.Register(() => new SQLitePlatformWinRT(), typeof(ISQLitePlatform));
 
             resolver.RegisterLazySingleton(() => new KeyChainHelper(), typeof(IKeyChainHelper));
-            resolver.RegisterLazySingleton(() => new MicrosoftBandService(), typeof(IMicrosoftBandService));
         }
 
         /// <summary>
