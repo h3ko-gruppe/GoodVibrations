@@ -95,6 +95,10 @@ namespace GoodVibrations.Web
             });
 
             app.UseSignalR();
+
+            //Ensure Db exists
+            var context = app.ApplicationServices.GetService<ApplicationDbContext>();
+            context.Database.Migrate();
         }
     }
 }
