@@ -51,8 +51,8 @@ namespace GoodVibrations.ViewModels
             Username = KeyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainUsername);
             Password = KeyChainHelper.GetKey(Constants.KeyChain.CommonKeyChainPassword);
 
-            Username = "test1@test.de";
-            Password = "!Test123";
+            Username = "hello@hennigandreas.de";
+            Password = "Te$t12345";
         }
 
         private async Task OnRegister()
@@ -77,7 +77,7 @@ namespace GoodVibrations.ViewModels
                     });
                 } catch (Exception ex) {
                     Device.BeginInvokeOnMainThread (async () => { 
-                        await App.Current.MainPage.DisplayAlert ("Error", $"Coild not start connection\r\n{ex.Message}", "OK");
+                        await App.Current.MainPage.DisplayAlert ("Error", $"Could not start connection\r\n{ex.Message}", "OK");
                     });
 
                 }

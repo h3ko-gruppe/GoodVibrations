@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations", "GoodVibra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Uwp", "Uwp\GoodVibrations.Uwp.csproj", "{A0A93A98-F10C-483C-83C4-A0CD814F8981}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodVibrations.Web", "GoodVibrations.Web\GoodVibrations.Web.csproj", "{18A972B5-0F70-428B-B1E6-1A3877E90E26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.Web", "GoodVibrations.Web\GoodVibrations.Web.csproj", "{18A972B5-0F70-428B-B1E6-1A3877E90E26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodVibrations.SignalRTestClient", "GoodVibrations.SignalRTestClient\GoodVibrations.SignalRTestClient.csproj", "{74495F7B-EB19-478A-A2C6-EBBFF1799677}"
 EndProject

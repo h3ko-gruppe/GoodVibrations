@@ -28,10 +28,10 @@ namespace GoodVibrations.Droid
 		{
 			global::PCLStorage.Resource.String.ApplicationName = global::GoodVibrations.Droid.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::GoodVibrations.Droid.Resource.String.Hello;
+			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::GoodVibrations.Droid.Resource.Drawable.plugin_lc_smallicon;
 			global::Splat.Resource.String.library_name = global::GoodVibrations.Droid.Resource.String.library_name;
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::GoodVibrations.Droid.Resource.String.ApplicationName;
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::GoodVibrations.Droid.Resource.String.Hello;
-			global::Plugin.LocalNotifications.Resource.Drawable.plugin_lc_smallicon = global::GoodVibrations.Droid.Resource.Drawable.plugin_lc_smallicon;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::GoodVibrations.Droid.Resource.Attribute.actionBarSize;
 		}
 		
