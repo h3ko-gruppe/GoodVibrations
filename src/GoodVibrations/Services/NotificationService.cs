@@ -9,6 +9,7 @@ using GoodVibrations.Interfaces.Services;
 using GoodVibrations.Models;
 using Microsoft.AspNet.SignalR.Client;
 using Xamarin.Forms;
+using GoodVibrations.Consts;
 
 namespace GoodVibrations.Services
 {
@@ -25,7 +26,7 @@ namespace GoodVibrations.Services
 
         public async Task ConnectToSignalRHub()
 	    {
-            var hubConnection = new HubConnection("https://goodvibrations-app.azurewebsites.net/");
+            var hubConnection = new HubConnection(Constants.RestApi.HostUrl);
             var stockTickerHubProxy = hubConnection.CreateHubProxy("NotifyHub");
             stockTickerHubProxy.On<string> ("Notify", eventId => OnNotificationReceived (eventId));
             await hubConnection.Start();
