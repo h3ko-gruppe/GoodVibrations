@@ -7,6 +7,17 @@ namespace GoodVibrations.Services
 {
     public class AuthentificationSerivce : IAuthentificationSerivce
     {
+		public string Username
+		{
+			get;
+			private set;
+		}
+
+		public string Password
+		{
+			get;
+			private set;
+		}
 
         public async Task<bool> Login(string username, string password)
         {
@@ -29,18 +40,6 @@ namespace GoodVibrations.Services
             Password = isSuccessful ? password : string.Empty;
 
             return isSuccessful;
-        }
-
-        public string Username
-        {
-            get;
-            private set;
-        }
-
-        public string Password
-        {
-            get;
-            private set;
         }
 
         private string CreateBasicAuthToken(string username, string password)

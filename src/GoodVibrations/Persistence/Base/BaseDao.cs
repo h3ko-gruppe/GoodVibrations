@@ -209,7 +209,7 @@ namespace GoodVibrations.Persistence.Base
         }
 
         /// <summary>
-        /// Gets the name of the tablen.
+        /// Gets the name of the table.
         /// </summary>
         /// <value>The name of the tablen.</value>
         public static string TablenName {

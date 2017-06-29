@@ -16,6 +16,8 @@ using KeyChain.Net.XamarinAndroid;
 using KeyChain.Net;
 using GoodVibrations.Shared;
 using GoodVibrations.Services;
+using Xamarin.Forms;
+using Plugin.Toasts;
 
 namespace GoodVibrations.Droid
 {
@@ -31,6 +33,9 @@ namespace GoodVibrations.Droid
 
             global::Xamarin.Forms.Forms.Init (this, savedInstanceState);
 
+			DependencyService.Register<ToastNotification>();
+			ToastNotification.Init(this);
+
             RegisterPlatformServices();
 
             LoadApplication (new App ());
@@ -42,7 +47,7 @@ namespace GoodVibrations.Droid
 
             resolver.Register(() => new SQLitePlatformAndroid(), typeof(ISQLitePlatform));
 
-            resolver.RegisterLazySingleton(() => new KeyChainHelper(() => Application.Context, Constants.KeyChain.CommonKeyChainKeyStoreFileProtectionPassword), typeof(IKeyChainHelper));
+            resolver.RegisterLazySingleton(() => new KeyChainHelper(() => Android.App.Application.Context, Constants.KeyChain.CommonKeyChainKeyStoreFileProtectionPassword), typeof(IKeyChainHelper));
         }
     }
 }

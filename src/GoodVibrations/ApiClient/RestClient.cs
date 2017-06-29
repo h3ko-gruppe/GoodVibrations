@@ -4,7 +4,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GoodVibrations.Consts;
 using GoodVibrations.Interfaces.Services;
+using Plugin.Toasts;
 using Refit;
+using Xamarin.Forms;
 
 namespace GoodVibrations.ApiClient
 {
@@ -40,6 +42,19 @@ namespace GoodVibrations.ApiClient
             };
 
             var result = await _api.CreateAccount (req);
+
+            // Debug output
+            if(!result.IsSuccessStatusCode) {
+                var notificator = DependencyService.Get<IToastNotificator>();
+				var options = new NotificationOptions()
+				{
+                    Title = $"Error: {result.StatusCode}",
+                    Description = $"{result.ReasonPhrase}"
+				};
+
+                await notificator.Notify(options);
+            }
+
             return result.IsSuccessStatusCode;
         }
 

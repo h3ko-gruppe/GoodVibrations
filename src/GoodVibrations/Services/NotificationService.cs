@@ -10,6 +10,7 @@ using GoodVibrations.Models;
 using Microsoft.AspNet.SignalR.Client;
 using Xamarin.Forms;
 using GoodVibrations.Consts;
+using Plugin.Vibrate;
 
 namespace GoodVibrations.Services
 {
@@ -36,7 +37,8 @@ namespace GoodVibrations.Services
         {
             await _microsoftBandService.ConnectAndReadData();
         }
-	    public event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
+
+	    public event EventHandler<NotificationReceivedEventArgs> NotificationReceived;
 
         private void OnNotificationReceived (string eventId)
         {
@@ -50,14 +52,17 @@ namespace GoodVibrations.Services
 
                 if (NotificationReceived != null)
                 {
-                    var e = new NotificationRecievedEventArgs(eventId, notification);
+                    var e = new NotificationReceivedEventArgs(eventId, notification);
                     NotificationReceived(this, e);
                 }
 
                 await _microsoftBandService.NotifyIfConnected (eventId, notification.Name);
 
                 var message = $"Received sound '{notification.EventId}' on '{notification.Name}'.";
-                await App.Current.MainPage.DisplayAlert("Soundnotification", message, "Ok");
+
+                CrossVibrate.Current.Vibration();
+                await App.Current.MainPage.DisplayAlert("Sound Notification", message, "Ok");
+
             });
 
 

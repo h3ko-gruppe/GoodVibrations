@@ -6,7 +6,7 @@ namespace GoodVibrations.Interfaces.Services
 {
 	public interface INotificationService
 	{
-		event EventHandler<NotificationRecievedEventArgs> NotificationReceived;
+		event EventHandler<NotificationReceivedEventArgs> NotificationReceived;
 	    Task ConnectToSignalRHub();
         Task ConnectToMsBand ();
 
