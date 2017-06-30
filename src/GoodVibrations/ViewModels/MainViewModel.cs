@@ -75,6 +75,7 @@ namespace GoodVibrations.ViewModels
 
             _itemSubscriptions.Clear();
 
+
             // create sections
             _phoneCallTemplateSection = new SectionViewModel<PhoneCallTemplateItemViewModel>()
             {
@@ -113,8 +114,8 @@ namespace GoodVibrations.ViewModels
 
 			_directCallSection.Items.Add(new ActionItemViewModel() { Title = "Do directcall", SelectedCommand = ItemSelected });
 
-			MenuItems.Add(_directCallSection);
-			MenuItems.Add(_phoneCallTemplateSection);
+			//MenuItems.Add(_directCallSection);
+			//MenuItems.Add(_phoneCallTemplateSection);
 			MenuItems.Add(_notificatorSection);
 		}
 

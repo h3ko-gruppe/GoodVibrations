@@ -40,8 +40,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>English</string>
@@ -58,5 +56,7 @@
 	<string>New Entry</string>
 	<key>NSContactsUsageDescription</key>
 	<string>needed to Call without enter number</string>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
 </dict>
 </plist>
